@@ -3,6 +3,7 @@ import Splash from './splash/splash'
 import NavBar from './navbar/navbar'
 export default () => { 
     return (<div>
+        <NavBar/>
         <Splash/>
     </div>)
 }
