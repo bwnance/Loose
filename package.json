@@ -23,7 +23,12 @@
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "webpack --watch --mode=development",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "webpack"
+  },
+  "engines": {
+    "node": "10.13.0"
   },
   "repository": {
     "type": "git",
