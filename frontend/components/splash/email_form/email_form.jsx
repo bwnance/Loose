@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {clearErrors} from '../../../actions/errors_actions'
-import {checkEmail} from '../../../actions/session'
+import {checkEmail} from '../../../actions/ui_actions'
 import {withRouter} from 'react-router-dom'
 class EmailForm extends React.Component {
     constructor(props){
@@ -15,10 +15,9 @@ class EmailForm extends React.Component {
     handleSubmit(e){ 
         e.preventDefault()
         //redirect to login or signup, depending on state
-        
         this.props.checkEmail(this.state.email)
-            .then((result)=> {                
-                if (result.user.exists){
+            .then((result)=> {         
+                if (result.data.exists){
                     this.props.history.push('/login')
                 }
                 else{
@@ -54,8 +53,8 @@ class EmailForm extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-    errors: Object.values(state.errors.session),
-    email: state.session.email
+    errors: Object.values(state.errors.ui),
+    email: state.ui.emailForm.email
 })
 
 const mapDispatchToProps = (dispatch) => ({

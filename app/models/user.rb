@@ -10,7 +10,12 @@ class User < ApplicationRecord
     attr_accessor :password_check
 
     after_initialize :ensure_session_token
-
+    
+    def initialize(params)
+        email = params[:email]
+        params[:username] ||= email.split("@")[0]
+        super(params)
+    end
     def self.generate_session_token
         return SecureRandom.urlsafe_base64
     end

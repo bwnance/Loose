@@ -31,8 +31,8 @@ export default class SessionForm extends React.Component {
         const formBody =  this.props.formType === 'signup' ? (
             <>
                 <h2>Sign Up</h2>
-                <label> Username
-                    <input type="text" onChange={this.handleInput('username')} value={this.state.username} />
+                <label> Full Name
+                    <input type="text" onChange={this.handleInput('full_name')} value={this.state.full_name} />
                 </label>
                 <label> Email
                     <input type="text" onChange={this.handleInput('email')} value={this.state.email} />

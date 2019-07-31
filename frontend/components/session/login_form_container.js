@@ -6,8 +6,8 @@ const mapStateToProps = (state) => ({
     errors: Object.values(state.errors.session),
     formType: 'login',
     formUser: {
-        username: "",
-        email: state.session.email,
+        full_name: "",
+        email: state.ui.emailForm.email,
         password: "",
         password_check: ""
     }

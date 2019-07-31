@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import Root from './components/root'
 import {createUser} from './util/users_api_util'
 import configureStore from './store/store'
-import {checkEmail} from './actions/session'
+import {checkEmail} from './actions/ui_actions.js'
 document.addEventListener('DOMContentLoaded', ()=>{
     let preloadedState = undefined;
     if (window.currentUser) {
@@ -13,8 +13,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
             },
             session: {
                 id: window.currentUser.id,
-                email: "",
-                exists: false
             }
         };
     }

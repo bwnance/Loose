@@ -19,15 +19,10 @@ const logoutCurrentUser = () => {
     }
 }
 
-const sessionErrors = errors => ({ type: RECEIVE_SESSION_ERRORS, errors })
-
-
-export const checkEmail = (email) => dispatch => {
-    
-    return SessionAPIUtil.checkEmail(email)
-        .then((user) => dispatch(receiveCurrentUser(user)))
-        .fail((errors) => dispatch(sessionErrors(errors.responseJSON)))
-}
+const sessionErrors = errors => ({ 
+    type: RECEIVE_SESSION_ERRORS, 
+    errors 
+})
 export const login = (user) => dispatch => {
     return SessionAPIUtil.login(user)
         .then(user => {

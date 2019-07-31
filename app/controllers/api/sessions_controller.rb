@@ -30,6 +30,7 @@ class Api::SessionsController < ApplicationController
             render '/api/users/email'
         end
     end
+    
     def session_params
         params.require(:user).permit(:email, :password)
     end
