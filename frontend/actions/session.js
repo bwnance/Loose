@@ -6,6 +6,7 @@ export const RECEIVE_SESSION_ERRORS = "RECEIVE_SESSION_ERRORS"
 
 
 const receiveCurrentUser = (user) => {
+    
     return {
         type: RECEIVE_CURRENT_USER,
         user
@@ -20,13 +21,20 @@ const logoutCurrentUser = () => {
 
 const sessionErrors = errors => ({ type: RECEIVE_SESSION_ERRORS, errors })
 
+
+export const checkEmail = (email) => dispatch => {
+    
+    return SessionAPIUtil.checkEmail(email)
+        .then((user) => dispatch(receiveCurrentUser(user)))
+        .fail((errors) => dispatch(sessionErrors(errors.responseJSON)))
+}
 export const login = (user) => dispatch => {
     return SessionAPIUtil.login(user)
         .then(user => {
             return dispatch(receiveCurrentUser(user))
         })
-        .fail(err => {
-            return dispatch(sessionErrors(err.responseJSON))
+        .fail(errors => {
+            return dispatch(sessionErrors(errors.responseJSON))
         })
 }
 
@@ -35,8 +43,8 @@ export const signup = (user) => dispatch => {
         .then(user => {
             return dispatch(receiveCurrentUser(user))
         })
-        .fail(err => {
-            return dispatch(sessionErrors(err.responseJSON))
+        .fail(errors => {
+            return dispatch(sessionErrors(errors.responseJSON))
         })
 }
 
@@ -45,7 +53,7 @@ export const logout = () => dispatch => {
         .then(() => {
             return dispatch(logoutCurrentUser())
         })
-        .fail(err => {
-            return dispatch(sessionErrors(err.responseJSON))
+        .fail(errors => {
+            return dispatch(sessionErrors(errors.responseJSON))
         })
 }

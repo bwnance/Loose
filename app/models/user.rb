@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+    include ApplicationHelper
     validates :email,:username, :session_token, presence: true, uniqueness: true
 
     validates :password_digest, presence: true
@@ -44,7 +45,7 @@ class User < ApplicationRecord
         end
     end
     def email_format    #regex for email validity. matches any character n times, then an @ symbol, then any number of al
-        unless email =~ /^.+@[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)+$/
+        unless is_email?(email)
             errors.add(:email, "must be a valid email")
         end
     end

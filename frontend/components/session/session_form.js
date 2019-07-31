@@ -3,12 +3,7 @@ import React from 'react'
 export default class SessionForm extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            username: "",
-            email: "",
-            password: "",
-            password_check: ""
-        };
+        this.state = this.props.formUser
         this.handleSubmit = this.handleSubmit.bind(this)
         this.handleInput = this.handleInput.bind(this)
     }
@@ -18,7 +13,9 @@ export default class SessionForm extends React.Component {
             //.then(() => this.setState({ username: "", password: "", password_check: "" }))
             .fail((e) => this.setState({ password: "", password_check: "" }))
     }
-
+    componentWillUnmount() {
+        this.props.clearErrors()
+    }
     handleInput(type) {
         return (e) => {
             this.setState({ [type]: e.target.value })

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 class NavBar extends React.Component {
     render() {
-        return this.props.currentUser ? (
+        return this.props.currentUser && this.props.currentUser.id ? (
             <div>
                 <button onClick={this.props.logout}>Log out</button>
             </div>
