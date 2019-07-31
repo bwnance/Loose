@@ -3,8 +3,7 @@ import ReactDOM from 'react-dom'
 import Root from './components/root'
 import {createUser} from './util/users_api_util'
 import configureStore from './store/store'
-document.addEventListener('DOMContentLoaded',()=>{
-    
+document.addEventListener('DOMContentLoaded', ()=>{
     let preloadedState = undefined;
     if (window.currentUser) {
         preloadedState = {

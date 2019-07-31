@@ -8,6 +8,7 @@ import SignupFormContainer from './session/signup_form_container'
 export default () => { 
     return (<div>
         <Splash/>
+        <NavBar/>
         <AuthRoute path="/login" component={LoginFormContainer} />
         <AuthRoute path="/signup" component={SignupFormContainer} />
     </div>)

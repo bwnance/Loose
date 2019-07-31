@@ -7,7 +7,7 @@ export default (state = _noErrors, action) => {
         case RECEIVE_CURRENT_USER:
             return _noErrors
         case RECEIVE_SESSION_ERRORS:
-            return Object.assign({}, action.errors)
+            return Object.assign({}, action.errors['errors'])
         default:
             return state
     }

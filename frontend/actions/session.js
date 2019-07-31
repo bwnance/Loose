@@ -26,7 +26,7 @@ export const login = (user) => dispatch => {
             return dispatch(receiveCurrentUser(user))
         })
         .fail(err => {
-            return dispatch(sessionErrors(err.responseJSON['errors']))
+            return dispatch(sessionErrors(err.responseJSON))
         })
 }
 

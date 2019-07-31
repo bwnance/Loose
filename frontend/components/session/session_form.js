@@ -5,6 +5,7 @@ export default class SessionForm extends React.Component {
         super(props);
         this.state = {
             username: "",
+            email: "",
             password: "",
             password_check: ""
         };
@@ -25,27 +26,48 @@ export default class SessionForm extends React.Component {
     }
 
     render() {
-        const lastInput = this.props.formType === 'signup' ? (
+        const errors = []
+        
+        this.props.errors.forEach((error)=>{
+            errors.push(<li className="error-item">{error}</li>)
+        })
+        const formBody =  this.props.formType === 'signup' ? (
             <>
+                <h2>Sign Up</h2>
+                <label> Username
+                    <input type="text" onChange={this.handleInput('username')} value={this.state.username} />
+                </label>
+                <label> Email
+                    <input type="text" onChange={this.handleInput('email')} value={this.state.email} />
+                </label>
+                <label> Password
+                    <input type="password" onChange={this.handleInput('password')} value={this.state.password} />
+                </label>
                 <label> Confirm Password
                     <input type="password" onChange={this.handleInput('password_check')} value={this.state.password_check} />
                 </label>
                 <input type="submit" value="Sign up"/>
             </>
-        ):(
-            <input type="submit" value="Sign in"/>
-        )
-        return (
-            <form onSubmit={this.handleSubmit}>
-                <h2>{this.props.formType === 'signup' ? "Sign up" : "Log in"}</h2>
-                <label> Username
-                    <input type="text" onChange={this.handleInput('username')} value={this.state.username} />
+        ) : (
+            <>
+                <h2>Sign In</h2>
+                <label> Email
+                    <input type="text" onChange={this.handleInput('email')} value={this.state.email} />
                 </label>
                 <label> Password
                     <input type="password" onChange={this.handleInput('password')} value={this.state.password} />
                 </label>
-                {lastInput}
-            </form>
+                <input type="submit" value="Sign In" />
+            </>
         )
+
+            return (
+                <>
+                <ul>{errors}</ul>
+                <form onSubmit = {this.handleSubmit} >
+                {formBody}
+                </form>
+                </>
+            )
     }
 }
