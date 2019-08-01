@@ -42,3 +42,26 @@ body{
 .grey-bg{
     background-color: rgba(0,0,100,0.02);
 }
+
+
+
+typewriter {
+  overflow: hidden;
+  border-right: .15em solid rgb(254, 234, 125);
+  white-space: nowrap;
+  margin: 0 auto;
+  letter-spacing: .05em;
+  animation: 
+    typing 2.5s steps(25, end),
+    blink-caret .75s step-end infinite;
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  0% { border-color: rgb(254, 234, 125); }
+}
