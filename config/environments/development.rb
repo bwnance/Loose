@@ -8,10 +8,13 @@ Rails.application.configure do
 
   # Do not eager load code on boot.
   config.eager_load = false
-
+  config.middleware.insert_before Rack::Runtime, Rack::LiveReload
+  config.middleware.use(Rack::LiveReload,
+  min_delay: 200,    # default 1000
+  max_delay: 10_000 # default 60_000
+)
   # Show full error reports.
   config.consider_all_requests_local = true
-
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.
   if Rails.root.join('tmp', 'caching-dev.txt').exist?

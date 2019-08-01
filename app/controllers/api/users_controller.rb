@@ -5,8 +5,8 @@ class Api::UsersController < ApplicationController
             login!(@user)
             render :show
         else
-            @errors = @user.errors.full_messages
-            render 'api/errors/errors', status: 422
+            @errors = @user.errors
+            render 'api/errors/structured_errors', status: 422
         end
     end
     def show

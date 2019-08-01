@@ -3,11 +3,11 @@ import {clearErrors} from '../../actions/errors_actions'
 import { login } from '../../actions/session'
 import SessionForm from './session_form'
 const mapStateToProps = (state) => ({
-    errors: Object.values(state.errors.session),
+    errors: state.errors.session,
     formType: 'login',
     formUser: {
         full_name: "",
-        email: state.ui.emailForm.email,
+        email: state.ui.emailForm.email || "",
         password: "",
         password_check: ""
     }

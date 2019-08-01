@@ -53,6 +53,10 @@ group :development do
   gem 'better_errors'
   gem 'pry-rails'
   gem 'annotate'
+  gem 'guard', '>= 2.2.2', require: false
+  gem 'rb-fsevent', require: false
+  gem 'guard-livereload', '~> 2.5', require: false
+  gem "rack-livereload", group: :development
 
 end
 

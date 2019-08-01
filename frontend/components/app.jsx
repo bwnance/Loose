@@ -6,9 +6,9 @@ import {Route} from 'react-router-dom'
 import LoginFormContainer from './session/login_form_container'
 import SignupFormContainer from './session/signup_form_container'
 export default () => { 
-    return (<div>
-        <AuthRoute exact path="/" component={Splash} />
+    return (<div className="main-container">
         <NavBar/>
+        <AuthRoute exact path="/" component={Splash} />
         <AuthRoute path="/login" component={LoginFormContainer} />
         <AuthRoute path="/signup" component={SignupFormContainer} />
     </div>)

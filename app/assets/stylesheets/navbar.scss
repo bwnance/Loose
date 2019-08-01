@@ -1,0 +1,63 @@
+.navbar{
+    display: flex;
+    justify-content: flex-end;
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    z-index: 2;
+    background-color: white;
+}
+
+
+.navbar-login{ 
+    padding: 10px;
+    margin: 10px;
+    --webkit-appearance: textfield;
+    box-sizing: border-box;
+    background-color: rgba(0,0,0,0);
+    border: none;
+    text-decoration: none;
+    color: black;
+    margin-top: 5px;
+    border-radius: 4px;;
+    height: 50%;
+    font-size: 85%;
+    font-weight: bolder;
+    text-transform: uppercase;
+    transition-duration: 0.2s;
+    border: 1px solid grey;
+}
+.navbar-login:hover{ 
+    background-color: #B5EF8A;
+    transition-duration: 0.2s;
+    cursor: pointer;
+}
+.navbar-signup{ 
+    padding: 10px;
+    margin: 10px;
+    --webkit-appearance: textfield;
+    box-sizing: border-box;
+    background-color: #B5EF8A;
+    border: none;
+    text-decoration: none;
+    color: black;
+    margin-top: 5px;
+    border-radius: 4px;;
+    height: 50%;
+    font-size: 85%;
+    font-weight: bolder;
+    text-transform: uppercase;
+    transition-duration: 0.2s;
+    border: 1px solid #B5EF8A;
+    
+}
+.navbar-signup:hover{ 
+    background-color: #83C64F;
+    border: 1px solid #83C64F;
+    transition-duration: 0.2s;
+    cursor: pointer;
+}
+
+.navbar-login{
+    padding: 10px;
+}

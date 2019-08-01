@@ -1,6 +1,6 @@
 class User < ApplicationRecord
     include ApplicationHelper
-    validates :email,:username, :session_token, presence: true, uniqueness: true
+    validates :email,:username, :full_name, :session_token, presence: true, uniqueness: true
 
     validates :password_digest, presence: true
     validates :password, length: { minimum: 6, allow_nil: true}
@@ -13,7 +13,7 @@ class User < ApplicationRecord
     
     def initialize(params)
         email = params[:email]
-        params[:username] ||= email.split("@")[0]
+        params[:username] ||= email && email.split("@")[0]
         super(params)
     end
     def self.generate_session_token

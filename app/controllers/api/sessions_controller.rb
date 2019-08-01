@@ -7,7 +7,7 @@ class Api::SessionsController < ApplicationController
             render 'api/users/show'
         else
             @errors = ["Invalid email or password"]
-            render 'api/errors/errors', status: 422
+            render 'api/errors/login_errors', status: 422
         end
     end
 

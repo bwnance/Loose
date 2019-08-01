@@ -3,16 +3,24 @@ import {connect} from 'react-redux'
 import {clearErrors} from '../../../actions/errors_actions'
 import {checkEmail} from '../../../actions/ui_actions'
 import {withRouter} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 class EmailForm extends React.Component {
     constructor(props){
         super(props)
 
         this.handleSubmit = this.handleSubmit.bind(this)
         this.handleChange = this.handleChange.bind(this)
-        this.state = {email: this.props.email}
-        
+        this.pageClick = this.pageClick.bind(this)
+        this.state = {email: this.props.email, showErrors: false}
+    }
+    componentDidMount(){
+        window.addEventListener("mousedown", this.pageClick, false);
+    }
+    pageClick(){
+        this.setState({showErrors: false})
     }
     handleSubmit(e){ 
+        this.setState({showErrors: true})
         e.preventDefault()
         //redirect to login or signup, depending on state
         this.props.checkEmail(this.state.email)
@@ -25,6 +33,8 @@ class EmailForm extends React.Component {
 
                 }
             })
+        window.addEventListener("mousedown", this.pageClick, false);
+
     }
     handleChange(e){
         this.setState({email: e.target.value})
@@ -39,13 +49,17 @@ class EmailForm extends React.Component {
             )
         })
         return (<>
-            <ul>
+            <ul className={`splash-errors ${this.state.showErrors ? '' : 'hide'}`}>
                 {errors}
             </ul>
-            <form onSubmit={this.handleSubmit}>
-                <input type="text" placeholder="Your work email" onChange={this.handleChange}/>
-                <input type="submit" value="Try For Free"/>
+            <form onSubmit={this.handleSubmit} className="splash-email-form">
+                <input className="splash-form-text" type="text" placeholder="Your work email" onChange={this.handleChange}/>
+                <input className="splash-form-submit"  type="submit" value="Try For Free"/>
             </form>
+            <div className="email-form-login" >
+                <span>Already Using Loose?  </span><Link to="/login">Log in</Link>.
+            </div>
+
             </>
         )
     }
