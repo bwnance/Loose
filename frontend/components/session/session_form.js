@@ -1,5 +1,4 @@
 import React from 'react'
-
 export default class SessionForm extends React.Component {
     constructor(props) {
         super(props);
@@ -47,6 +46,7 @@ export default class SessionForm extends React.Component {
                 passwordLoop();
             }
         }
+        
         let j = 0;
         function passwordLoop() {
             if (j < demoPassword.length) {
@@ -108,12 +108,14 @@ export default class SessionForm extends React.Component {
             </>
         )
             return (
+                <>
                 <div className="session-form-container">
                     {login_error}
                     <form className="loose-form" onSubmit = {this.handleSubmit} >
                     {formBody}
                     </form>
                 </div>
+                </>
             )
     }
 }

@@ -10,10 +10,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_31_184113) do
+ActiveRecord::Schema.define(version: 2019_08_01_155147) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "channels", force: :cascade do |t|
+    t.string "title", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.integer "sender_id", null: false
+    t.integer "messageable_id", null: false
+    t.string "messageable_type", null: false
+    t.integer "parent_id"
+    t.text "body", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["messageable_id"], name: "index_messages_on_messageable_id"
+    t.index ["parent_id"], name: "index_messages_on_parent_id"
+    t.index ["sender_id"], name: "index_messages_on_sender_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "username", null: false

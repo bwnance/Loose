@@ -6,7 +6,7 @@ export default ({store})=>{
     return (
     <Provider store={store}>
         <HashRouter>
-            <App/>
+            <App state={store.getState()}/>
         </HashRouter>
     </Provider>)
 }
