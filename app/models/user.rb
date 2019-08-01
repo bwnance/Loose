@@ -1,8 +1,7 @@
 class User < ApplicationRecord
     include ApplicationHelper
-    validates :email,:username, :full_name, :session_token, presence: true, uniqueness: true
-
-    validates :password_digest, presence: true
+    validates :email,:username, :session_token, presence: true, uniqueness: true
+    validates :password_digest, :full_name, presence: true
     validates :password, length: { minimum: 6, allow_nil: true}
     validate :passwords_match
     validate :email_format
@@ -26,7 +25,7 @@ class User < ApplicationRecord
         
     end
     def ensure_session_token
-        self.session_token = self.class.generate_session_token
+        self.session_token ||= self.class.generate_session_token
     end
     def is_password?(pass)
         ourPass = BCrypt::Password.new(self.password_digest)

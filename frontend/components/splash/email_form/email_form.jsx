@@ -40,7 +40,8 @@ class EmailForm extends React.Component {
         this.setState({email: e.target.value})
     }
     componentWillUnmount() {
-       this.props.clearErrors()
+        this.props.clearErrors()
+        window.removeEventListener("mousedown", this.pageClick, false);
     }
     render(){
         const errors = this.props.errors.map((error)=>{ 
@@ -55,11 +56,11 @@ class EmailForm extends React.Component {
             <form onSubmit={this.handleSubmit} className="splash-email-form">
                 <input className="splash-form-text" type="text" placeholder="Your work email" onChange={this.handleChange}/>
                 <input className="splash-form-submit"  type="submit" value="Try For Free"/>
-            </form>
+            
             <div className="email-form-login" >
                 <span>Already Using Loose?  </span><Link to="/login">Log in</Link>.
             </div>
-
+            </form>
             </>
         )
     }
