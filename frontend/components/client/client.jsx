@@ -14,7 +14,7 @@ class Client extends React.Component {
         App.messaging = undefined;
     }
     onReceiveMessage(message){
-        console.log(message);
+        //console.log(message);
         this.setState({messages: this.state.messages.concat(message.body)})
     }
     componentDidMount() {

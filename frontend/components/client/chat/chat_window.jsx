@@ -38,7 +38,7 @@ class ChatWindow extends React.Component {
         }
     }
     setupSubscription(){
-        console.log("CONNECTING...")
+        //console.log("CONNECTING...")
         App.messaging = App.cable.subscriptions.create(
             {
             channel: 'MessagesChannel', 
@@ -46,7 +46,7 @@ class ChatWindow extends React.Component {
         },
         {
             received: this.receiveMessage,
-        connected: () => console.log("CONNECTED")}
+        //connected: () => console.log("CONNECTED")}
         )
 
     }
@@ -74,7 +74,7 @@ class ChatWindow extends React.Component {
         //connect to live chat and populate messages slice of state
         this.populateUsers().then(this.populateMessages)
         this.setupSubscription();
-        console.log(this.props.currentChannelId)
+        //console.log(this.props.currentChannelId)
 
     }
 }

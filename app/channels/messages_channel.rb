@@ -1,8 +1,6 @@
 class MessagesChannel < ApplicationCable::Channel
   def subscribed
-    puts(params[:channel_id])
     @channel = Channel.find(params[:channel_id]) if params[:channel_id]
-    debugger unless @channel
     #channel = Channel.first;
     stream_for @channel
     

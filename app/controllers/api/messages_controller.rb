@@ -11,7 +11,6 @@ class Api::MessagesController < ApplicationController
             # MessagesChannel.broadcast_to channel, @message
             # head :ok
         else
-            debugger
             @errors = @message.errors.full_messages
             render 'api/errors/message_errors'
         end

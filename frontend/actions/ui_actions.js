@@ -24,7 +24,7 @@ export const changeChatWindowView = (id) => {
 export const getDefaultChannel = () => dispatch => {
     return UiAPIUtil.fetchDefaultChannel()
         .then(({id}) => dispatch(changeChatWindowView(id)))
-        .fail((err) => console.log(err))
+        //.fail((err) => console.log(err))
 }
 export const checkEmail = (email) => dispatch => {
 
