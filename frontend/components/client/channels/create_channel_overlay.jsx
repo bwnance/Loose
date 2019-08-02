@@ -10,9 +10,12 @@ class CreateChannelOverlay extends React.Component {
     }
     onSubmit(e) {
         e.preventDefault()
-        this.props.closeOverlay()
-        this.props.createChannel(this.state)
-        this.setState({ title: "", purpose: ""})
+        this.props.createChannel(this.state).then(()=>{
+            this.props.closeOverlay()
+            this.setState({ title: "", purpose: "" })
+        })
+
+       
         
     }
     handleInput(type){
@@ -24,7 +27,7 @@ class CreateChannelOverlay extends React.Component {
     render() {
         return (
             <div className={this.props.className}>
-                <form onSubmit={this.onSubmit}>
+                <form className="overlay-form" onSubmit={this.onSubmit}>
                     <label htmlFor="channel-name">Name</label>
                     <input id="channel-name" type="text" value={this.state.title} onChange={this.handleInput('title')}/>
                     <label htmlFor="channel-purpose">Channel Purpose <span>(optional)</span></label>

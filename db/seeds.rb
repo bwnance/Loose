@@ -6,4 +6,6 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 User.destroy_all()
-User.create(full_name: "Demo User", email: "demouser@loose.org", password:"demodemo", password_check: "demodemo")
+Channel.destroy_all()
+demo = User.create(full_name: "Demo User", email: "demouser@loose.org", password:"demodemo", password_check: "demodemo")
+Channel.create(title: "general", purpose: "General discussion!").users << demo

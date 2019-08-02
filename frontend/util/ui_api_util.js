@@ -5,3 +5,9 @@ export const checkEmail = (email) => {
         data: { email }
     })
 }
+export const fetchDefaultChannel = () => {
+    return $.ajax({
+        type: "GET",
+        url: '/api/channels/getDefaultChannelId'
+    })
+}

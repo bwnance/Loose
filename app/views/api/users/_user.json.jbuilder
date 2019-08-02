@@ -1,4 +1,4 @@
-json.extract! user, :id, :username, :email
+json.extract! user, :id, :username, :email, :full_name
 json.channel_ids do
      json.array! user.channels.ids
 end

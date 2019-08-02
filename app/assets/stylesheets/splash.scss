@@ -1,3 +1,4 @@
+@import '_variables.scss';
 html{
     background-color: #ffffff;
 }
@@ -49,7 +50,7 @@ html{
 .splash-form-submit{ 
     --webkit-appearance: textfield;
     box-sizing: border-box;
-    background-color: #B5EF8A;
+    background-color: $color-foreground;
     border: none;
     text-decoration: none;
     color: black;
@@ -63,7 +64,7 @@ html{
     
 }
 .splash-form-submit:hover{ 
-    background-color: #83C64F;
+    background-color: $color-hover;
     transition-duration: 0.2s;
     cursor: pointer;
 }
@@ -76,7 +77,7 @@ html{
     align-content: center;
     justify-content: center;
     align-items: center;
-    background-color: white;
+    background-color: $color-bg;
     position: absolute;
     z-index: 1;
     color: grey;

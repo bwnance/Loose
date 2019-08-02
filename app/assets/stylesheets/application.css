@@ -9,19 +9,28 @@
  * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
  * files in this directory. Styles in this file should be added after the last require_* statement.
  * It is generally better to create a new file per style scope.
+ *= require _variables.scss
  *= require reset
  *= require fonts
  *= require set_fonts
  *= require_tree .
  *= require_self
  */
+
  .main-container{
     display: flex;
     align-items: center;
     justify-content: center;
     align-content: center;
-    height: 90vh;
+    height: 100vh;
     width: 100%;
+    overflow: hidden;
+}
+#root{
+    overflow: hidden;
+}
+body{
+    overflow: hidden;
 }
 .hide{
     display: none;
@@ -29,6 +38,7 @@
 
 .transparent{ 
     opacity: 0;
+    z-index: -5
 }
 
 label{
@@ -41,27 +51,4 @@ body{
 }
 .grey-bg{
     background-color: rgba(0,0,100,0.02);
-}
-
-
-
-typewriter {
-  overflow: hidden;
-  border-right: .15em solid rgb(254, 234, 125);
-  white-space: nowrap;
-  margin: 0 auto;
-  letter-spacing: .05em;
-  animation: 
-    typing 2.5s steps(25, end),
-    blink-caret .75s step-end infinite;
-}
-
-@keyframes typing {
-  from { width: 0 }
-  to { width: 100% }
-}
-
-@keyframes blink-caret {
-  from, to { border-color: transparent }
-  0% { border-color: rgb(254, 234, 125); }
 }

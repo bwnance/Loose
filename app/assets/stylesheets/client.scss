@@ -1,0 +1,122 @@
+@import '_variables.scss';
+
+.client{
+    width: 100vw;
+    height: 100vh;
+    z-index: 3;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+}
+.channel-list{
+    .channels-header{
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        span{
+            margin-left: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            
+        }
+        span:hover{
+            color: rgba(0, 0, 0, 0.7)
+        }
+        .show-create-channel-button{
+           
+            background: none;
+            border: none;
+            align-self: center;
+            i{
+                font-size: 20px;
+                color: rgba(255,255,255,0.6);
+                
+            }
+            i:hover{
+                cursor: pointer;
+                color: rgba(255,255,255,0.9);
+                
+            }
+        }
+        
+       
+    }
+        
+    .channel-list-item{
+        height: 25px;
+        width: 100%;
+        .channel-list-item-button{
+            background: none;
+            border: none;
+            text-align: left;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0 10px 0 10px;
+        }
+        .channel-list-item-button:hover{
+            background-color: rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+    }
+    
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: 100%;
+    width: 30%;
+    background-color: $color-foreground;
+}
+.client-overlay{
+    position: fixed;
+    z-index: 5;
+    width: 100vw;
+    height: 100vh;
+    background-color: $color-bg;
+    transition-duration: 0.2s;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.chat-window{
+    position: relative;
+    height: 100%;
+    width: 70%;
+    overflow: hidden;
+    .window-message-list{
+        overflow: hidden;
+        box-sizing: border-box;
+        height: 90%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 0 20px 0 20px;
+    }
+    .message-form{
+        box-sizing: border-box;
+
+        height: 10%;
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        padding: 20px 20px 20px 20px;
+
+        .message-input{
+            width: 100%;
+            align-self: center;
+            height: 100%;
+            border-radius: 4px;
+            box-shadow: none;
+            padding: 5px;
+            border: 1px solid gray;
+
+
+        }
+    }
+}

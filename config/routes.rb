@@ -6,10 +6,12 @@ Rails.application.routes.draw do
     
     resources :users, only: [:create, :index, :show]
     resource :session, only: [:create, :destroy]
-    resources :channels, only: [:create, :destroy, :update, :show, :index] do
+    resources :channels, only: [:create, :destroy, :update, :index] do
       resources :messages, only: [:create, :index]
     end
     resources :messages, only: [:update]
-  get 'session/check_email', to: 'sessions#check_email' 
+    get 'session/check_email', to: 'sessions#check_email' 
+    get 'channels/getDefaultChannelId', to: 'channels#getDefaultChannelId' 
+
   end
 end

@@ -1,7 +1,8 @@
-export const fetchUsers = () =>{
+export const fetchUsers = (channelId) =>{
     return $.ajax({ 
         type: "GET",
-        url: "/api/users"
+        url: "/api/users",
+        data: { channelId }
     })
 }
 export const fetchUser = (id) =>{

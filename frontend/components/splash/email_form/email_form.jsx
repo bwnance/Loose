@@ -30,7 +30,6 @@ class EmailForm extends React.Component {
                 }
                 else{
                     this.props.history.push('/signup')
-
                 }
             })
         window.addEventListener("mousedown", this.pageClick, false);
@@ -44,15 +43,10 @@ class EmailForm extends React.Component {
         window.removeEventListener("mousedown", this.pageClick, false);
     }
     render(){
-        const errors = this.props.errors.map((error)=>{ 
-            return (
-                <li>{error}</li>
-            )
-        })
         return (<>
-            <ul className={`splash-errors ${this.state.showErrors ? '' : 'hide'}`}>
-                {errors}
-            </ul>
+            <div className={`splash-errors ${this.state.showErrors ? '' : 'hide'}`}>
+                {this.props.errors[0]}
+            </div>
             <form onSubmit={this.handleSubmit} className="splash-email-form">
                 <input className="splash-form-text" type="text" placeholder="Your work email" onChange={this.handleChange}/>
                 <input className="splash-form-submit"  type="submit" value="Try For Free"/>

@@ -17,7 +17,14 @@ class Api::ChannelsController < ApplicationController
         @channels = Channel.select {|channel| current_user_channel_ids.include?(channel.id)}
         render :index
     end
+
+    def getDefaultChannelId        
+        @channel = Channel.default
+        render :show
+    end
+
     def channel_params
         params.require(:channel).permit(:title, :purpose);
     end
+    
 end
