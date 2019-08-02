@@ -6,8 +6,11 @@ import LoginFormContainer from './session/login_form_container'
 import NavBar from './navbar/navbar'
 import SignupFormContainer from './session/signup_form_container'
 import ClientContainer from './client/client_container'
+import Client from './client/client'
+
 export default ({state}) => { 
     const navBar = state.session.id ? null : <NavBar />
+    const cable = ActionCable.createConsumer("ws://localhost:3000/cable")
     return (<div className="main-container">
         {/* {navBar} */}
         <NavBar />
@@ -15,5 +18,9 @@ export default ({state}) => {
         <AuthRoute path="/login" component={LoginFormContainer} />
         <AuthRoute path="/signup" component={SignupFormContainer} />
         <ProtectedRoute path="/client" component={ClientContainer} />
+
+       
+
+        
     </div>)
 }

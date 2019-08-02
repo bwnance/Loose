@@ -4,6 +4,8 @@ import Root from './components/root'
 import {createUser} from './util/users_api_util'
 import configureStore from './store/store'
 import {checkEmail} from './actions/ui_actions.js'
+import {sendMessage} from './util/messages_api_util'
+import {createChannel} from './util/channels_api_util'
 document.addEventListener('DOMContentLoaded', ()=>{
     let preloadedState = undefined;
     if (window.currentUser) {
@@ -19,6 +21,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
     const store = configureStore(preloadedState)
     //DEBUG//
     window.getState = store.getState
+    window.sendMessage = sendMessage
+    window.createChannel = createChannel
     window.dispatch = store.dispatch
     window.checkEmail = checkEmail
     //END DEBUG//

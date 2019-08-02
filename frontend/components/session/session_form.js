@@ -40,7 +40,9 @@ export default class SessionForm extends React.Component {
             if (i < demoEmail.length) {
                 const char = demoEmail[i]
                 i++
+                
                 return that.setState({ email: that.state.email + char }, () => setTimeout(loginLoop, 30))
+                
             }
             else{
                 passwordLoop();

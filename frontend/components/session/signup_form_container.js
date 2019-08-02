@@ -7,7 +7,7 @@ const mapStateToProps = (state) => ({
     formType: 'signup',
     formUser: {
         full_name: "",
-        email: state.ui.emailForm.email,
+        email: state.ui.emailForm.email || "",
         password: "",
         password_check: ""
     }

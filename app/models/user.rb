@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: users
+#
+#  id              :bigint           not null, primary key
+#  username        :string           not null
+#  email           :string           not null
+#  password_digest :string           not null
+#  session_token   :string           not null
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  full_name       :string           not null
+#
+
 class User < ApplicationRecord
     include ApplicationHelper
     validates :email,:username, :session_token, presence: true, uniqueness: true
@@ -10,6 +24,13 @@ class User < ApplicationRecord
 
     after_initialize :ensure_session_token
     
+    has_many :channel_memberships, class_name: :ChannelMemberships
+
+    has_many :channels, through: :channel_memberships
+    has_many :messages, foreign_key: :sender_id
+
+
+
     def initialize(params)
         email = params[:email]
         params[:username] ||= email && email.split("@")[0]
