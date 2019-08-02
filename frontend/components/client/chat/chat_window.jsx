@@ -47,7 +47,7 @@ class ChatWindow extends React.Component {
         {
             received: this.receiveMessage,
         //connected: () => console.log("CONNECTED")}
-        )
+        })
 
     }
     receiveMessage(message){
