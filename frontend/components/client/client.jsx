@@ -1,7 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import Channel from './channels/channel'
-import createActionCable from '../../util/cable_util'
 import ChannelList from './channels/channel_list'
 import ChatWindow from './chat/chat_window'
 import { getDefaultChannel} from '../../actions/ui_actions'
