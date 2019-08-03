@@ -11,7 +11,8 @@ class Client extends React.Component {
         this.state = {messages: []}
     }
     componentWillUnmount() {
-        App.messaging = undefined;
+        App.cable.disconnect();
+
     }
     onReceiveMessage(message){
         //console.log(message);

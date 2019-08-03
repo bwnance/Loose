@@ -1,7 +1,7 @@
 import {connect} from 'react-redux'
 import React from 'react'
 import {receiveMessage, fetchMessages} from '../../../actions/messages_actions'
-import {getUsers} from '../../../actions/users_actions.js'
+import {getUsers,getUser} from '../../../actions/users_actions.js'
 import ChatMessage from './chat_message'
 class ChatWindow extends React.Component {
     constructor(props){
@@ -10,6 +10,7 @@ class ChatWindow extends React.Component {
         this.populateMessages = this.populateMessages.bind(this)
         this.receiveMessage = this.receiveMessage.bind(this)
         this.handleBodyUpdate = this.handleBodyUpdate.bind(this)
+        this.subscription = null
     }
     handleBodyUpdate(e){
         this.setState({body: e.target.value})
@@ -51,14 +52,22 @@ class ChatWindow extends React.Component {
 
     }
     receiveMessage(message){
-        this.props.receiveMessage(message)
+        if (this.props.users.every((user) => user.id !== message.sender_id)) {
+            this.props.getUser(message.sender_id).then(()=>this.props.receiveMessage(message))
+        }
+        else{
+            this.props.receiveMessage(message)
+        }
+    }
+    componentWillUnmount(){
+        App.messaging.unsubscribe();
     }
     componentDidUpdate(){
         if(this.state.currentChannelId !== this.props.currentChannelId){
             this.setState({ currentChannelId: this.props.currentChannelId })
             this.populateUsers();
             this.populateMessages();
-            this.setupSubscription()
+            this.setupSubscription();
         }
     }
     populateUsers(){
@@ -80,10 +89,12 @@ class ChatWindow extends React.Component {
 }
 const mapStateToProps = (state) =>({
     currentChannelId: state.ui.chatWindow.id,
-    messages: Object.values(state.entities.messages)
+    messages: Object.values(state.entities.messages),
+    users: Object.values(state.entities.users)
 })
 
 const mapDispatchToProps = (dispatch) => ({
+    getUser: (userId) => dispatch(getUser(userId)),
     populateMessages: (channelId) => dispatch(fetchMessages(channelId)),
     populateUsers: (channelId) => dispatch(getUsers(channelId)),
     receiveMessage: (message) => dispatch(receiveMessage(message))

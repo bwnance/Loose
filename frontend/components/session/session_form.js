@@ -73,9 +73,10 @@ export default class SessionForm extends React.Component {
         const login_error = <div className={`login-error ${this.props.errors.login ? "" : "transparent"}`}><i className="error-ico"/>{this.props.errors.login}</div>
         const hasFNErrors = !!this.props.errors.full_name
         const hasEmailErrors = !!this.props.errors.email
+        const hasUsernameErrors = !!this.props.errors.username
         const hasPasswordErrors = !!this.props.errors.password
         const hasPasswordsErrors = !!this.props.errors.passwords
-        const anyErrors = hasFNErrors || hasEmailErrors || hasPasswordErrors;
+        const anyErrors = hasFNErrors || hasEmailErrors || hasPasswordErrors || hasUsernameErrors;
 
 
         const formBody =  this.props.formType === 'signup' ? (
@@ -87,6 +88,7 @@ export default class SessionForm extends React.Component {
                 <label htmlFor="email" />
                     <input id="email" className={`loose-text-input ${anyErrors ? "warn-field-border" : ""} ${hasEmailErrors ? "warn-field" : ""}`} type="text" onChange={this.handleInput('email')} value={this.state.email} placeholder="Email"/>
                     <div className="session-form-error">{hasEmailErrors && "Email " + this.props.errors.email[0]}</div>
+                <div className="session-form-error">{hasUsernameErrors && "Email " + this.props.errors.username[0]}</div>
                 <label htmlFor="password" />
                     <input id="password" className={`loose-text-input ${anyErrors ? "warn-field-border" : ""} ${hasPasswordErrors ? "warn-field" : ""}`} type="password" onChange={this.handleInput('password')} value={this.state.password} placeholder="Password"/>
                     <div className="session-form-error">{hasPasswordErrors && "Password " + this.props.errors.password[0]}</div>
