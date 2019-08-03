@@ -1,4 +1,3 @@
-require 'colorize'
 class MessagesChannel < ApplicationCable::Channel
   def subscribed
     @channel = Channel.find(params[:channel_id]) if params[:channel_id]

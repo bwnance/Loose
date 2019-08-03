@@ -56,7 +56,6 @@ group :development do
   gem 'rb-fsevent', require: false
   gem 'guard-livereload', '~> 2.5', require: false
   gem "rack-livereload", group: :development
-  gem 'colorize'
 
 end
 
