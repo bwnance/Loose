@@ -4,37 +4,28 @@ import {receiveMessage, fetchMessages} from '../../../actions/messages_actions'
 import {getUsers,getUser} from '../../../actions/users_actions.js'
 import ChatMessage from './chat_message'
 import ChatMessageList from './chat_message_list'
+import ChatForm from './chat_form';
 class ChatWindow extends React.Component {
     constructor(props){
         super(props)
-        this.state = {body: "",currentChannelId: this.props.currentChannelId, messages: []}
+        this.state = {currentChannelId: this.props.currentChannelId, messages: []}
         this.populateMessages = this.populateMessages.bind(this)
         this.receiveMessage = this.receiveMessage.bind(this)
-        this.handleBodyUpdate = this.handleBodyUpdate.bind(this)
     }
-    handleBodyUpdate(e){
-        this.setState({body: e.target.value})
-    }
+    
     render(){
         const messages = this.props.messages.map((message)=>{
-            return <ChatMessage key={`message-${message.id}`} message={message}/>
+            if (message.sender_id) return <ChatMessage key={`message-${message.id}`} message={message}/>
         })
         return (
             <div className="chat-window">
                 <ChatMessageList messages={messages}/>
-                <form className="message-form" onSubmit={this.handleMessageSubmit(this)}>
-                    <input value={this.state.body} onChange={this.handleBodyUpdate}type="text" className="message-input" placeholder="Message channel"/>
-                </form>
+                <ChatForm onSubmit={this.handleMessageSubmit.bind(this)}/>
             </div>
         )
     }
-    handleMessageSubmit(that){
-        return (e) =>{
-            e.preventDefault()
-            const body = e.target[0].value
-            that.setState({body: ""})
-            App.messaging.send({body})
-        }
+    handleMessageSubmit(body){
+        App.messaging.send({body})
     }
     setupSubscription(){
         //console.log("CONNECTING...")
@@ -50,6 +41,7 @@ class ChatWindow extends React.Component {
 
     }
     receiveMessage(message){
+        if(!message.sender_id || !message.id) return;
         if (this.props.users.every((user) => user.id !== message.sender_id)) {
             this.props.getUser(message.sender_id).then(()=>this.props.receiveMessage(message))
         }

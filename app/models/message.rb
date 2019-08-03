@@ -14,8 +14,8 @@
 
 class Message < ApplicationRecord
     validates :sender_id, :messageable_id, :messageable_type, :body, presence: true
-
-
+    validates :body, length: { maximum: 4000 }
+    
     belongs_to :user, foreign_key: :sender_id
     belongs_to :messageable, polymorphic: true
     

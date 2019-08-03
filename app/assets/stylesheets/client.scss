@@ -94,26 +94,33 @@
         overflow-y: scroll;
         justify-content: flex-end;
         padding: 0 20px 0 20px;
+        word-break: break-all;
+        white-space: pre-line
     }
     .message-form{
-        box-sizing: border-box;
-        height: 10%;
+        height: 50px;
         width: 100%;
-        display: flex;
-        justify-content: space-around;
+        box-sizing: border-box;
         padding: 20px 20px 20px 20px;
 
         .message-input{
+            box-sizing: border-box;
             align-self: end;
             width: 100%;
             align-self: center;
-            height: 31px;
+            height: 37px;
             border-radius: 4px;
             box-shadow: none;
             padding: 5px;
             border: 1px solid gray;
-
-
+            resize: none;
+            border-radius: 4px;
+            padding-top: 10px;
+            padding-bottom: 0px;
+            margin: 0;
+            overflow: auto;
+            max-height: 200px;
+            margin-bottom: 5px;
         }
     }
 }

@@ -9,7 +9,7 @@
 #
 
 class Channel < ApplicationRecord
-    validates :title, presence: true
+    validates :title, presence: true, length: { maximum: 22 }
     has_many :messages, as: :messageable
     has_many :channel_memberships,  class_name: :ChannelMemberships
     has_many :users, through: :channel_memberships
