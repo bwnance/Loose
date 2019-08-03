@@ -11,7 +11,7 @@ class NavBar extends React.Component {
                         <Link className="navbar-signup" to="/signup">Get Started</Link>
 
                     </>
-                }
+                
             </div >
         )
     }
