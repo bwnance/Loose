@@ -7,7 +7,7 @@ import SignupFormContainer from './session/signup_form_container'
 import Client from './client/client'
 
 export default ({state}) => { 
-    App.cable = ActionCable.createConsumer("ws://localhost:3000/cable")
+    App.cable = ActionCable.createConsumer("/cable")
     return (<div className="main-container">
         <AuthRoute exact path="/" component={Splash} />
         <AuthRoute path="/login" component={LoginFormContainer} />
