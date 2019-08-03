@@ -14,7 +14,6 @@ class ChatForm extends React.Component {
         if(e.keyCode === 13 ){
             if( e.shiftKey === false) {
             e.preventDefault()
-                this.props.onSubmit()
                 this.messageSubmit();
             }
             else{
@@ -51,14 +50,12 @@ class ChatForm extends React.Component {
             if(height > 500) height = 500;
             textArea.style.height = height + "px";
 
-            console.log(textArea.scrollHeight)
 
             const newHeight = height
             
             const heightDifference = newHeight - textAreaStartingHeight ;
             const newFormHeight = formStartingHeight + heightDifference;
             const newMessagesHeight = messagesInitialHeight - heightDifference
-            console.log(newFormHeight - formStartingHeight)
             form.style.height = newFormHeight + "px"
             messageList.style.height = newMessagesHeight + "px";
             
@@ -75,7 +72,6 @@ class ChatForm extends React.Component {
         }, false);
     }
     messageSubmit(){
-        console.log("submitting")
         const body = this.state.body
         this.props.onSubmit(body)
         this.setState({ body: "" })

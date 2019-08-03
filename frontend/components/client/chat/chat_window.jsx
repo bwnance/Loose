@@ -41,7 +41,11 @@ class ChatWindow extends React.Component {
 
     }
     receiveMessage(message){
-        if(!message.sender_id || !message.id) return;
+        if(!message.sender_id || !message.id) {
+            console.log("weird message received")
+            debugger
+            return 
+        }
         if (this.props.users.every((user) => user.id !== message.sender_id)) {
             this.props.getUser(message.sender_id).then(()=>this.props.receiveMessage(message))
         }
@@ -57,6 +61,7 @@ class ChatWindow extends React.Component {
             this.setState({ currentChannelId: this.props.currentChannelId })
             this.populateUsers();
             this.populateMessages();
+            App.messaging.unsubscribe();
             this.setupSubscription();
         }
     }
