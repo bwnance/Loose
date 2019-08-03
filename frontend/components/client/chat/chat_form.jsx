@@ -34,32 +34,35 @@ class ChatForm extends React.Component {
             const messagesStyle = getComputedStyle(messageList)
 
             //set starting height of the three elements
-            const startingHeight = parseFloat(textAreaStyle.getPropertyValue('height'))
+            const textAreaStartingHeight = parseFloat(textAreaStyle.getPropertyValue('height'))
             const formStartingHeight = parseFloat(formStyle.getPropertyValue('height'))
             const messagesInitialHeight = parseFloat(messagesStyle.getPropertyValue('height'));
 
             //resizes text area//
             textArea.style.height = '0px';
-            const height = parseFloat(textAreaStyle.getPropertyValue('border-top-width'))
+            let height = parseFloat(textAreaStyle.getPropertyValue('border-top-width'))
                 + parseFloat(textAreaStyle.getPropertyValue('padding-top'))
                 + textArea.scrollHeight
                 + parseFloat(textAreaStyle.getPropertyValue('padding-bottom'))
                 + parseFloat(textAreaStyle.getPropertyValue('border-bottom-width'));
 
+           
+
+            if(height > 500) height = 500;
             textArea.style.height = height + "px";
 
-            if(height < 200){
             console.log(textArea.scrollHeight)
 
             const newHeight = height
             
-            const heightDifference = newHeight - startingHeight ;
+            const heightDifference = newHeight - textAreaStartingHeight ;
             const newFormHeight = formStartingHeight + heightDifference;
             const newMessagesHeight = messagesInitialHeight - heightDifference
             console.log(newFormHeight - formStartingHeight)
             form.style.height = newFormHeight + "px"
             messageList.style.height = newMessagesHeight + "px";
-            }
+            
+            
         }
         
         
