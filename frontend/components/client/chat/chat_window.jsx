@@ -3,6 +3,7 @@ import React from 'react'
 import {receiveMessage, fetchMessages} from '../../../actions/messages_actions'
 import {getUsers,getUser} from '../../../actions/users_actions.js'
 import ChatMessage from './chat_message'
+import ChatMessageList from './chat_message_list'
 class ChatWindow extends React.Component {
     constructor(props){
         super(props)
@@ -10,7 +11,6 @@ class ChatWindow extends React.Component {
         this.populateMessages = this.populateMessages.bind(this)
         this.receiveMessage = this.receiveMessage.bind(this)
         this.handleBodyUpdate = this.handleBodyUpdate.bind(this)
-        this.subscription = null
     }
     handleBodyUpdate(e){
         this.setState({body: e.target.value})
@@ -21,9 +21,7 @@ class ChatWindow extends React.Component {
         })
         return (
             <div className="chat-window">
-                <ul className="window-message-list">
-                    {messages}
-                </ul>
+                <ChatMessageList messages={messages}/>
                 <form className="message-form" onSubmit={this.handleMessageSubmit(this)}>
                     <input value={this.state.body} onChange={this.handleBodyUpdate}type="text" className="message-input" placeholder="Message channel"/>
                 </form>
