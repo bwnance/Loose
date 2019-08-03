@@ -83,7 +83,6 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.12.2)
-    colorize (0.8.1)
     concurrent-ruby (1.1.5)
     crass (1.0.4)
     debug_inspector (0.0.3)
@@ -250,7 +249,6 @@ DEPENDENCIES
   capybara (>= 2.15)
   chromedriver-helper
   coffee-rails (~> 4.2)
-  colorize
   guard (>= 2.2.2)
   guard-livereload (~> 2.5)
   jbuilder (~> 2.5)
