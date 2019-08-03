@@ -1,4 +1,5 @@
 import React from 'react'
+import NavBar from '../navbar/navbar'
 export default class SessionForm extends React.Component {
     constructor(props) {
         super(props);
@@ -113,6 +114,7 @@ export default class SessionForm extends React.Component {
         )
             return (
                 <>
+                <NavBar />
                 <div className="session-form-container">
                     {login_error}
                     <form className="loose-form" onSubmit = {this.handleSubmit} >
