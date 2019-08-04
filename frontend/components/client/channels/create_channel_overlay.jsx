@@ -11,6 +11,7 @@ class CreateChannelOverlay extends React.Component {
         this.selectUser = this.selectUser.bind(this)
     }
     onSubmit(e) {
+        
         e.preventDefault()
         const that = this
         if(this.state.title.length <= 20){
@@ -84,7 +85,7 @@ class CreateChannelOverlay extends React.Component {
                     <label htmlFor="channel-members"><span>Send invites to  <span className="overlay-optional">(optional)</span></span></label>
                     {selectedUserSpans}<input id="channel-members" className="loose-text-input overlay-text-input" type="text" value={this.state.search_user} onChange={this.handleSearchBarInput}/>
                     <div className="overlay-buttons">
-                        <button onClick={this.props.closeOverlay} className="overlay-cancel" >Cancel</button>
+                        <button type="button" onClick={this.props.closeOverlay} className="overlay-cancel" >Cancel</button>
                         <input type="submit" className="overlay-submit" value="Create" />
                     </div>
                    
