@@ -59,16 +59,12 @@ class ChatWindow extends React.Component {
     componentDidUpdate(){
         if(this.state.currentChannelId !== this.props.currentChannelId){
             this.setState({ currentChannelId: this.props.currentChannelId })
-            this.populateUsers();
             this.populateMessages();
             App.messaging.unsubscribe();
             this.setupSubscription();
         }
     }
-    populateUsers(){
-        const channelId = this.props.currentChannelId
-        return this.props.populateUsers(channelId)
-    }
+    
     populateMessages(){
         const channelId = this.props.currentChannelId
         return this.props.populateMessages(channelId)
@@ -77,7 +73,7 @@ class ChatWindow extends React.Component {
     componentDidMount(){
         
         //connect to live chat and populate messages slice of state
-        this.populateUsers().then(this.populateMessages)
+        this.populateMessages()
         this.setupSubscription();
         //console.log(this.props.currentChannelId)
 
@@ -92,7 +88,6 @@ const mapStateToProps = (state) =>({
 const mapDispatchToProps = (dispatch) => ({
     getUser: (userId) => dispatch(getUser(userId)),
     populateMessages: (channelId) => dispatch(fetchMessages(channelId)),
-    populateUsers: (channelId) => dispatch(getUsers(channelId)),
     receiveMessage: (message) => dispatch(receiveMessage(message))
 })
 export default connect(mapStateToProps, mapDispatchToProps)(ChatWindow)
