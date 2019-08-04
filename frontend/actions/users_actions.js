@@ -24,6 +24,11 @@ export const receiveUserErrors = (errors) => {
         errors
     }
 }
+export const getAllUsers = () => dispatch => {
+    return UsersApiUtil.fetchAllUsers()
+        .then((users) => dispatch(receiveUsers(users)))
+        .fail((errors) => dispatch(receiveUserErrors(errors)))
+}
 export const getUsers = (channelId) => dispatch => {
     return UsersApiUtil.fetchUsers(channelId)
         .then((users) => dispatch(receiveUsers(users)))

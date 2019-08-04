@@ -13,6 +13,11 @@ class Api::UsersController < ApplicationController
     def show
         @user = User.find(params[:id])
     end
+    def getAllUsersForChannel
+        @channel = Channel.find(params[:channel_id])
+        @users = @channel.users
+        render :index
+    end
     def index
         @users = User.all
         render :index

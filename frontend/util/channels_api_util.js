@@ -5,7 +5,13 @@ export const createChannel = (channel) => {
         data: { channel }
     })
 }
-
+export const addUsersToChannel = (users, channelId) => {
+    return $.ajax({
+        type: "POST",
+        url: `/api/channels/${channelId}/users`,
+        data: { users }
+    })
+}
 export const fetchChannels = () => {
     return $.ajax({
         type: "GET", 

@@ -8,6 +8,8 @@ Rails.application.routes.draw do
     resource :session, only: [:create, :destroy]
     resources :channels, only: [:create, :destroy, :update, :index] do
       resources :messages, only: [:create, :index]
+      get 'users', to: 'users#getAllUsersForChannel'
+      post 'users', to: 'channels#addUsersToChannel'
     end
     resources :messages, only: [:update]
     get 'session/check_email', to: 'sessions#check_email' 

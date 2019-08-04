@@ -2,7 +2,6 @@ class Api::ChannelsController < ApplicationController
     def create
         @channel = Channel.new(channel_params)
         if @channel.save
-            current_user.channels << @channel
             ActionCable.server.broadcast 'channels_channel', @channel
             render :show
         else
@@ -17,7 +16,16 @@ class Api::ChannelsController < ApplicationController
         @channels = Channel.select {|channel| current_user_channel_ids.include?(channel.id)}
         render :index
     end
-
+    def addUsersToChannel
+        @channel = Channel.find(params[:channel_id])
+        if(@channel) 
+            users = params[:users].map do |user| 
+                @user = User.find(user) 
+                @user if @user
+            end
+            @channel.users.concat(users.compact)
+        end
+    end
     def getDefaultChannelId        
         @channel = Channel.default
         render :show

@@ -1,8 +1,13 @@
 export const fetchUsers = (channelId) =>{
     return $.ajax({ 
         type: "GET",
-        url: "/api/users",
-        data: { channelId }
+        url: `/api/channels/${channelId}/users`,
+    })
+}
+export const fetchAllUsers = () =>{
+    return $.ajax({ 
+        type: "GET",
+        url: "/api/users"
     })
 }
 export const fetchUser = (id) =>{

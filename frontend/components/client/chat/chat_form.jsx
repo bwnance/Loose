@@ -85,7 +85,7 @@ class ChatForm extends React.Component {
 
         return (
             <form id="message-window-form" className="message-form">
-                <textarea rows="1" cols="80" id="message-window-textarea" onKeyDown={this.onEnterPress} value={this.state.body} onChange={this.handleBodyUpdate} type="text" className="message-input" placeholder="Message channel" />
+                <textarea id="message-window-textarea" onKeyDown={this.onEnterPress} value={this.state.body} onChange={this.handleBodyUpdate} type="text" className="message-input" placeholder="Message channel" />
             </form>
         )
 

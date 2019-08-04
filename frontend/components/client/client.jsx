@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import Channel from './channels/channel'
 import ChannelList from './channels/channel_list'
 import ChatWindow from './chat/chat_window'
+import {getAllUsers} from '../../actions/users_actions'
 import { getDefaultChannel} from '../../actions/ui_actions'
 class Client extends React.Component {
     constructor(props) {
@@ -20,10 +21,10 @@ class Client extends React.Component {
     }
     componentDidMount() {
         this.props.fetchDefaultChannel();
+        this.props.fetchAllUsers();
         // App.messaging = App.cable.subscriptions.create('ChannelsChannel', {
         //     received: this.onReceiveMessage,
         // })
-
     }
     render(){
         return <div className="client">
@@ -36,6 +37,7 @@ const mapStateToProps = (state) => ({
     currentChannelId: state.ui.chatWindow.id
 })
 const mapDispatchToProps = dispatch => ({
-    fetchDefaultChannel: () => dispatch(getDefaultChannel())
+    fetchDefaultChannel: () => dispatch(getDefaultChannel()),
+    fetchAllUsers: () => dispatch(getAllUsers()),
 })
 export default connect(mapStateToProps, mapDispatchToProps)(Client)

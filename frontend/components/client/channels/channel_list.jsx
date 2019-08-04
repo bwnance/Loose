@@ -56,7 +56,7 @@ class ChannelList extends React.Component {
                 </li>
                 {channels}
             </ul>
-                <CreateChannelOverlay closeOverlay={this.closeOverlay} className={this.state.showOverlay ? "client-overlay" : "client-overlay transparent"}/>
+                <CreateChannelOverlay closeOverlay={this.closeOverlay} className={this.state.showOverlay ? "" : " transparent"}/>
             </>
         )
     }

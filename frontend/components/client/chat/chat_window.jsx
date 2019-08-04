@@ -75,6 +75,7 @@ class ChatWindow extends React.Component {
 
     }
     componentDidMount(){
+        
         //connect to live chat and populate messages slice of state
         this.populateUsers().then(this.populateMessages)
         this.setupSubscription();
