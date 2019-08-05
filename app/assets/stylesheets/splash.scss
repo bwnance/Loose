@@ -1,6 +1,6 @@
 @import '_variables.scss';
 html{
-    background-color: #ffffff;
+    background-color: $color-bg;
 }
 
 .splash{
@@ -46,14 +46,17 @@ html{
     padding-left: 17px;
     padding-right: 17px;
     border: 1px solid grey;
+    background-color: transparent;
+
 }
 .splash-form-submit{ 
     --webkit-appearance: textfield;
+
     box-sizing: border-box;
     background-color: $color-foreground;
     border: none;
     text-decoration: none;
-    color: black;
+    color: $alt-text;
     margin-top: 5px;
     border-radius: 4px;;
     height: 50px;

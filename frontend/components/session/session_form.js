@@ -114,7 +114,7 @@ export default class SessionForm extends React.Component {
         )
             return (
                 <>
-                <NavBar />
+                <NavBar className="navbar-session"/>
                 <div className="session-form-container">
                     {login_error}
                     <form className="loose-form" onSubmit = {this.handleSubmit} >

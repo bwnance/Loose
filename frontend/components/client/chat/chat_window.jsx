@@ -14,8 +14,11 @@ class ChatWindow extends React.Component {
     }
     
     render(){
+        let prevMessage = null;
         const messages = this.props.messages.map((message)=>{
-            if (message.sender_id) return <ChatMessage key={`message-${message.id}`} message={message}/>
+            let cm = <ChatMessage prevMessage={prevMessage} key={`message-${message.id}`} message={message}/>
+            prevMessage = message
+            return cm;
         })
         return (
             <div className="chat-window">

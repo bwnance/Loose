@@ -2,12 +2,46 @@
 
 .navbar{
     display: flex;
-    justify-content: flex-end;
+    flex-direction: row;
+    justify-content: space-between;
     position: fixed;
     top: 0;
     width: 100vw;
     z-index: 2;
     background-color: $color-bg;
+    .logo{
+        height: 25px;
+        width: 25px;
+        background-image: asset_url('loose-logo.png');
+        background-repeat: no-repeat;
+        background-size: 25px;
+        display: table-cell;
+    }
+    .loose-text{
+        display: table-cell;
+        vertical-align: middle;
+        font-weight:bolder;
+        font-size: 18px;
+
+    }
+    .logo-container{
+        margin: 10px 20px;
+        display: table-cell;
+        flex-direction: row;
+    }
+    .links{
+        display: flex;
+        flex-direction: row;
+        height: 100%;
+    }
+}
+.navbar-session{
+    border-bottom: 1px solid $border-color;
+    background-color: $color-bg-secondary;
+    justify-content: flex-end;
+    .logo-container{
+        display: none;
+    }
 }
 
 
@@ -32,6 +66,8 @@
 .navbar-login:hover{ 
     background-color: $color-foreground;
     transition-duration: 0.2s;
+    color: $alt-text;
+
     cursor: pointer;
 }
 .navbar-signup{ 
@@ -42,7 +78,7 @@
     background-color: $color-foreground;
     border: none;
     text-decoration: none;
-    color: black;
+    color: $alt-text;
     margin-top: 5px;
     border-radius: 4px;;
     height: 50%;
@@ -56,6 +92,7 @@
 .navbar-signup:hover{ 
     background-color: $color-hover;
     border: 1px solid $color-hover;
+
     transition-duration: 0.2s;
     cursor: pointer;
 }

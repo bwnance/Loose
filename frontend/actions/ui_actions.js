@@ -3,6 +3,8 @@ import * as UiAPIUtil from '../util/ui_api_util'
 export const RECEIVE_EMAIL_FORM_DATA = "RECEIVE_EMAIL_FORM_DATA"
 export const RECEIVE_UI_ERRORS = "RECEIVE_UI_ERRORS"
 export const RECEIVE_CURRENT_CHAT_WINDOW_ID = "RECEIVE_CURRENT_CHAT_WINDOW_ID"
+export const SHOW_MENU = "SHOW_MENU"
+export const HIDE_MENU = "HIDE_MENU"
 const uiErrors = errors => ({
     type: RECEIVE_UI_ERRORS,
     errors
@@ -19,6 +21,18 @@ export const changeChatWindowView = (id) => {
     return {
         type: RECEIVE_CURRENT_CHAT_WINDOW_ID,
         id
+    }
+}
+export const showMenu = () => {
+    return {
+        type: SHOW_MENU,
+        
+    }
+}
+export const hideMenu = () => {
+    return {
+        type: HIDE_MENU,
+        
     }
 }
 export const getDefaultChannel = () => dispatch => {
