@@ -22,8 +22,7 @@ class ChatMessage extends React.Component{
         }
         return sameUser ? 
             (<li className="chat-message">
-                <div className="message-content-secondary">
-                    
+                <div className="timestamp-container">
                     <span className="hover-timestamp">
                         {/* this is broken, z-index issue*/}
                         {/* <div className="hover-timestamp-tooltip">
@@ -33,25 +32,30 @@ class ChatMessage extends React.Component{
                             {this.getShortAMPMTime(this.message.created_at)}
                         </span>
                     </span>
+                </div>
+                <div className="message-content-secondary">
+                    
                     <span className="message-body">
                         {this.message.body}
-                        </span>
+                    </span>
                 </div>
             </li>) 
         :
-            (<li className="chat-message">
-            <i className="user-icon fa fa-user"/>
-            <div className="message-content">
-                <span className="top-row">
-                    <span className="message-author">
-                        {this.author.full_name}
+            (
+            <li className="chat-message">
+                
+                <i className="user-icon fa fa-user"/>
+                <div className="message-content">
+                    <span className="top-row">
+                        <span className="message-author">
+                            {this.author.full_name}
+                        </span>
+                        <span className="message-timestamp">
+                            {this.getShortAMPMTime(this.message.created_at)}
+                        </span>
                     </span>
-                    <span className="message-timestamp">
-                        {this.getShortAMPMTime(this.message.created_at)}
-                    </span>
-                </span>
-                <span className="message-body">{this.message.body}</span>
-            </div>
+                    <span className="message-body">{this.message.body}</span>
+                </div>
         </li>) 
 
     }
@@ -74,9 +78,10 @@ class ChatMessage extends React.Component{
         let minutes = date.getMinutes();
         let seconds = date.getSeconds();
         const ampm = hours >= 12 ? "PM" : "AM";
+        hours = hours % 12;
+        // hours = hours < 10 ? `0${hours}` : `${hours}`
         minutes = minutes < 10 ? `0${minutes}` : `${minutes}`
         seconds = seconds < 10 ? `0${seconds}` : `${seconds}`
-        hours = hours % 12;
         const result =  `${hours}:${minutes} ${ampm}`
         return result
 

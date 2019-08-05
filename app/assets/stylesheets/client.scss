@@ -234,10 +234,11 @@ body{
             margin-right: 10px;
             .divider{
                 border-right: 2px solid $border-color;
-                font-size: 30px;
+                font-size: 20px;
                 margin-right: 10px;
                 margin-left: 10px;
-                padding-bottom: 6px;
+                padding-bottom: 4px;
+                padding-top: 2px;
             }
             .fa{
                 color: rgba(0, 0, 0, 0.7);
@@ -567,15 +568,16 @@ body{
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
-        align-items: center;
+        
         .user-icon:hover{
             cursor: pointer;
         }
-        .user-icon{
-            height: 100%;
-            font-size: 35px;
-            margin-right: 10px;
-        }
+            .user-icon{
+                margin-top: 3px;
+                height: 100%;
+                font-size: 35px;
+                margin-right: 10px;
+            }
         .top-row{
             .message-author{
                 font-weight: bold;
@@ -596,6 +598,8 @@ body{
 
         }
         .hover-timestamp{
+            text-align: right;
+            margin-top: 3px;
             width: 45px;
             display: none;
         }
@@ -619,7 +623,7 @@ body{
             user-select: none;
             color: grey;
             position: relative;
-            right: 8px;
+            right: 16px;
             top: 0px;
             font-size: 10px;
             display: inherit;
