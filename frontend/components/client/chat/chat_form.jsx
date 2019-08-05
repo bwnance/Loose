@@ -50,7 +50,6 @@ class ChatForm extends React.Component {
             if(height > 500) height = 500;
             textArea.style.height = height + "px";
 
-
             const newHeight = height
             
             const heightDifference = newHeight - textAreaStartingHeight ;
@@ -59,8 +58,8 @@ class ChatForm extends React.Component {
             form.style.height = newFormHeight + "px"
             messageList.style.height = newMessagesHeight + "px";
             
-            
         }
+        
         
         
     }
@@ -77,6 +76,10 @@ class ChatForm extends React.Component {
         this.setState({ body: "" })
         setTimeout(this.onKeyUp)
 
+    }
+    componentDidUpdate(){
+        setTimeout(()=>document.getElementById("messages-end").scrollIntoView(), 0);
+        
     }
     handleBodyUpdate(e) {
         this.setState({ body: e.target.value })

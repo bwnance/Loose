@@ -149,7 +149,11 @@ body{
             font-weight: bold;
             .client-notifications-btn{
                 font-size: 20px;
-                color: rgba(255, 255, 255, 0.7)
+                color: rgba(255, 255, 255, 0.8)
+            }
+            .client-notifications-btn:hover{
+                color: rgba(255, 255, 255, 1)
+
             }
             .dropdown-btn{
                 position: relative;
@@ -279,6 +283,7 @@ body{
 }
 
 .channel-list{
+    // justify-content: center;
     position: absolute;
     z-index: 0;
     color: $alt-text;
@@ -286,6 +291,7 @@ body{
     overflow: overlay;
     .channel-list-scrollable{
     overflow-y : scroll;
+    color: rgba(255,255,255,0.8);
 
     }  
     .selected-channel:hover{
@@ -304,17 +310,22 @@ body{
         display: flex;
         justify-content: space-between;
         align-items: flex-end;
+        margin-top: 5px;
+        font-weight: bolder;
+        margin-bottom: 5px;
         span{
-            margin-left: 10px;
+            margin-left: 5px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             width: 100%;
             height: 100%;
-            
+            color: rgba(255,255,255,0.8);
+
+
         }
         span:hover{
-            color: rgba(255,255,255, 0.8)
+            color: rgba(255,255,255, 1)
         }
         .show-create-channel-button:focus{
             border: none;
@@ -327,6 +338,7 @@ body{
             border: none;
             align-self: center;
             margin-right: 5px;
+            margin-top: 7px;
             i{
                 position: relative;
                 bottom: 3px;
@@ -419,8 +431,87 @@ body{
             margin-top: 10px;
             margin-bottom: 7px;
         }
-        .members-form{
-            padding-top: 12px;
+
+        
+
+
+        #channel-members-container:focus-within{
+            box-shadow: 0 0 0 1px #1264a3, 0 0 0 5px rgba(29,155,209,.3);
+            border-color: transparent;
+        }
+        #channel-members-container{
+            display: flex;
+            align-items: center;
+            justify-content: stretch;
+            padding-left: 5px;
+            .search-members-input{
+                background-color: transparent;
+                border: none;
+                font-size: inherit;
+                padding-left: 10px;
+                flex-grow: 1;
+                height: 100%;
+            }
+            .search-members-input:focus{
+                outline: none;
+            }
+            .selected-user-span{
+                margin-left: 10px;
+                padding: 0px 0px 0px 0px;
+                background-color: rgba(31,73,133, 0.3);
+                border-radius: 4px;
+                display: flex;
+                font-weight: bold;
+                justify-content: center;
+                align-items: center;
+                *:focus{
+                    outline: none;
+                }
+                .user{
+                    height: 32px;
+                    width: 32px;
+                    font-size: 32px;
+                    // position: relative;
+                    
+                    bottom: 9px;
+                    background-color: $color-bg;
+                    border: 1px solid rgba(0,0,0,0.3);
+                    align-self: center;
+                    margin-right: 10px;
+                    border-radius: 4px 0px 0px 4px;
+                }
+                button{
+                    background: transparent;
+                    border: none;
+                    width: 20px;
+                    height: 20px;
+                    padding: 0px;
+                    margin-left: 5px;
+                    margin-right: 5px;
+                    position: relative;
+                    top: 1px;
+
+                    .button-close{
+                        // display: none;
+                        width: 12px;
+                        height: 12px;
+                        position: relative;
+                        top: 1px;
+                        right: 0px;
+                        // fill: black;
+                        // stroke: black;
+                    }
+                }
+                button:hover{
+                    cursor: pointer;
+                    background-color: rgba(255,255,255, 0.1);
+                    border-radius: 4px;
+                }
+            }
+            .selected-user-span:hover{
+                cursor: pointer;
+            }
+            // justify-content: flex-end;
         }
         .subtitle{
             color: grey;
@@ -498,8 +589,11 @@ body{
         .overlay-close-x{
             position: absolute;
             right: 20px;
-            top: 0px;
-            font-size: 40px;
+            top: 16px;
+            height: 20px;
+            width: 20px;
+            stroke: $border-color;
+            fill: $border-color;
             color: $border-color;
             outline: none;
         }
@@ -520,8 +614,8 @@ body{
     position: relative;
     height: 100%;
     z-index: 10;
-    overflow: hidden;
-   
+    overflow-y: hidden;
+    overflow-x: visible;
     width: 100%;
     padding-bottom: 0px;
 
@@ -563,6 +657,10 @@ body{
         word-break: break-all;
         white-space: pre-wrap;
         vertical-align: bottom;        
+        #messages-end{
+            margin-top: 20px;
+            
+        }
     }
     .chat-message{
         display: flex;
@@ -673,7 +771,6 @@ body{
         padding-bottom: 0px;
 
         .message-input{
-
             box-sizing: border-box;
             align-self: end;
             width: 100%;

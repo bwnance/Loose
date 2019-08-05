@@ -26,6 +26,13 @@
     width: 100%;
     overflow: hidden;
 }
+[contenteditable=true]:empty::before {
+  content: attr(placeholder);
+  color: grey;
+}
+/* [contenteditable]:after {
+  content: attr(value);
+} */
 #root{
     overflow: hidden;
 }
