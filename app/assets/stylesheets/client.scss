@@ -208,8 +208,10 @@ body{
                     transform: rotate(-30deg);
                 }
                 .info-seperator{
+                    position: relative;
+                    top: 1px;
                     border-left: 1px solid gray;
-                    font-size: 18px;
+                    font-size: 15px;
                     margin-right: 7px;
                 }
                 .fa{
@@ -235,6 +237,7 @@ body{
                 font-size: 30px;
                 margin-right: 10px;
                 margin-left: 10px;
+                padding-bottom: 6px;
             }
             .fa{
                 color: rgba(0, 0, 0, 0.7);
