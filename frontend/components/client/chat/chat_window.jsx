@@ -46,7 +46,7 @@ class ChatWindow extends React.Component {
     receiveMessage(message){
         if(!message.sender_id || !message.id) {
             console.log("weird message received")
-            debugger
+            
             return 
         }
         if (this.props.users.every((user) => user.id !== message.sender_id)) {
