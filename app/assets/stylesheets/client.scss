@@ -568,15 +568,15 @@ body{
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
-        
+        color: rgba(0,0,0,0.95);
         .user-icon:hover{
             cursor: pointer;
         }
             .user-icon{
-                margin-top: 3px;
                 height: 100%;
-                font-size: 35px;
+                font-size: 32px;
                 margin-right: 10px;
+                color: black;
             }
         .top-row{
             .message-author{
