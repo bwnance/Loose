@@ -12,7 +12,7 @@ class ChannelList extends React.Component {
         this.showChannelsOverlay = this.showChannelsOverlay.bind(this)
     }
     componentDidMount() {
-        this.props.fetchChannels();//.then(() => console.log("default channel fetched "));
+        this.props.fetchAllChannels();//.then(() => console.log("default channel fetched "));
         
     }
     showCreateChannel(e){
@@ -21,7 +21,8 @@ class ChannelList extends React.Component {
     }
 
     showChannelsOverlay(){
-        this.props.fetchAllChannels().then(this.props.showChannelsOverlay)
+        //should fetch channels with permissions
+        this.props.showChannelsOverlay()
     }
     render(){
         const channels = this.props.channels.map((channel) => (
@@ -30,8 +31,6 @@ class ChannelList extends React.Component {
             </li>)) // sort alphabetically later
         return (
             <>
-            
-               
                 <div className="channel-list">
                 <div className="channel-list-jump-to">
                     
@@ -56,7 +55,7 @@ class ChannelList extends React.Component {
 
 const mapStateToProps = (state) => ({
     currentUser: state.entities.users[state.session.id],
-    channels: Object.values(state.entities.channels),
+    channels: Object.values(state.entities.channels).filter(channel => channel.user_ids.includes(state.session.id)),
     currentChannel: state.ui.chatWindow.id
 })
 const mapDispatchToProps = (dispatch) => ({

@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { changeChatWindowView, closeOverlay, showCreateChannelOverlay } from '../../../actions/ui_actions'
+import { fetchChannels} from '../../../actions/channel_actions'
 import moment from 'moment'
 import CloseOverlayBtn from './common/close_overlay_btn'
 class ShowChannelsOverlay extends React.Component {
@@ -10,9 +11,14 @@ class ShowChannelsOverlay extends React.Component {
         this.handleInput = this.handleInput.bind(this)
         this.handleJoinChannelClick = this.handleJoinChannelClick.bind(this)
         this.handleJoinedChannelClick = this.handleJoinedChannelClick.bind(this)
+        this.closeOverlay = this.closeOverlay.bind(this)
     }
     handleInput(e){
         this.setState({searchInput: e.target.value}, this.updateFoundChannels)
+    }
+    closeOverlay(){
+        // this.props.fetchChannels();
+        this.props.closeOverlay();
     }
     updateFoundChannels(){
         const searchText = this.state.searchInput.toLowerCase();
@@ -23,7 +29,7 @@ class ShowChannelsOverlay extends React.Component {
             const foundJoinedChannels = this.props.joinedChannels.filter(channel=>{
                 return channel.title.toLowerCase().startsWith(searchText)
             })
-            console.log(foundJoinableChannels)
+            // console.log(foundJoinableChannels)
             this.setState({joinableChannels: foundJoinableChannels, joinedChannels: foundJoinedChannels})
         }
         else{
@@ -40,7 +46,7 @@ class ShowChannelsOverlay extends React.Component {
     handleJoinedChannelClick(id){
         return (e) => {
             this.props.changeChannelView(id)();
-            this.props.closeOverlay();
+            this.closeOverlay();
         }
     }
     render(){
@@ -117,6 +123,7 @@ const mapStateToProps = (state) => ({
 })
 const mapDispatchToProps = (dispatch) => ({ 
     closeOverlay: ()=> dispatch(closeOverlay()),
-    showCreateChannelOverlay: ()=> dispatch(showCreateChannelOverlay())
+    showCreateChannelOverlay: ()=> dispatch(showCreateChannelOverlay()),
+    fetchChannels: ()=> dispatch(fetchChannels())
 })
 export default connect(mapStateToProps, mapDispatchToProps)(ShowChannelsOverlay);

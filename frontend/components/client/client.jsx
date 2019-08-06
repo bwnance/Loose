@@ -34,7 +34,7 @@ class Client extends React.Component {
         App.cable.disconnect();
     }
     onReceiveMessage(message){
-        //console.log(message);
+        //console.log(message); 
         this.setState({messages: this.state.messages.concat(message.body)})
     }
     changeChannelView(id) {
@@ -71,6 +71,7 @@ class Client extends React.Component {
         }
     }
     handleChannelSuccess(channel, author_id){
+        // debugger
         this.props.receiveChannel(channel)
         if(author_id === this.props.currentUser.id) this.changeChannelView(channel.id)()
         

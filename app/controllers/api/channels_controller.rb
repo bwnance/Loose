@@ -22,7 +22,7 @@ class Api::ChannelsController < ApplicationController
     def addUsersToChannel
         @channel = Channel.find(params[:channel_id])
         if(@channel) 
-            debugger
+            # debugger
             users = params[:users].map do |user| 
                 @user = User.find(user) 
                 @user if @user
