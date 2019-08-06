@@ -6,13 +6,29 @@ import CloseOverlayBtn from './common/close_overlay_btn'
 class ShowChannelsOverlay extends React.Component {
     constructor(props){
         super(props)
-        this.state = { joinableChannels: this.props.joinableChannels, searchInput: ""}
+        this.state = { joinableChannels: this.props.joinableChannels, searchInput: "", joinedChannels: this.props.joinedChannels}
         this.handleInput = this.handleInput.bind(this)
         this.handleJoinChannelClick = this.handleJoinChannelClick.bind(this)
         this.handleJoinedChannelClick = this.handleJoinedChannelClick.bind(this)
     }
     handleInput(e){
-        this.setState({searchInput: ""})
+        this.setState({searchInput: e.target.value}, this.updateFoundChannels)
+    }
+    updateFoundChannels(){
+        const searchText = this.state.searchInput.toLowerCase();
+        if(searchText){
+            const foundJoinableChannels = this.props.joinableChannels.filter(channel=>{
+                return channel.title.toLowerCase().startsWith(searchText)
+            })
+            const foundJoinedChannels = this.props.joinedChannels.filter(channel=>{
+                return channel.title.toLowerCase().startsWith(searchText)
+            })
+            console.log(foundJoinableChannels)
+            this.setState({joinableChannels: foundJoinableChannels, joinedChannels: foundJoinedChannels})
+        }
+        else{
+            this.setState({ joinableChannels: this.props.joinableChannels, joinedChannels: this.props.joinedChannels })
+        }
     }
     handleJoinChannelClick(channelId){
         return (e) => {
@@ -46,7 +62,7 @@ class ShowChannelsOverlay extends React.Component {
                 </li>
             )
         })
-        const joinedChannelList = this.props.joinedChannels.map(channel =>{
+        const joinedChannelList = this.state.joinedChannels.map(channel =>{
             return(
                 <li onClick={this.handleJoinedChannelClick(channel.id)} key={`channel-${channel.id}`} className="browse-channel-item">
                     <div className="channel-info">
