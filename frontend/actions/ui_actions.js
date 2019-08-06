@@ -5,13 +5,38 @@ export const RECEIVE_UI_ERRORS = "RECEIVE_UI_ERRORS"
 export const RECEIVE_CURRENT_CHAT_WINDOW_ID = "RECEIVE_CURRENT_CHAT_WINDOW_ID"
 export const SHOW_MENU = "SHOW_MENU"
 export const HIDE_MENU = "HIDE_MENU"
+export const SHOW_CREATE_CHANNEL_OVERLAY = "SHOW_CREATE_CHANNEL_OVERLAY";
+export const SHOW_CHANNELS_OVERLAY = "SHOW_CHANNELS_OVERLAY";
+export const SHOW_ADD_USER_TO_CHANNEL_OVERLAY = "SHOW_ADD_USER_TO_CHANNEL_OVERLAY";
+export const CLOSE_OVERLAY = "CLOSE_OVERLAY"
 const uiErrors = errors => ({
     type: RECEIVE_UI_ERRORS,
     errors
 })
 
-const receiveEmailFormData = (data) => {
 
+
+const showCreateChannelOverlayAction = () => {
+    return {
+        type: SHOW_CREATE_CHANNEL_OVERLAY
+    }
+}
+const showChannelsOverlayAction = () => {
+    return {
+        type: SHOW_CHANNELS_OVERLAY
+    }
+}
+const closeOverlayAction = () => {
+    return {
+        type: CLOSE_OVERLAY
+    }
+}
+const showAddUserToChannelOverlayAction = () => {
+    return {
+        type: SHOW_ADD_USER_TO_CHANNEL_OVERLAY
+    }
+}
+const receiveEmailFormData = (data) => {
     return {
         type: RECEIVE_EMAIL_FORM_DATA,
         data
@@ -45,4 +70,16 @@ export const checkEmail = (email) => dispatch => {
     return UiAPIUtil.checkEmail(email)
         .then((data) => dispatch(receiveEmailFormData(data)))
         .fail((errors) => dispatch(uiErrors(errors.responseJSON)))
+}
+export const showCreateChannelOverlay = () => dispatch => {
+    return dispatch(showCreateChannelOverlayAction())
+}
+export const showChannelsOverlay = () => dispatch => {
+    return dispatch(showChannelsOverlayAction())
+}
+export const showAddUserToChannelOverlay = () => dispatch => {
+    return dispatch(showAddUserToChannelOverlayAction())
+}
+export const closeOverlay = () => dispatch => {
+    return dispatch(closeOverlayAction())
 }

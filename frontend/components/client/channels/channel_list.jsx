@@ -1,14 +1,13 @@
 import React from 'react';
 import {connect} from 'react-redux'
 import {fetchChannels} from '../../../actions/channel_actions'
-import {changeChatWindowView} from '../../../actions/ui_actions'
+import {showCreateChannelOverlay} from '../../../actions/ui_actions'
 import { logout } from '../../../actions/session'
 
 class ChannelList extends React.Component {
     constructor(props){ 
         super(props)
         this.showCreateChannel = this.showCreateChannel.bind(this);
-        this.state = {showOverlay: false}
     }
     componentDidMount() {
         this.props.fetchChannels();//.then(() => console.log("default channel fetched "));
@@ -16,7 +15,7 @@ class ChannelList extends React.Component {
     }
     showCreateChannel(e){
         e.preventDefault();
-        this.props.showOverlay();
+        this.props.showCreateChannelOverlay();
     }
 
 
@@ -58,7 +57,8 @@ const mapStateToProps = (state) => ({
 })
 const mapDispatchToProps = (dispatch) => ({
     fetchChannels: () => dispatch(fetchChannels()),
-    logout: () => dispatch(logout())
+    logout: () => dispatch(logout()),
+    showCreateChannelOverlay: () => dispatch(showCreateChannelOverlay())
 
 })
 

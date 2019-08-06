@@ -4,8 +4,8 @@ import Channel from './channels/channel'
 import ChannelList from './channels/channel_list'
 import ChatWindow from './chat/chat_window'
 import {getAllUsers} from '../../actions/users_actions'
-import { getDefaultChannel, changeChatWindowView, hideMenu} from '../../actions/ui_actions'
-import CreateChannelOverlay from './create_channel_overlay'
+import { getDefaultChannel, changeChatWindowView, hideMenu, closeOverlay} from '../../actions/ui_actions'
+import CreateChannelOverlay from './overlay/create_channel_overlay'
 import ClientNavBar from './client_navbar'
 import { logout } from '../../actions/session'
 import {receiveChannel} from '../../actions/channel_actions'
@@ -27,7 +27,7 @@ class Client extends React.Component {
         this.setState({ showOverlay: true });
     }
     closeOverlay() {
-        this.setState({ showOverlay: false });
+        this.props.closeOverlay();
     }
     componentWillUnmount() {
         App.cable.disconnect();
@@ -60,7 +60,6 @@ class Client extends React.Component {
         App.clientChannel.send({type: "ADD_USERS_TO_CHANNEL", user_id: userId, channel_id: channelId})
     }
     createChannel(data){
-        console.log(data)
         App.clientChannel.send({type: "CREATE_CHANNEL", data: data})
         this.closeOverlay();
         
@@ -97,7 +96,18 @@ class Client extends React.Component {
         this.props.logout()
     }
     render(){
-        
+        let overlay = undefined
+        //I'm so sorry.
+        switch(this.props.overlayType){
+            case "OVERLAY_CREATE_CHANNEL":
+                overlay = <CreateChannelOverlay createChannel={this.createChannel} addUsersToChannel={this.addUsersToChannel} changeChannelView={this.changeChannelView} closeOverlay={this.closeOverlay}/>
+                break;
+            case "OVERLAY_SHOW_CHANNELS":
+                overlay = <ShowChannelOverlay addUserToChannel={this.AddUserToChannel} changeChannelView={this.changeChannelView} closeOverlay={this.closeOverlay} />
+                break;
+            case "OVERLAY_ADD_USERS_TO_CHANNELS":
+                overlay = <AddUserOverlay addUserToChannel={this.AddUserToChannel} changeChannelView={this.changeChannelView} closeOverlay={this.closeOverlay}/>
+            }
         return <div className="client">
             <div onClick={this.hideMenu} className={`menu-overlay ${this.props.showMenu ? "" : "invisible"}`}>
                 
@@ -129,7 +139,7 @@ class Client extends React.Component {
                 <ChannelList changeChannelView={this.changeChannelView} showOverlay={this.showOverlay} closeOverlay={this.closeOverlay}/>
                 {this.props.currentChannelId ? <ChatWindow/> : ""}
             </div>
-            <CreateChannelOverlay createChannel={this.createChannel} addUsersToChannel={this.addUsersToChannel} changeChannelView={this.changeChannelView} closeOverlay={this.closeOverlay} className={this.state.showOverlay ? "" : " transparent"} />
+            {overlay}
 
         </div>  
     }
@@ -137,7 +147,8 @@ class Client extends React.Component {
 const mapStateToProps = (state) => ({
     currentChannelId: state.ui.chatWindow.id,
     currentUser: state.entities.users[state.session.id],
-    showMenu: state.ui.clientMenu.showMenu
+    showMenu: state.ui.clientMenu.showMenu,
+    overlayType: state.ui.overlay.overlayType
 })
 const mapDispatchToProps = dispatch => ({
     fetchDefaultChannel: () => dispatch(getDefaultChannel()),
@@ -145,7 +156,8 @@ const mapDispatchToProps = dispatch => ({
     changeChannelView: (id) => dispatch(changeChatWindowView(id)),
     logout: ()=> dispatch(logout()),
     hideMenu: ()=> dispatch(hideMenu()),
-    receiveChannel: (channel)=> new Promise(()=>dispatch(receiveChannel(channel)))
+    receiveChannel: (channel) => new Promise(()=>dispatch(receiveChannel(channel))),
+    closeOverlay: () => dispatch(closeOverlay()),
 
 
 })

@@ -398,6 +398,7 @@ body{
     background-color: $color-foreground;
 }
 .client-overlay{
+    transition: display 10s linear;
     position: fixed;
     z-index: 700;
     width: 100vw;
