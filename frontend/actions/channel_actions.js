@@ -25,14 +25,23 @@ export const receiveChannelErrors = (errors) => {
         errors
     }
 }
-
 export const addUsersToChannel = (users, channelId) => dispatch =>{
     return ChannelsApiUtil.addUsersToChannel(users, channelId)
         // .then((channels) => dispatch(receiveChannels(channels)))
         .fail((errors) => dispatch(receiveChannelErrors(errors)))
 }
+export const addUserToChannel = (user, channelId) => dispatch =>{
+    return ChannelsApiUtil.addUsersToChannel(user, channelId)
+        // .then((channels) => dispatch(receiveChannels(channels)))
+        .fail((errors) => dispatch(receiveChannelErrors(errors)))
+}
 export const fetchChannels = () => dispatch => {
     return ChannelsApiUtil.fetchChannels()
+        .then((channels) => dispatch(receiveChannels(channels)))
+        .fail((errors) => dispatch(receiveChannelErrors(errors)))
+}
+export const fetchAllChannels = () => dispatch => {
+    return ChannelsApiUtil.fetchAllChannels()
         .then((channels) => dispatch(receiveChannels(channels)))
         .fail((errors) => dispatch(receiveChannelErrors(errors)))
 }

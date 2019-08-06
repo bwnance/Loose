@@ -15,6 +15,12 @@ export const addUsersToChannel = (users, channelId) => {
 export const fetchChannels = () => {
     return $.ajax({
         type: "GET", 
-        url: `/api/channels`
+        url: `/api/channels/currentUserChannels`
+    })
+}
+export const fetchAllChannels = () => {
+    return $.ajax({
+        type: "GET", 
+        url: `/api/channels/`
     })
 }

@@ -1,5 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import UsersDropdown from './users_dropdown'
 class SearchUsersField extends React.Component {
     constructor(props) {
         super(props)
@@ -7,8 +8,9 @@ class SearchUsersField extends React.Component {
         this.handleSearchBarInput = this.handleSearchBarInput.bind(this)
         this.selectUser = this.selectUser.bind(this)
         this.onClick = this.onClick.bind(this);
-        this.state = { searchUser: "", selectedUsers: [], foundUsers: []}
+        this.state = { searchUser: "", selectedUsers: [], foundUsers: [], disableDropdown: false}
         this.handleInput = this.handleInput.bind(this)
+        this.disableDropdown = this.disableDropdown.bind(this)
     }
     setBothStates(state){
         this.props.setParentState(state);
@@ -25,9 +27,12 @@ class SearchUsersField extends React.Component {
         }
     }
     selectUser(id) {
-        return () => {
-            document.getElementsByClassName("search-members-input")[0].focus();
-            this.setBothStates({ selectedUsers: this.state.selectedUsers.concat(id), searchUser: "", foundUsers: [], })
+        return (e) => {
+            e.preventDefault();
+            if(!this.state.selectedUsers.some(selId=> selId === id)){
+                this.setBothStates({ selectedUsers: this.state.selectedUsers.concat(id), searchUser: "", foundUsers: [], })
+                document.getElementsByClassName("search-members-input")[0].focus();
+            }
         }
     }
     keyUp(e) {
@@ -36,7 +41,6 @@ class SearchUsersField extends React.Component {
         }
     }
     onClick(e) {
-        console.log("click")
         document.getElementsByClassName("search-members-input")[0].focus();
     }
     handleSearchBarInput(e) {
@@ -48,9 +52,11 @@ class SearchUsersField extends React.Component {
                 foundUsers.push(user)
             }
         })
-        console.log(foundUsers)
         this.setBothStates({ foundUsers: foundUsers })
         
+    }
+    disableDropdown(){
+        this.setState({foundUsers: [], searchUser: ""});
     }
     handleInput(type){
         return (e) => {
@@ -87,17 +93,14 @@ class SearchUsersField extends React.Component {
             </span>
         })
         const placeholder = this.state.selectedUsers && this.state.selectedUsers.length ? "" : "Search for users"
-        const disableDropdown = foundUserButtons && foundUserButtons.length ? "" : "hide";
-        console.log(disableDropdown)
+        const dropdownDisabled = foundUserButtons && foundUserButtons.length ? "" : "hide";
         return (
             <div className="users-search-field">
                 <div id="channel-members-container" onClick={this.onClick} className="loose-text-input overlay-text-input">
                     {selectedUserSpans}
                     <input className="search-members-input" type="text" onKeyDown={this.keyUp} onChange={this.handleSearchBarInput} placeholder={placeholder} value={this.state.searchUser} />
                 </div>
-                <div className={`foundUsers-dropdown ${disableDropdown}`}>
-                    {foundUserButtons}
-                </div>
+                {dropdownDisabled ? null : <UsersDropdown disableDropdown={this.disableDropdown} foundUserButtons={foundUserButtons}/>}
             </div>
         )
     }

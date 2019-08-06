@@ -14,6 +14,7 @@ Rails.application.routes.draw do
     resources :messages, only: [:update]
     get 'session/check_email', to: 'sessions#check_email' 
     get 'channels/getDefaultChannelId', to: 'channels#getDefaultChannelId' 
+    get 'channels/currentUserChannels', to: 'channels#currentUserChannels'
 
   end
 end

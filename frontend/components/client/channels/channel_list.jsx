@@ -1,13 +1,15 @@
 import React from 'react';
 import {connect} from 'react-redux'
-import {fetchChannels} from '../../../actions/channel_actions'
+import {fetchChannels, fetchAllChannels} from '../../../actions/channel_actions'
 import {showCreateChannelOverlay} from '../../../actions/ui_actions'
 import { logout } from '../../../actions/session'
+import {showChannelsOverlay} from '../../../actions/ui_actions'
 
 class ChannelList extends React.Component {
     constructor(props){ 
         super(props)
         this.showCreateChannel = this.showCreateChannel.bind(this);
+        this.showChannelsOverlay = this.showChannelsOverlay.bind(this)
     }
     componentDidMount() {
         this.props.fetchChannels();//.then(() => console.log("default channel fetched "));
@@ -18,7 +20,9 @@ class ChannelList extends React.Component {
         this.props.showCreateChannelOverlay();
     }
 
-
+    showChannelsOverlay(){
+        this.props.fetchAllChannels().then(this.props.showChannelsOverlay)
+    }
     render(){
         const channels = this.props.channels.map((channel) => (
             <li id={`channel-${channel.id}`} className={`channel-list-item  ${channel.id === this.props.currentChannel ? " selected-channel" : ""}`} key={`channel-${channel.id}`}>
@@ -35,7 +39,7 @@ class ChannelList extends React.Component {
                 <ul className="channel-list-scrollable">
                     <li>
                         <div className="channels-header channel-list-item">
-                            <span>Channels</span>
+                            <span onClick={this.showChannelsOverlay}>Channels</span>
                             <button className="show-create-channel-button" onClick={this.showCreateChannel}>
                                     <i className="fa fa-plus-circle"/>
 
@@ -57,8 +61,10 @@ const mapStateToProps = (state) => ({
 })
 const mapDispatchToProps = (dispatch) => ({
     fetchChannels: () => dispatch(fetchChannels()),
+    fetchAllChannels : () => dispatch(fetchAllChannels()),
     logout: () => dispatch(logout()),
-    showCreateChannelOverlay: () => dispatch(showCreateChannelOverlay())
+    showCreateChannelOverlay: () => dispatch(showCreateChannelOverlay()),
+    showChannelsOverlay: () => dispatch(showChannelsOverlay())
 
 })
 

@@ -6,6 +6,7 @@ import ChatWindow from './chat/chat_window'
 import {getAllUsers} from '../../actions/users_actions'
 import { getDefaultChannel, changeChatWindowView, hideMenu, closeOverlay} from '../../actions/ui_actions'
 import CreateChannelOverlay from './overlay/create_channel_overlay'
+import ShowChannelsOverlay from './overlay/show_channels_overlay'
 import ClientNavBar from './client_navbar'
 import { logout } from '../../actions/session'
 import {receiveChannel} from '../../actions/channel_actions'
@@ -52,17 +53,16 @@ class Client extends React.Component {
 
     }
     addUsersToChannel(users, channelId){
-        users.forEach(userId => {
-            this.addUserToChannel(userId, channelId);
-        })
+        App.clientChannel.send({ type: "ADD_USERS_TO_CHANNEL", data: { selectedUsers: users, channel_id: channelId } })
+
     }
     addUserToChannel(userId, channelId){
-        App.clientChannel.send({type: "ADD_USERS_TO_CHANNEL", user_id: userId, channel_id: channelId})
+        App.clientChannel.send({type: "ADD_USER_TO_CHANNEL", data: {user_id: userId, channel_id: channelId}})
+        this.closeOverlay();
     }
     createChannel(data){
         App.clientChannel.send({type: "CREATE_CHANNEL", data: data})
         this.closeOverlay();
-        
     }
     receiveClientData(data){
         switch(data.type){
@@ -103,10 +103,10 @@ class Client extends React.Component {
                 overlay = <CreateChannelOverlay createChannel={this.createChannel} addUsersToChannel={this.addUsersToChannel} changeChannelView={this.changeChannelView} closeOverlay={this.closeOverlay}/>
                 break;
             case "OVERLAY_SHOW_CHANNELS":
-                overlay = <ShowChannelOverlay addUserToChannel={this.AddUserToChannel} changeChannelView={this.changeChannelView} closeOverlay={this.closeOverlay} />
+                overlay = <ShowChannelsOverlay addUserToChannel={this.addUserToChannel} changeChannelView={this.changeChannelView} closeOverlay={this.closeOverlay} />
                 break;
             case "OVERLAY_ADD_USERS_TO_CHANNELS":
-                overlay = <AddUserOverlay addUserToChannel={this.AddUserToChannel} changeChannelView={this.changeChannelView} closeOverlay={this.closeOverlay}/>
+                overlay = <AddUserOverlay addUsersToChannel={this.addUsersToChannel} changeChannelView={this.changeChannelView} closeOverlay={this.closeOverlay}/>
             }
         return <div className="client">
             <div onClick={this.hideMenu} className={`menu-overlay ${this.props.showMenu ? "" : "invisible"}`}>

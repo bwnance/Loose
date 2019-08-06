@@ -4,10 +4,9 @@ class ClientsChannel < ApplicationCable::Channel
      stream_for current_user if current_user
   end
   def receive(data)
-    puts "RECEIVED DATA!!!"
+    request_data = data["data"]
     case data["type"]
     when "CREATE_CHANNEL"
-      request_data = data["data"]
       channel = Channel.new(title: request_data["title"], purpose: request_data["purpose"])
       
       if channel.save!
@@ -22,11 +21,21 @@ class ClientsChannel < ApplicationCable::Channel
           #broadcast errors
       end
     when "ADD_USERS_TO_CHANNEL"
-      user = User.find_by(id: params[:user_id])
+      users_to_add = request_data["selectedUsers"]
       channel = Channel.includes(:users).find_by(id: params[:channel_id])
+      users = User.where(id: users_to_add)
+      if users_to_add && users && channel
+        channel.users.concat(users)
+        users.each do |user|
+            ClientsChannel.broadcast_to(user, {type: "CHANNEL_SUCCESS", author_id: current_user.id, channel: {id: channel.id, title: channel.title,purpose: channel.purpose, user_ids: channel.users.ids}})
+        end     
+      end
+    when "ADD_USER_TO_CHANNEL"
+      user = User.find_by(id: request_data["user_id"])
+      channel = Channel.includes(:users).find_by(id: request_data["channel_id"])
       if user && channel
         channel.users << user
-        ClientsChannel.broadcast_to(user, {id: channel.id, title: channel.title,purpose: channel.purpose, user_ids: channel.users.ids}) #this is bad, fix it.
+        ClientsChannel.broadcast_to(user, {type: "CHANNEL_SUCCESS", author_id: current_user.id, channel: {id: channel.id, title: channel.title,purpose: channel.purpose, user_ids: channel.users.ids}})
       end
     end
   end
