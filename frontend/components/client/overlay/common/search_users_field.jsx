@@ -90,10 +90,11 @@ class SearchUsersField extends React.Component {
         const disableDropdown = foundUserButtons && foundUserButtons.length ? "" : "hide";
         console.log(disableDropdown)
         return (
-            <div id="channel-members-container" onClick={this.onClick} className="loose-text-input overlay-text-input">
-                {selectedUserSpans}
-
-                <input className="search-members-input" type="text" onKeyDown={this.keyUp} onChange={this.handleSearchBarInput} placeholder={placeholder} value={this.state.searchUser} />
+            <div className="users-search-field">
+                <div id="channel-members-container" onClick={this.onClick} className="loose-text-input overlay-text-input">
+                    {selectedUserSpans}
+                    <input className="search-members-input" type="text" onKeyDown={this.keyUp} onChange={this.handleSearchBarInput} placeholder={placeholder} value={this.state.searchUser} />
+                </div>
                 <div className={`foundUsers-dropdown ${disableDropdown}`}>
                     {foundUserButtons}
                 </div>

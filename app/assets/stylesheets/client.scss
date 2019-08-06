@@ -409,11 +409,17 @@ body{
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    .users-search-field{
+        position: relative;
+    }
     .foundUsers-dropdown{
         padding: 15px 0 15px 0;
         width: 725px;
         position: absolute;
-        top: 71vh;
+        top: 50px;
+        left: -14px;
+        float: center;
+        align-self: center;
         background-color: $color-bg;
         border: 1px solid $border-color;
         border-radius: 10px;
