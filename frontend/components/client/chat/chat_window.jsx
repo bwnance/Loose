@@ -33,8 +33,8 @@ class ChatWindow extends React.Component {
     setupSubscription(){
         //console.log("CONNECTING...")
         App.messaging = App.cable.subscriptions.create(
-            {
-            channel: 'MessagesChannel', 
+        {
+            channel: 'MessagesChannel',
             channel_id: this.props.currentChannelId
         },
         {

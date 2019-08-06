@@ -19,6 +19,9 @@ class Client extends React.Component {
         this.changeChannelView = this.changeChannelView.bind(this)
         this.hideMenu = this.hideMenu.bind(this)
         this.logout = this.logout.bind(this)
+        this.receiveClientData = this.receiveClientData.bind(this)
+        this.addUsersToChannel = this.addUsersToChannel.bind(this)
+        this.addUserToChannel = this.addUserToChannel.bind(this)
     }
     showOverlay() {
         this.setState({ showOverlay: true });
@@ -45,6 +48,30 @@ class Client extends React.Component {
         // App.messaging = App.cable.subscriptions.create('ChannelsChannel', {
         //     received: this.onReceiveMessage,
         // })
+
+    }
+    addUsersToChannel(users, channelId){
+        user.forEach(userId => {
+            this.addUserToChannel(userId, channelId);
+        })
+    }
+    addUserToChannel(userId, channelId){
+        App.clientChannel.send({type: "CHANNEL", user_id: userId, channel_id: channelId})
+    }
+    receiveClientData(data){
+        
+    }
+    setupSubscription() {
+        //console.log("CONNECTING...")
+        App.clientChannel = App.cable.subscriptions.create(
+            {
+                channel: 'ClientChannel',
+                user_id: this.props.currentUser.id
+            },
+            {
+                received: this.receiveClientData,
+                //connected: () => console.log("CONNECTED")}
+            })
 
     }
     hideMenu(e){
@@ -87,7 +114,7 @@ class Client extends React.Component {
                 <ChannelList changeChannelView={this.changeChannelView} showOverlay={this.showOverlay} closeOverlay={this.closeOverlay}/>
                 {this.props.currentChannelId ? <ChatWindow/> : ""}
             </div>
-            <CreateChannelOverlay changeChannelView={this.changeChannelView} closeOverlay={this.closeOverlay} className={this.state.showOverlay ? "" : " transparent"} />
+            <CreateChannelOverlay addUsersToChannel={this.addUsersToChannel} changeChannelView={this.changeChannelView} closeOverlay={this.closeOverlay} className={this.state.showOverlay ? "" : " transparent"} />
 
         </div>  
     }

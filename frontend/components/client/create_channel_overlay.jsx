@@ -12,6 +12,7 @@ class CreateChannelOverlay extends React.Component {
         this.closeOverlay = this.closeOverlay.bind(this)
         this.handleSearchBarInput = this.handleSearchBarInput.bind(this)
         this.keyUp = this.keyUp.bind(this);
+        this.onClick = this.onClick.bind(this);
     }
     onSubmit(e) {
         e.preventDefault()
@@ -40,6 +41,7 @@ class CreateChannelOverlay extends React.Component {
     }
     selectUser(id){
         return ()=> {
+            document.getElementsByClassName("search-members-input")[0].focus();
             this.setState({ selectedUsers: this.state.selectedUsers.concat(id), searchUser: "", foundUsers: [],})
         }
     }
@@ -63,12 +65,15 @@ class CreateChannelOverlay extends React.Component {
 
     componentDidMount(){
     }
+    onClick(e){
+        console.log("click")
+        document.getElementsByClassName("search-members-input")[0].focus();
+    }
     closeOverlay(){
         this.setState({ title: "", purpose: "", searchUser: "", foundUsers: [], selectedUsers: [] })
         this.props.closeOverlay();
     }
     keyUp(e){
-        
         if (e.keyCode === 8 && !this.state.searchUser){ //backspace pressed
             this.setState({ selectedUsers: this.state.selectedUsers.slice(0, this.state.selectedUsers.length-1)});
         }
@@ -79,13 +84,17 @@ class CreateChannelOverlay extends React.Component {
         const foundUserButtons = this.state.foundUsers.map((user) => {
             return (
             <button onClick={this.selectUser(user.id)}key={`found-user-${user.id}`} className="found_user_item">
-                {this.state.selectedUsers.includes(user.id) ? <i className="user-already-selected fa fa-check"/> : ""}
+                {this.state.selectedUsers.includes(user.id) ? <i className="user-already-selected fa fa-check"/> : <span className="check-placeholder"/>}
+                    <svg className="user-small svg-icon-darker" viewBox="0 0 20 15">
+                        <path d="M12.075,10.812c1.358-0.853,2.242-2.507,2.242-4.037c0-2.181-1.795-4.618-4.198-4.618S5.921,4.594,5.921,6.775c0,1.53,0.884,3.185,2.242,4.037c-3.222,0.865-5.6,3.807-5.6,7.298c0,0.23,0.189,0.42,0.42,0.42h14.273c0.23,0,0.42-0.189,0.42-0.42C17.676,14.619,15.297,11.677,12.075,10.812 M6.761,6.775c0-2.162,1.773-3.778,3.358-3.778s3.359,1.616,3.359,3.778c0,2.162-1.774,3.778-3.359,3.778S6.761,8.937,6.761,6.775 M3.415,17.69c0.218-3.51,3.142-6.297,6.704-6.297c3.562,0,6.486,2.787,6.705,6.297H3.415z"></path>
+                    </svg>
                 {user.username}
             </button>
             )
         })
+        console.log(foundUserButtons.length)
         const selectedUserSpans = this.state.selectedUsers.map( id =>{
-            return <span contentEditable="false" key={`selected-user-${id}`} className="selected-user-span">
+            return <span key={`selected-user-${id}`} className="selected-user-span">
                 <svg className="user svg-icon" viewBox="0 0 20 15">
                     <path d="M12.075,10.812c1.358-0.853,2.242-2.507,2.242-4.037c0-2.181-1.795-4.618-4.198-4.618S5.921,4.594,5.921,6.775c0,1.53,0.884,3.185,2.242,4.037c-3.222,0.865-5.6,3.807-5.6,7.298c0,0.23,0.189,0.42,0.42,0.42h14.273c0.23,0,0.42-0.189,0.42-0.42C17.676,14.619,15.297,11.677,12.075,10.812 M6.761,6.775c0-2.162,1.773-3.778,3.358-3.778s3.359,1.616,3.359,3.778c0,2.162-1.774,3.778-3.359,3.778S6.761,8.937,6.761,6.775 M3.415,17.69c0.218-3.51,3.142-6.297,6.704-6.297c3.562,0,6.486,2.787,6.705,6.297H3.415z"></path>
                 </svg>
@@ -99,6 +108,8 @@ class CreateChannelOverlay extends React.Component {
             </span>
         })
         const placeholder = this.state.selectedUsers && this.state.selectedUsers.length ? "" : "Search for users"
+        const disableDropdown = foundUserButtons && foundUserButtons.length ? "" : "hide";
+        console.log(disableDropdown)
         return (
             
             <div className={`client-overlay ${this.props.className}`}>
@@ -120,7 +131,7 @@ class CreateChannelOverlay extends React.Component {
                     </p>
                     <form className="overlay-form" onSubmit={this.onSubmit}>
                         <label htmlFor="channel-name">Name</label>
-                        <input id="channel-name" className="loose-text-input overlay-text-input" type="text" value={this.state.title} onChange={this.handleInput('title')} placeholder="&nbsp;e.g. marketing"/>
+                        <input id="channel-name" className="loose-text-input overlay-text-input" type="text" value={this.state.title} onChange={this.handleInput('title')} placeholder="e.g. marketing"/>
                         <p className="subtitle">Names must be shorter than 22 characters.</p>
                         <label htmlFor="channel-purpose"><span>Channel Purpose <span className="overlay-optional">(optional)</span></span></label>
                         <input id="channel-purpose" className="loose-text-input overlay-text-input" type="text" value={this.state.purpose} onChange={this.handleInput('purpose')}/>
@@ -128,7 +139,7 @@ class CreateChannelOverlay extends React.Component {
 
                         <label htmlFor="channel-members"><span>Send invites to  <span className="overlay-optional">(optional)</span></span></label>
                        
-                        <div id="channel-members-container" className="loose-text-input overlay-text-input">
+                        <div id="channel-members-container" onClick={this.onClick} className="loose-text-input overlay-text-input">
                             {selectedUserSpans}
                             
                             <input className="search-members-input" type="text" onKeyDown={this.keyUp} onChange={this.handleSearchBarInput} placeholder={placeholder} value={this.state.searchUser}/>
@@ -142,7 +153,7 @@ class CreateChannelOverlay extends React.Component {
                     
                     </form>
                 </div>
-                <div className="foundUsers-dropdown">
+                <div className={`foundUsers-dropdown ${disableDropdown}`}>
                     {foundUserButtons}
                 </div>
 
