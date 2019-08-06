@@ -7,6 +7,9 @@ class ShowChannelsOverlay extends React.Component {
     constructor(props){
         super(props)
         this.state = { joinableChannels: this.props.joinableChannels, searchInput: ""}
+        this.handleInput = this.handleInput.bind(this)
+        this.handleJoinChannelClick = this.handleJoinChannelClick.bind(this)
+        this.handleJoinedChannelClick = this.handleJoinedChannelClick.bind(this)
     }
     handleInput(e){
         this.setState({searchInput: ""})
