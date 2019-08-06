@@ -8,7 +8,7 @@ import { getDefaultChannel, changeChatWindowView, hideMenu} from '../../actions/
 import CreateChannelOverlay from './create_channel_overlay'
 import ClientNavBar from './client_navbar'
 import { logout } from '../../actions/session'
-
+import {receiveChannel} from '../../actions/channel_actions'
 class Client extends React.Component {
     constructor(props) {
         super(props)
@@ -45,27 +45,40 @@ class Client extends React.Component {
     componentDidMount() {
         this.props.fetchDefaultChannel();
         this.props.fetchAllUsers();
+        this.setupSubscription();
         // App.messaging = App.cable.subscriptions.create('ChannelsChannel', {
         //     received: this.onReceiveMessage,
         // })
 
     }
     addUsersToChannel(users, channelId){
-        user.forEach(userId => {
+        users.forEach(userId => {
             this.addUserToChannel(userId, channelId);
         })
     }
     addUserToChannel(userId, channelId){
-        App.clientChannel.send({type: "CHANNEL", user_id: userId, channel_id: channelId})
+        App.clientChannel.send({type: "ADD_USERS_TO_CHANNEL", user_id: userId, channel_id: channelId})
+    }
+    createChannel(data){
+        console.log(data)
+        App.clientChannel.send({type: "CREATE_CHANNEL", data: data})
+        this.closeOverlay();
     }
     receiveClientData(data){
-        
+        switch(data.type){
+            case "CHANNEL_SUCCESS":
+                return this.handleChannelSuccess(data.channel);
+        }
+    }
+    handleChannelSuccess(channel){
+        // debugger
+        this.props.receiveChannel(channel).then(this.changeChannelView(channel.id));
     }
     setupSubscription() {
         //console.log("CONNECTING...")
         App.clientChannel = App.cable.subscriptions.create(
             {
-                channel: 'ClientChannel',
+                channel: 'ClientsChannel',
                 user_id: this.props.currentUser.id
             },
             {
@@ -114,7 +127,7 @@ class Client extends React.Component {
                 <ChannelList changeChannelView={this.changeChannelView} showOverlay={this.showOverlay} closeOverlay={this.closeOverlay}/>
                 {this.props.currentChannelId ? <ChatWindow/> : ""}
             </div>
-            <CreateChannelOverlay addUsersToChannel={this.addUsersToChannel} changeChannelView={this.changeChannelView} closeOverlay={this.closeOverlay} className={this.state.showOverlay ? "" : " transparent"} />
+            <CreateChannelOverlay createChannel={this.createChannel} addUsersToChannel={this.addUsersToChannel} changeChannelView={this.changeChannelView} closeOverlay={this.closeOverlay} className={this.state.showOverlay ? "" : " transparent"} />
 
         </div>  
     }
@@ -129,7 +142,8 @@ const mapDispatchToProps = dispatch => ({
     fetchAllUsers: () => dispatch(getAllUsers()),
     changeChannelView: (id) => dispatch(changeChatWindowView(id)),
     logout: ()=> dispatch(logout()),
-    hideMenu: ()=> dispatch(hideMenu())
+    hideMenu: ()=> dispatch(hideMenu()),
+    receiveChannel: (channel)=> new Promise(()=>dispatch(receiveChannel(channel)), 0)
 
 
 })

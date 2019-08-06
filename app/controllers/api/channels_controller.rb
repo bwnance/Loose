@@ -2,7 +2,6 @@ class Api::ChannelsController < ApplicationController
     def create
         @channel = Channel.new(channel_params)
         if @channel.save
-            ActionCable.server.broadcast 'channels_channel', @channel
             render :show
         else
             @errors = @channel.errors.full_messages
@@ -19,6 +18,7 @@ class Api::ChannelsController < ApplicationController
     def addUsersToChannel
         @channel = Channel.find(params[:channel_id])
         if(@channel) 
+            debugger
             users = params[:users].map do |user| 
                 @user = User.find(user) 
                 @user if @user

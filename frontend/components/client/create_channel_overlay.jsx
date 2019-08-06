@@ -18,14 +18,15 @@ class CreateChannelOverlay extends React.Component {
         e.preventDefault()
         const that = this
         if(this.state.title.length <= 22){
-            this.props.createChannel(this.state).then((result) => {
-                this.props.addUsersToChannel(this.state.selectedUsers.concat(this.props.currentUserId), result.channel.id)
-                this.props.changeChannelView(result.channel.id)();
-                this.closeOverlay()
-            })
+            this.props.createChannel(this.state);
+            this.resetState()
         }
     }
-   
+    resetState(){
+        this.setState({ title: "", purpose: "", searchUser: "", foundUsers: [], selectedUsers: [] })
+
+        
+    }
     handleSearchBarInput(e){
         this.handleInput("searchUser")(e);
         const searchText = e.target.value
@@ -70,7 +71,6 @@ class CreateChannelOverlay extends React.Component {
         document.getElementsByClassName("search-members-input")[0].focus();
     }
     closeOverlay(){
-        this.setState({ title: "", purpose: "", searchUser: "", foundUsers: [], selectedUsers: [] })
         this.props.closeOverlay();
     }
     keyUp(e){
@@ -166,7 +166,7 @@ const mapStateToProps = (state) => ({
     currentUserId: state.session.id
 })
 const mapDispatchToProps = (dispatch) => ({
-    createChannel: (channel) => dispatch(createChannel(channel)),
-    addUsersToChannel: (users, channelId) => dispatch(addUsersToChannel(users, channelId))
+    // createChannel: (channel) => dispatch(createChannel(channel)),
+    // addUsersToChannel: (users, channelId) => dispatch(addUsersToChannel(users, channelId))
 })
 export default connect(mapStateToProps, mapDispatchToProps)(CreateChannelOverlay);
