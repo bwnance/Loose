@@ -32,7 +32,6 @@ export default class SessionForm extends React.Component {
         if (this.typingDemoUser) return
         const demoEmail = "demouser@loose.org"
         const demoPassword = "demodemo"
-        
         this.typingDemoUser = true;
         let i = 0;
         const that = this;
@@ -41,15 +40,12 @@ export default class SessionForm extends React.Component {
             if (i < demoEmail.length) {
                 const char = demoEmail[i]
                 i++
-                
                 return that.setState({ email: that.state.email + char }, () => setTimeout(loginLoop, 30))
-                
             }
             else{
                 passwordLoop();
             }
         }
-        
         let j = 0;
         function passwordLoop() {
             if (j < demoPassword.length) {
@@ -69,7 +65,6 @@ export default class SessionForm extends React.Component {
             this.setState({ [type]: e.target.value })
         }
     }
-
     render() {
         const login_error = <div className={`login-error ${this.props.errors.login ? "" : "transparent"}`}><i className="error-ico"/>{this.props.errors.login}</div>
         const hasFNErrors = !!this.props.errors.full_name

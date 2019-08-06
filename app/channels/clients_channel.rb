@@ -16,7 +16,7 @@ class ClientsChannel < ApplicationCable::Channel
           users = User.where(id: users_to_add)
           channel.users.concat(users)
           users.each do |user|
-            ClientsChannel.broadcast_to(user, {type: "CHANNEL_SUCCESS", channel: {id: channel.id, title: channel.title,purpose: channel.purpose, user_ids: channel.users.ids}})
+            ClientsChannel.broadcast_to(user, {type: "CHANNEL_SUCCESS", author_id: current_user.id, channel: {id: channel.id, title: channel.title,purpose: channel.purpose, user_ids: channel.users.ids}})
           end
       else
           #broadcast errors

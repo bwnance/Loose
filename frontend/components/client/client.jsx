@@ -63,16 +63,18 @@ class Client extends React.Component {
         console.log(data)
         App.clientChannel.send({type: "CREATE_CHANNEL", data: data})
         this.closeOverlay();
+        
     }
     receiveClientData(data){
         switch(data.type){
             case "CHANNEL_SUCCESS":
-                return this.handleChannelSuccess(data.channel);
+                return this.handleChannelSuccess(data.channel, data.author_id);
         }
     }
-    handleChannelSuccess(channel){
-        // debugger
-        this.props.receiveChannel(channel).then(this.changeChannelView(channel.id));
+    handleChannelSuccess(channel, author_id){
+        this.props.receiveChannel(channel)
+        if(author_id === this.props.currentUser.id) this.changeChannelView(channel.id)()
+        
     }
     setupSubscription() {
         //console.log("CONNECTING...")
@@ -143,7 +145,7 @@ const mapDispatchToProps = dispatch => ({
     changeChannelView: (id) => dispatch(changeChatWindowView(id)),
     logout: ()=> dispatch(logout()),
     hideMenu: ()=> dispatch(hideMenu()),
-    receiveChannel: (channel)=> new Promise(()=>dispatch(receiveChannel(channel)), 0)
+    receiveChannel: (channel)=> new Promise(()=>dispatch(receiveChannel(channel)))
 
 
 })

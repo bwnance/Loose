@@ -24,8 +24,6 @@ class CreateChannelOverlay extends React.Component {
     }
     resetState(){
         this.setState({ title: "", purpose: "", searchUser: "", foundUsers: [], selectedUsers: [] })
-
-        
     }
     handleSearchBarInput(e){
         this.handleInput("searchUser")(e);
