@@ -1,6 +1,6 @@
 import {connect} from 'react-redux'
 import React from 'react'
-import {receiveMessage, fetchMessages} from '../../../actions/messages_actions'
+import {receiveMessage, fetchMessages, deleteMessage} from '../../../actions/messages_actions'
 import {getUsers,getUser} from '../../../actions/users_actions.js'
 import ChatMessage from './chat_message'
 import ChatMessageList from './chat_message_list'
@@ -14,12 +14,41 @@ class ChatWindow extends React.Component {
     }
     
     render(){
-        let prevMessage = null;
+        // let prevMessage = null;
+        // const messages = [];
+        // for (let i = 0; i < this.props.messages.length; i++){
+
+        //     const message = this.props.messages[i]
+
+        //     const prevMessage = this.props.messages[i-1];
+        //     const isTopLevelMessage = false;
+        //     // debugger
+        //     if(prevMessage){
+        //         if (prevMessage && prevMessage.sender_id !== message.sender_id){
+        //             isTopLevelMessage = true;
+        //         }
+        //     }
+        //     else{
+        //         isTopLevelMessage = true;
+        //     }
+        //     if (message.is_auto_message) {
+        //         isTopLevelMessage = true;
+        //     }
+
+        //     messages.push(<ChatMessage isTopLevelMessage={isTopLevelMessage} key={`message-${message.id}`} message={message} />)
+
+        // }
+        // const messages = this.props.messages.map((message)=>{
+        //     return <ChatMessage
+        // }
+
+        let prevMessage;
         const messages = this.props.messages.map((message)=>{
-            let cm = <ChatMessage prevMessage={prevMessage} key={`message-${message.id}`} message={message}/>
+            let cm = <ChatMessage isTopLevelMessage={true} prevMessage={prevMessage} key={`message-${message.id}`} message={message}/>
             prevMessage = message
             return cm;
         })
+        debugger
         return (
             <div className="chat-window">
                 <ChatMessageList messages={messages}/>
@@ -28,7 +57,7 @@ class ChatWindow extends React.Component {
         )
     }
     handleMessageSubmit(body){
-        App.messaging.send({body})
+        App.messaging.send({type: "NEW_MESSAGE", data: {body}})
     }
     setupSubscription(){
         //console.log("CONNECTING...")
@@ -43,18 +72,24 @@ class ChatWindow extends React.Component {
         })
 
     }
-    receiveMessage(message){
-        if(!message.sender_id || !message.id) {
-            console.log("weird message received")
-            
-            return 
+    receiveMessage(payload){
+        switch(payload.type){
+            case "NEW_MESSAGE":
+                // debugger
+                const message = payload.message
+                // if (this.props.users.every((user) => user.id !== message.sender_id)) {
+                if (!this.props.users[message.sender_id]){
+                    this.props.getUser(message.sender_id).then(() => this.props.receiveMessage(message))
+                }
+                else {
+                    this.props.receiveMessage(message)
+                }
+            break
+            case "DELETE_MESSAGE":
+                this.props.deleteMessage(payload.messageId)
+            break
         }
-        if (this.props.users.every((user) => user.id !== message.sender_id)) {
-            this.props.getUser(message.sender_id).then(()=>this.props.receiveMessage(message))
-        }
-        else{
-            this.props.receiveMessage(message)
-        }
+       
     }
     componentWillUnmount(){
         App.messaging.unsubscribe();
@@ -82,15 +117,21 @@ class ChatWindow extends React.Component {
 
     }
 }
-const mapStateToProps = (state) =>({
-    currentChannelId: state.ui.chatWindow.id,
-    messages: Object.values(state.entities.messages),
-    users: Object.values(state.entities.users)
-})
+const mapStateToProps = (state) => {
+    console.log("msp");
+    debugger
+    return {
+        currentChannelId: state.ui.chatWindow.id,
+        messages: Object.values(state.entities.messages),
+        users: state.entities.users
+    }
+}
+
 
 const mapDispatchToProps = (dispatch) => ({
     getUser: (userId) => dispatch(getUser(userId)),
     populateMessages: (channelId) => dispatch(fetchMessages(channelId)),
-    receiveMessage: (message) => dispatch(receiveMessage(message))
+    receiveMessage: (message) => dispatch(receiveMessage(message)),
+    deleteMessage: (message) => dispatch(deleteMessage(message))
 })
 export default connect(mapStateToProps, mapDispatchToProps)(ChatWindow)

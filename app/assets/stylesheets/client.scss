@@ -1256,7 +1256,6 @@ body{
         color: rgba(0,0,0,0.95);
         padding-right: 10px;
         &:hover{
-            
             .message-tooltip{
                 opacity: 1;
                 button{
@@ -1268,17 +1267,48 @@ body{
         .message-info{
             display: flex;
             align-items: center;
+            flex: 1;
         }
         .popup{
             position: absolute;
             top: -15px;
             right: 35px;
-            height: 75px;
+            height: 50px;
             width: 200px;
             background-color: $color-bg;
             border: 1px solid $border-color;
             border-radius: 8px;
             z-index: 999;
+            padding-top: 7px;
+            padding-bottom: 7px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            // padding-left: 10px;
+            .popup-item{
+                height: 30px;
+                width: 100%;
+                display: flex;
+                align-items: center;
+                &:hover{
+                    cursor: pointer;
+                    background-color: $color-foreground;
+                    button{
+                        color: white;
+                        cursor: pointer;
+
+                    }
+                }
+                button{
+                    &:focus{
+                        outline: none;
+                    }
+                    background: none;
+                    border: none;
+                }
+                
+            }
         }
         .popup-overlay{
             // pointer-events: all;
@@ -1368,7 +1398,7 @@ body{
         .hover-timestamp-tooltip{
             display: none;
         }
-        padding-bottom: 5px;
+        padding-bottom: 4px;
         padding-top: 5px;
         padding-left: 30px;
     }

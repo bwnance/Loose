@@ -7,13 +7,15 @@ class ClientsChannel < ApplicationCable::Channel
     
     request_data = data["data"]
     case data["type"]
+     
       when "FETCH_CHANNEL"
         channel = Channel.find_by(id: request_data["channel_id"])
         if channel
               ClientsChannel.broadcast_to(current_user, {type: "CHANNEL_SUCCESS", author_id: current_user.id,channel: {id: channel.id,created_at: channel.created_at,topic: channel.topic, title: channel.title,purpose: channel.purpose, user_ids: channel.users.ids}})
         end
       when "DELETE_CHANNEL"
-        
+        if request_data["channel_id"] == 1
+          return
         channel = Channel.find_by(id: request_data["channel_id"])
         if channel
           channel_id = channel.id

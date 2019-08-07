@@ -4,6 +4,7 @@ import Channel from './channels/channel'
 import ChannelList from './channels/channel_list'
 import ChatWindow from './chat/chat_window'
 import {getAllUsers, receiveUser} from '../../actions/users_actions'
+import {deleteMessage} from '../../actions/messages_actions'
 import { getDefaultChannel, changeChatWindowView, hideMenu, closeOverlay} from '../../actions/ui_actions'
 import CreateChannelOverlay from './overlay/create_channel_overlay'
 import ShowChannelsOverlay from './overlay/show_channels_overlay'
@@ -93,6 +94,9 @@ class Client extends React.Component {
             case "DELETE_CHANNEL":
                 this.changeChannelView(1)()
                 this.props.deleteChannel(data.channelId)
+                break;
+            case "DELETE_MESSAGE":
+                this.props.deleteMessage(data.messageId);
                 break;
         }
     }
@@ -218,6 +222,7 @@ const mapDispatchToProps = dispatch => ({
     receiveUser: (user) => dispatch(receiveUser(user)),
     addUserToChannel: (user) => dispatch(addUserToChannel(user)),
     deleteChannel: (channelId) => dispatch(deleteChannel(channelId)),
+    deleteMessage: (id) => dispatch(deleteMessage(id))
 
 
 })

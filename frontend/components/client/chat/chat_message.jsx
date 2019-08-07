@@ -1,101 +1,156 @@
 import {connect} from 'react-redux'
 import React from 'react'
 import {MoreHorizontal} from 'react-feather'
-import { showMessageSettingsOverlay} from '../../../actions/ui_actions'
+import {deleteMessage, updateMessage} from '../../../actions/cable_actions'
+import {CornerDownLeft} from 'react-feather'
 class ChatMessage extends React.Component{
     constructor(props){
         super(props);
-        this.state = { showPopup: false}
-        this.message = this.props.message;
-        this.prevMessage = this.props.prevMessage;
-        this.author = this.props.users[this.message.sender_id];
+        this.state = { showPopup: false, isEditing: false, editText: ""}
+        this.author = this.props.users[this.props.message.sender_id];
+        
+        this.subsequentMessage = false;
+        
+        
         this.openMessageSettings = this.openMessageSettings.bind(this)
         this.closePopup = this.closePopup.bind(this)
+        this.handleClick = this.handleClick.bind(this)
+        this.deleteMessage = this.deleteMessage.bind(this)
+        this.editMessage = this.editMessage.bind(this)
+        this.handleFormChange = this.handleFormChange.bind(this)
+        this.stopEditing = this.stopEditing.bind(this)
+        this.saveChanges = this.saveChanges.bind(this)
     }
     openMessageSettings(){
         this.setState({showPopup: true});
     }
-    closePopup(e){
+    handleClick(e){
         // debugger
         if (e.target.className !== "popup" && e.currentTarget.className !== "popup") this.setState({showPopup: false});
     }
+    closePopup(){
+        this.setState({ showPopup: false });
+    }
+    handleFormChange(e){
+        this.setState({editText: e.target.value})
+    }
+    stopEditing(){
+        this.setState({isEditing: false})
+    }
+    saveChanges(){
+        this.stopEditing()
+        this.props.updateMessage(this.props.message.id, {body: this.state.editText});
+    }
     render(){
-        // console.log(`MESSAGE: ${this.message}`)
-        let subsequentMessage;
-        if(this.prevMessage){
+        // console.log(`MESSAGE: ${this.props.message}`)
+        // this.subsequentMessage;
+        // if(this.props.prevMessage){
 
-            if(this.prevMessage.sender_id === this.message.sender_id){
-                subsequentMessage = true;
-            }
-            else{
-                subsequentMessage = false;
-            }
-            if(this.prevMessage.is_auto_message) subsequentMessage = false;
-        }else{
-            subsequentMessage = false;
-        }
-        if(this.message.is_auto_message) subsequentMessage = false;
+        //     if(this.props.prevMessage.sender_id === this.props.message.sender_id){
+        //         this.subsequentMessage = true;
+        //     }
+        //     else{
+        //         this.subsequentMessage = false;
+        //     }
+        //     if(this.props.prevMessage.is_auto_message) this.subsequentMessage = false;
+        // }else{
+        //     this.subsequentMessage = false;
+        // }
+        // if(this.props.message.is_auto_message) this.subsequentMessage = false;
         return (
+
             <li className="chat-message">
-                {subsequentMessage ? 
-                (
-                    <div className="message-info">
-                    <div className="timestamp-container">
-                        <span className="hover-timestamp">
-                            {/* this is broken, z-index issue*/}
-                            {/* <div className="hover-timestamp-tooltip">
-                                {this.getAMPMTime(this.message.created_at)}
-                            </div> */}
-                            <span>
-                                {this.getShortAMPMTime(this.message.created_at)}
-                            </span>
-                        </span>
-                    </div>
-                    <div className="message-content-secondary">
-                        
-                        <span className="message-body">
-                            {this.message.body}
-                        </span>
-                    </div>
-                    </div>
-                ) 
-                :
-                (
+                { this.state.isEditing ? 
+                    (<>
                         <div className="message-info">
-                            <i className="user-icon fa fa-user"/>
+                            <i className="user-icon fa fa-user" />
                             <div className="message-content">
                                 <span className="top-row">
-                                    <span className="message-author">
-                                        {this.author.full_name}
-                                    </span>
-                                    <span className="message-timestamp">
-                                        {this.getShortAMPMTime(this.message.created_at)}
-                                    </span>
+                                    <input onChange={this.handleFormChange} value={this.state.editText} type="text" className="edit-form"/>
                                 </span>
-                                <span className={`message-body ${this.message.is_auto_message ? "auto-message" : ""}`}>{this.message.body}</span>
+                                <span>
+                                    <button className="edit-cancel" onClick={this.stopEditing} >Cancel</button>
+                                    <button className="edit-save" onClick={this.saveChanges}><CornerDownLeft/>Save Changes</button>
+                                </span>
                             </div>
-                        
+
                         </div>
-                ) }
-                <div className="message-tooltip">
-                    <button onClick={this.openMessageSettings} className="tooltip-button"><MoreHorizontal className="more"/></button>
-                </div>
-                    {this.state.showPopup ? 
-                        <>
-                            <div className="popup">  
-                                <div className="popup-item">
-                                </div>     
-                                <div>
-                                </div>     
+                    </>) 
+                    : 
+                    ( <>
+                        {!this.props.isTopLevelMessage ?
+                        (
+                            <div className="message-info">
+                                <div className="timestamp-container">
+                                    <span className="hover-timestamp">
+                                        {/* this is broken, z-index issue*/}
+                                        {/* <div className="hover-timestamp-tooltip">
+                                            {this.getAMPMTime(this.props.message.created_at)}
+                                        </div> */}
+                                        <span>
+                                            {this.getShortAMPMTime(this.props.message.created_at)}
+                                        </span>
+                                    </span>
+                                </div>
+                                <div className="message-content-secondary">
+
+                                    <span className="message-body">
+                                        {this.props.message.body}
+                                    </span>
+                                </div>
                             </div>
-                            <div onClick={this.closePopup} className="popup-overlay">
-                            </div> 
-                        </>
-                    : null} 
+                        ) : (
+                            <div className="message-info">
+                                <i className="user-icon fa fa-user" />
+                                <div className="message-content">
+                                    <span className="top-row">
+                                        <span className="message-author">
+                                            {this.author.full_name}
+                                        </span>
+                                        <span className="message-timestamp">
+                                            {this.getShortAMPMTime(this.props.message.created_at)}
+                                        </span>
+                                    </span>
+                                    <span className={`message-body ${this.props.message.is_auto_message ? "auto-message" : ""}`}>{this.props.message.body}</span>
+                                </div>
+
+                            </div>
+                        )}
+                        <div className="message-tooltip">
+                            <button onClick={this.openMessageSettings} className="tooltip-button"><MoreHorizontal className="more" /></button>
+                        </div>
+                        {this.state.showPopup ?
+                            <>
+                                <div className="popup">
+                                    <div onClick={this.editMessage} className="popup-item">
+                                        <button >Edit Message</button>
+                                    </div>
+                                    <div onClick={this.deleteMessage} className="popup-item">
+                                        <button>Delete Message</button>
+                                    </div>
+                                </div>
+                                <div onClick={this.handleClick} className="popup-overlay">
+                                </div>
+                            </>
+                            : null
+                        }
+                    </>
+                    )
+                }                          
         </li>
         
         )
 
+    }
+    editMessage(){
+        console.log("editing")
+        this.setState({isEditing: true})
+        this.closePopup();
+    }
+    deleteMessage(){
+        this.closePopup();
+        this.props.deleteMessage(this.props.message)
+        // if(!this.props.prevMessage.subsequentMessage) this.subsequentMessage = false
     }
     getAMPMTime(dateString){
         const date = new Date(dateString);
@@ -123,13 +178,13 @@ class ChatMessage extends React.Component{
         seconds = seconds < 10 ? `0${seconds}` : `${seconds}`
         const result =  `${hours}:${minutes} ${ampm}`
         return result
-
     }
 }
 const mapStateToProps = (state) => ({
     users: state.entities.users
 })
 const mapDispatchToProps = (dispatch) => ({
-    showMessageSettingsOverlay: dispatch(showMessageSettingsOverlay())
+    deleteMessage: id=>dispatch(deleteMessage(id)),
+    updateMessage: (id, data) => dispatch(updateMessage(id, data)),
 })
 export default connect(mapStateToProps, mapDispatchToProps)(ChatMessage)
