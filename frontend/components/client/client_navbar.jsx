@@ -37,17 +37,17 @@ class ClientNavBar extends React.Component {
                         </span>
                         <span className="channel-info">
                             <i className="fa fa-star" />
-                            <i className="info-seperator"/>
+                            <span className="info-seperator"/>
                             <span onClick={this.show} className="info-container view-users">
                                 <i className="fa fa-user" />
                                 <span className="info num-users">{`${this.props.currentChannel && this.props.currentChannel.user_ids.length}`}</span>
                             </span>
-                            <i className="info-seperator"/>
+                            <span className="info-seperator"/>
                             <span className="info-container view-pinned">
                                 <i className="fa fa-thumbtack" />
                                 <span className="info num-pinned">0</span>
                             </span>
-                            <i className="info-seperator add-topic"/>
+                            <span className="info-seperator add-topic"/>
                             <span onClick={this.onTopicClick} className="info-container topic-container">
                                 {/* <i className="fa fa-pencil-alt" /> */}
                                 {this.props.currentChannel && this.props.currentChannel.topic ? 

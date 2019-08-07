@@ -229,10 +229,11 @@ body{
                 }
                 .info-seperator{
                     position: relative;
-                    top: 1px;
+                    top: 0px;
                     border-left: 1px solid gray;
-                    font-size: 15px;
-                    margin-right: 6px;
+                    height: 15px;
+                    // font-size: 15px;
+                    margin-right: 7px;
                 }
                  .info-seperator.add-topic{
                      margin-right: 3px;
