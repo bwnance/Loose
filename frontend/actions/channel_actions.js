@@ -30,7 +30,8 @@ export const addUsersToChannel = (users, channelId) => dispatch =>{
         // .then((channels) => dispatch(receiveChannels(channels)))
         .fail((errors) => dispatch(receiveChannelErrors(errors)))
 }
-export const addUserToChannel = (user, channelId) => dispatch =>{
+
+export const addUserToChannel = (user) => dispatch =>{
     return ChannelsApiUtil.addUsersToChannel(user, channelId)
         // .then((channels) => dispatch(receiveChannels(channels)))
         .fail((errors) => dispatch(receiveChannelErrors(errors)))

@@ -3,14 +3,15 @@ import {connect} from 'react-redux'
 import Channel from './channels/channel'
 import ChannelList from './channels/channel_list'
 import ChatWindow from './chat/chat_window'
-import {getAllUsers} from '../../actions/users_actions'
+import {getAllUsers, receiveUser} from '../../actions/users_actions'
 import { getDefaultChannel, changeChatWindowView, hideMenu, closeOverlay} from '../../actions/ui_actions'
 import CreateChannelOverlay from './overlay/create_channel_overlay'
 import ShowChannelsOverlay from './overlay/show_channels_overlay'
 import ClientNavBar from './client_navbar'
 import { logout } from '../../actions/session'
-import {receiveChannel} from '../../actions/channel_actions'
+import { receiveChannel, receiveChannels, addUserToChannel} from '../../actions/channel_actions'
 import ShowTopicOverlay from './overlay/show_topic_overlay'
+import AddUserOverlay from './overlay/add_user_overlay'
 class Client extends React.Component {
     constructor(props) {
         super(props)
@@ -39,8 +40,9 @@ class Client extends React.Component {
         this.setState({messages: this.state.messages.concat(message.body)})
     }
     changeChannelView(id) {
-        return () => {
+        return (makeRequest=true) => {
             this.props.changeChannelView(id)
+            if(makeRequest) this.fetchChannel(id)
             document.getElementById(`channel-${id}`).scrollIntoViewIfNeeded(); //non-standard, find a better solution
         }
     }
@@ -59,8 +61,12 @@ class Client extends React.Component {
         App.clientChannel.send(payload)
     }
     addUsersToChannel(users, channelId){
+        console.log(users)
         App.clientChannel.send({ type: "ADD_USERS_TO_CHANNEL", data: { selectedUsers: users, channel_id: channelId } })
 
+    }
+    fetchChannel(channel_id){
+        App.clientChannel.send({ type: "FETCH_CHANNEL", data: { channel_id: channel_id } })
     }
     addUserToChannel(userId, channelId){
         App.clientChannel.send({type: "ADD_USER_TO_CHANNEL", data: {user_id: userId, channel_id: channelId}})
@@ -75,13 +81,30 @@ class Client extends React.Component {
             case "CHANNEL_SUCCESS":
                 console.log("SUCCESS!")
                 return this.handleChannelSuccess(data.channel, data.author_id);
+            case "USER_ADD":
+                console.log("WHOO WHOOO NEW USER ALERT")
+                return this.handleNewUser(data.user);
+            case "RECEIVE_CHANNELS":
+                this.props.receiveChannels(data.channels)
+            break;
         }
+    }
+    handleNewUser(user){
+        this.props.receiveUser(user)
+        this.fetchChannel(this.props.currentChannelId)
+    }
+    updateChannels(ids){
+        // App.clientChannel
     }
     handleChannelSuccess(channel, author_id){
         // debugger
         this.props.receiveChannel(channel)
-        if(author_id === this.props.currentUser.id) this.changeChannelView(channel.id)()
+        // debugger
+        if(author_id === this.props.currentUser.id) this.changeChannelView(channel.id)(false)
         
+    }
+    fetchAllChannels(){
+        App.clientChannel.send({type: "FETCH_ALL_CHANNELS"})
     }
     setupSubscription() {
         console.log("CONNECTING...")
@@ -112,10 +135,10 @@ class Client extends React.Component {
                 overlay = <CreateChannelOverlay createChannel={this.createChannel} addUsersToChannel={this.addUsersToChannel} changeChannelView={this.changeChannelView} closeOverlay={this.closeOverlay}/>
                 break;
             case "OVERLAY_SHOW_CHANNELS":
-                overlay = <ShowChannelsOverlay addUserToChannel={this.addUserToChannel} changeChannelView={this.changeChannelView} closeOverlay={this.closeOverlay} />
+                overlay = <ShowChannelsOverlay fetchAllChannels={this.fetchAllChannels} addUserToChannel={this.addUserToChannel} changeChannelView={this.changeChannelView} closeOverlay={this.closeOverlay} />
                 break;
             case "OVERLAY_ADD_USERS_TO_CHANNELS":
-                overlay = <AddUserOverlay addUsersToChannel={this.addUsersToChannel} changeChannelView={this.changeChannelView} closeOverlay={this.closeOverlay}/>
+                overlay = <AddUserOverlay addUsersToChannel={this.addUsersToChannel} closeOverlay={this.closeOverlay}/>
                 break
             case "OVERLAY_TOPIC":
                 overlay = <ShowTopicOverlay updateChannel={this.updateChannel} closeOverlay={this.closeOverlay}/>
@@ -165,12 +188,15 @@ const mapStateToProps = (state) => ({
 })
 const mapDispatchToProps = dispatch => ({
     fetchDefaultChannel: () => dispatch(getDefaultChannel()),
+    receiveChannels: (channels) => dispatch(receiveChannels(channels)),
     fetchAllUsers: () => dispatch(getAllUsers()),
     changeChannelView: (id) => dispatch(changeChatWindowView(id)),
     logout: ()=> dispatch(logout()),
     hideMenu: ()=> dispatch(hideMenu()),
     receiveChannel: (channel) => new Promise(()=>dispatch(receiveChannel(channel))),
     closeOverlay: () => dispatch(closeOverlay()),
+    receiveUser: (user) => dispatch(receiveUser(user)),
+    addUserToChannel: (user) => dispatch(addUserToChannel(user)),
 
 
 })

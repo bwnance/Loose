@@ -1,12 +1,13 @@
 import React from 'react'
 import { logout } from '../../actions/session'
 import {connect} from 'react-redux'
-import {showMenu, showTopicOverlay} from '../../actions/ui_actions'
+import { showMenu, showTopicOverlay, showAddUserToChannelOverlay} from '../../actions/ui_actions'
 class ClientNavBar extends React.Component {
     constructor(props){
         super(props)
         this.showMenu = this.showMenu.bind(this);
         this.onTopicClick = this.onTopicClick.bind(this)
+        this.showAddUserToChannelOverlay = this.showAddUserToChannelOverlay.bind(this)
     }
     showMenu(){
         this.props.showMenu();
@@ -14,6 +15,10 @@ class ClientNavBar extends React.Component {
     onTopicClick(e){
         e.preventDefault();
         this.props.showTopicOverlay();
+    }
+    showAddUserToChannelOverlay(e){
+        e.preventDefault();
+        this.props.showAddUserToChannelOverlay();
     }
     render(){
         return (
@@ -38,7 +43,7 @@ class ClientNavBar extends React.Component {
                         <span className="channel-info">
                             <i className="fa fa-star" />
                             <span className="info-seperator"/>
-                            <span onClick={this.show} className="info-container view-users">
+                            <span onClick={this.showAddUserToChannelOverlay} className="info-container view-users">
                                 <i className="fa fa-user" />
                                 <span className="info num-users">{`${this.props.currentChannel && this.props.currentChannel.user_ids.length}`}</span>
                             </span>
@@ -84,6 +89,7 @@ const mapStateToProps = (state) => ({
 })
 const mapDispatchToProps = (dispatch) => ({
     showMenu: () => dispatch(showMenu()),
-    showTopicOverlay: () => dispatch(showTopicOverlay())
+    showTopicOverlay: () => dispatch(showTopicOverlay()),
+    showAddUserToChannelOverlay: () => dispatch(showAddUserToChannelOverlay())
 })
 export default connect(mapStateToProps, mapDispatchToProps)(ClientNavBar)

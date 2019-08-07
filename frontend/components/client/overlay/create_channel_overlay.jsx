@@ -14,12 +14,10 @@ class CreateChannelOverlay extends React.Component {
     }
     onSubmit(e) {
         e.preventDefault()
-        const that = this
-        if(this.state.title.length <= 22){
-            this.props.createChannel(this.state);
-            this.resetState()
-        }
-    }
+        this.props.createChannel(this.state);
+        this.resetState()
+
+    }       
     resetState(){
         this.setState({ title: "", purpose: "", searchUser: "", foundUsers: [], selectedUsers: [] })
     }
@@ -47,6 +45,7 @@ class CreateChannelOverlay extends React.Component {
                     <p>
                         Channels are where your members communicate. They’re best when organized around a topic — #marketing, for example.
                     </p>
+                    
                     <form className="overlay-form" onSubmit={this.onSubmit}>
                         <label htmlFor="channel-name">Name</label>
                         <input id="channel-name" className="loose-text-input overlay-text-input" type="text" value={this.state.title} onChange={this.handleInput('title')} placeholder="e.g. marketing"/>

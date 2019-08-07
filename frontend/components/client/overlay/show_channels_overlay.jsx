@@ -17,8 +17,15 @@ class ShowChannelsOverlay extends React.Component {
         this.setState({searchInput: e.target.value}, this.updateFoundChannels)
     }
     closeOverlay(){
-        // this.props.fetchChannels();
+        // this.props.fetchAllChannels();
         this.props.closeOverlay();
+    }
+    componentDidMount(){
+        // this.props.fetchAllChannels();
+    }
+    componentWillMount(){
+        
+
     }
     updateFoundChannels(){
         const searchText = this.state.searchInput.toLowerCase();

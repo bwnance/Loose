@@ -11,6 +11,7 @@ class SearchUsersField extends React.Component {
         this.state = { searchUser: "", selectedUsers: [], foundUsers: [], disableDropdown: false}
         this.handleInput = this.handleInput.bind(this)
         this.disableDropdown = this.disableDropdown.bind(this)
+        this.exclusionList = this.props.exclusionList || []
     }
     setBothStates(state){
         this.props.setParentState(state);
@@ -47,7 +48,7 @@ class SearchUsersField extends React.Component {
         this.handleInput("searchUser")(e);
         const searchText = e.target.value
         let foundUsers = [];
-        Object.values(this.props.users).forEach(user => {
+        Object.values(this.props.users).filter(user=>!this.exclusionList.includes(user.id)).forEach(user => {
             if (searchText !== "" && user.id !== this.props.currentUserId && user.username.startsWith(searchText)) {
                 foundUsers.push(user)
             }

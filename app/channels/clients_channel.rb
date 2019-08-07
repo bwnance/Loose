@@ -6,17 +6,49 @@ class ClientsChannel < ApplicationCable::Channel
   def receive(data)
     request_data = data["data"]
     case data["type"]
+    when "FETCH_CHANNEL"
+      channel = Channel.find(request_data["channel_id"])
+      if channel
+            ClientsChannel.broadcast_to(current_user, {type: "CHANNEL_SUCCESS", author_id: current_user.id, created_at: channel.created_at,channel: {id: channel.id,topic: channel.topic, title: channel.title,purpose: channel.purpose, user_ids: channel.users.ids}})
+      end
+    when "FETCH_ALL_CHANNELS"
+      channels = Channel.all
+      if(channels)
+        serialized_channels = {}
+        channels.includes(:users).each do |channel|
+          serialized_channels[channel.id] = {id: channel.id, created_at: channel.created_at,topic: channel.topic, title: channel.title,purpose: channel.purpose, user_ids: channel.users.ids}
+        end
+
+        ClientsChannel.broadcast_to(current_user, {type: "RECEIVE_CHANNELS", author_id: current_user.id, channels: serialized_channels})
+
+      end
     when "CREATE_CHANNEL"
       channel = Channel.new(title: request_data["title"], purpose: request_data["purpose"])
-      
       if channel.save!
           #add to channel
           users_to_add = request_data["selectedUsers"].is_a?(Array) ? request_data["selectedUsers"] + [current_user.id] : [current_user.id]
-          users = User.where(id: users_to_add)
+          users = User.includes(:channels).where(id: users_to_add)
           channel.users.concat(users)
-          users.each do |user|
-            ClientsChannel.broadcast_to(user, {type: "CHANNEL_SUCCESS", author_id: current_user.id, channel: {id: channel.id,topic: channel.topic, title: channel.title,purpose: channel.purpose, user_ids: channel.users.ids}})
+          
+          # users.each do |user|
+          #   ClientsChannel.broadcast_to(user, {type: "CHANNEL_SUCCESS", author_id: current_user.id, channel: {id: channel.id,created_at: channel.created_at,topic: channel.topic, title: channel.title,purpose: channel.purpose, user_ids: channel.users.ids}})
+          # end
+          updatedUsers = []
+          ActionCable.server.connections.each do |connection|
+          # debugger
+          connection.subscriptions.identifiers.each_with_index do |identifier|
+            hash = JSON.parse(identifier)
+            if hash["channel"] == "ClientsChannel"
+              user = User.find(hash["user_id"])
+              if user && !updatedUsers.include?(user.id)
+                # debugger
+                updatedUsers << user.id
+                # console.log(user)
+                ClientsChannel.broadcast_to(user, {type: "CHANNEL_SUCCESS", author_id: current_user.id, channel: {id: channel.id,  created_at: channel.created_at,topic: channel.topic, title: channel.title,purpose: channel.purpose, user_ids: channel.users.ids}})
+              end
+            end
           end
+        end
       else
           #broadcast errors
       end
@@ -26,20 +58,8 @@ class ClientsChannel < ApplicationCable::Channel
       if channel.update(request_data)
         i = 0;
         updatedUsers = []
-        ActionCable.server.connections.each do |connection|
-          # debugger
-          connection.subscriptions.identifiers.each_with_index do |identifier|
-            hash = JSON.parse(identifier)
-            if hash["channel"] == "ClientsChannel"
-              user = User.find(hash["user_id"])
-              if user && !updatedUsers.include?(user.id)
-                # debugger
-                updatedUsers << user.id
-                ClientsChannel.broadcast_to(user, {type: "CHANNEL_SUCCESS", author_id: current_user.id, channel: {id: channel.id, topic: channel.topic, title: channel.title,purpose: channel.purpose, user_ids: channel.users.ids}})
-              end
-            end
-          end
-          
+        channel.users.each do |user|
+          ClientsChannel.broadcast_to(user, {type: "CHANNEL_SUCCESS", author_id: current_user.id, channel: {id: channel.id, created_at: channel.created_at,topic: channel.topic, title: channel.title,purpose: channel.purpose, user_ids: channel.users.ids}})
         end
         puts i
         message = channel.messages.new(body: "set the channel topic: #{channel.topic}", sender_id: current_user.id, is_auto_message: true)
@@ -50,20 +70,27 @@ class ClientsChannel < ApplicationCable::Channel
       end
     when "ADD_USERS_TO_CHANNEL"
       users_to_add = request_data["selectedUsers"]
-      channel = Channel.includes(:users).find_by(id: params[:channel_id])
+      channel = Channel.includes(:users).find_by(id: request_data["channel_id"])
       users = User.where(id: users_to_add)
+      # debugger
       if users_to_add && users && channel
         channel.users.concat(users)
         users.each do |user|
-            ClientsChannel.broadcast_to(user, {type: "CHANNEL_SUCCESS", author_id: current_user.id,topic: channel.topic, channel: {id: channel.id, title: channel.title,purpose: channel.purpose, user_ids: channel.users.ids}})
+          ClientsChannel.broadcast_to(user, {type: "CHANNEL_SUCCESS", author_id: current_user.id,topic: channel.topic, created_at: channel.created_at,channel: {id: channel.id, title: channel.title,purpose: channel.purpose, user_ids: channel.users.ids}})
         end     
+        channel.users.includes(:channels, :messages).each do |user|
+          ClientsChannel.broadcast_to(user, {type: "USER_ADD", user: {id: user.id, username: user.username, full_name: user.full_name, channel_ids: user.channels.ids, message_ids: user.messages.ids}})
+        end
       end
     when "ADD_USER_TO_CHANNEL"
       user = User.find_by(id: request_data["user_id"])
       channel = Channel.includes(:users).find_by(id: request_data["channel_id"])
       if user && channel
         channel.users << user
-        ClientsChannel.broadcast_to(user, {type: "CHANNEL_SUCCESS", author_id: current_user.id,topic: channel.topic, channel: {id: channel.id, title: channel.title,purpose: channel.purpose, user_ids: channel.users.ids}})
+        ClientsChannel.broadcast_to(user, {type: "CHANNEL_SUCCESS", author_id: current_user.id,topic: channel.topic, created_at: channel.created_at,channel: {id: channel.id, title: channel.title,purpose: channel.purpose, user_ids: channel.users.ids}})
+      end
+      channel.users.includes(:channels, :messages).each do |user|
+        ClientsChannel.broadcast_to(user, {type: "USER_ADD", user: {id: user.id, username: user.username, full_name: user.full_name, channel_ids: user.channels.ids, message_ids: user.messages.ids}})
       end
     end
   end
