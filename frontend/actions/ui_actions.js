@@ -10,11 +10,12 @@ export const SHOW_CHANNELS_OVERLAY = "SHOW_CHANNELS_OVERLAY";
 export const SHOW_ADD_USER_TO_CHANNEL_OVERLAY = "SHOW_ADD_USER_TO_CHANNEL_OVERLAY";
 export const CLOSE_OVERLAY = "CLOSE_OVERLAY"
 export const SHOW_TOPIC_OVERLAY = "SHOW_TOPIC_OVERLAY"
+export const SHOW_SETTINGS_OVERLAY = "SHOW_SETTINGS_OVERLAY"
+
 const uiErrors = errors => ({
     type: RECEIVE_UI_ERRORS,
     errors
 })
-
 
 const showTopicOverlayAction = () => ({ 
     type: SHOW_TOPIC_OVERLAY
@@ -32,6 +33,11 @@ const showChannelsOverlayAction = () => {
 const closeOverlayAction = () => {
     return {
         type: CLOSE_OVERLAY
+    }
+}
+const showSettingsOverlayAction = () => {
+    return {
+        type: "SHOW_SETTINGS_OVERLAY"
     }
 }
 const showAddUserToChannelOverlayAction = () => {
@@ -85,6 +91,9 @@ export const showAddUserToChannelOverlay = () => dispatch => {
 }
 export const showTopicOverlay = () => dispatch => {
     return dispatch(showTopicOverlayAction())
+}
+export const showSettingsOverlay = () => dispatch => {
+    return dispatch(showSettingsOverlayAction())
 }
 export const closeOverlay = () => dispatch => {
     return dispatch(closeOverlayAction())

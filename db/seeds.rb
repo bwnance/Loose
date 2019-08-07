@@ -7,5 +7,9 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 User.destroy_all()
 Channel.destroy_all()
+Message.destroy_all()
 demo = User.create(full_name: "Demo User", email: "demouser@loose.org", password:"demodemo", password_check: "demodemo")
-Channel.create(title: "general", purpose: "General discussion!").users << demo
+general = Channel.new(title: "general", purpose: "General discussion!")
+general.id = 1;
+general.save!
+general.users << demo

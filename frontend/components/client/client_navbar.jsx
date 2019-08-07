@@ -1,13 +1,14 @@
 import React from 'react'
 import { logout } from '../../actions/session'
 import {connect} from 'react-redux'
-import { showMenu, showTopicOverlay, showAddUserToChannelOverlay} from '../../actions/ui_actions'
+import { showMenu, showTopicOverlay, showSettingsOverlay, showAddUserToChannelOverlay} from '../../actions/ui_actions'
 class ClientNavBar extends React.Component {
     constructor(props){
         super(props)
         this.showMenu = this.showMenu.bind(this);
         this.onTopicClick = this.onTopicClick.bind(this)
         this.showAddUserToChannelOverlay = this.showAddUserToChannelOverlay.bind(this)
+        this.showSettingsOverlay = this.showSettingsOverlay.bind(this)
     }
     showMenu(){
         this.props.showMenu();
@@ -16,12 +17,20 @@ class ClientNavBar extends React.Component {
         e.preventDefault();
         this.props.showTopicOverlay();
     }
+    showSettingsOverlay(e){
+        e.preventDefault();
+        this.props.showSettingsOverlay();
+    }
     showAddUserToChannelOverlay(e){
         e.preventDefault();
         this.props.showAddUserToChannelOverlay();
     }
     render(){
         return (
+            <>
+            <div className={`popupSettings ${this.showPopup ? "" : ""}`}>
+
+            </div>
             <div className="client-navbar">
                 <div onClick={this.showMenu} className="channel-section">
                     <div className="first-row">
@@ -35,11 +44,15 @@ class ClientNavBar extends React.Component {
                     </div>
                    
                 </div>
+                
                 <div className="chat-section">
                     <span className="left-side">
-                        <span className="channel-name">
-                            {`#${this.props.currentChannel && this.props.currentChannel.title}`}
-                        </span>
+                        <div className="channel-name">
+                            <span onClick={this.showSettingsOverlay}>
+                                {`#${this.props.currentChannel && this.props.currentChannel.title}`}
+                            </span>
+                        </div>
+                       
                         <span className="channel-info">
                             <i className="fa fa-star" />
                             <span className="info-seperator"/>
@@ -80,6 +93,7 @@ class ClientNavBar extends React.Component {
                 </div>
 
             </div>
+            </>
         )
     }
 }
@@ -90,6 +104,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     showMenu: () => dispatch(showMenu()),
     showTopicOverlay: () => dispatch(showTopicOverlay()),
-    showAddUserToChannelOverlay: () => dispatch(showAddUserToChannelOverlay())
+    showAddUserToChannelOverlay: () => dispatch(showAddUserToChannelOverlay()),
+    showSettingsOverlay: () => dispatch(showSettingsOverlay())
 })
 export default connect(mapStateToProps, mapDispatchToProps)(ClientNavBar)

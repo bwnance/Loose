@@ -5,9 +5,10 @@ class ChatMessage extends React.Component{
         super(props);
         this.message = this.props.message;
         this.prevMessage = this.props.prevMessage;
-        this.author= this.props.users[this.message.sender_id];
+        this.author = this.props.users[this.message.sender_id];
     }
     render(){
+        // console.log(`MESSAGE: ${this.message}`)
         let subsequentMessage;
         if(this.prevMessage){
 
@@ -80,8 +81,9 @@ class ChatMessage extends React.Component{
         let minutes = date.getMinutes();
         let seconds = date.getSeconds();
         const ampm = hours >= 12 ? "PM" : "AM";
-        hours = hours % 12;
-        // hours = hours < 10 ? `0${hours}` : `${hours}`
+        // hours = hours % 12;
+        if(hours === 0) hours = 12;
+        hours = hours < 10 ? `0${hours}` : `${hours}`
         minutes = minutes < 10 ? `0${minutes}` : `${minutes}`
         seconds = seconds < 10 ? `0${seconds}` : `${seconds}`
         const result =  `${hours}:${minutes} ${ampm}`

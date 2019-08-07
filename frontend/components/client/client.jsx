@@ -9,9 +9,10 @@ import CreateChannelOverlay from './overlay/create_channel_overlay'
 import ShowChannelsOverlay from './overlay/show_channels_overlay'
 import ClientNavBar from './client_navbar'
 import { logout } from '../../actions/session'
-import { receiveChannel, receiveChannels, addUserToChannel} from '../../actions/channel_actions'
+import { receiveChannel, receiveChannels, addUserToChannel, deleteChannel} from '../../actions/channel_actions'
 import ShowTopicOverlay from './overlay/show_topic_overlay'
 import AddUserOverlay from './overlay/add_user_overlay'
+import ShowSettingsOverlay from './overlay/settings_overlay'
 class Client extends React.Component {
     constructor(props) {
         super(props)
@@ -25,6 +26,8 @@ class Client extends React.Component {
         this.receiveClientData = this.receiveClientData.bind(this)
         this.addUsersToChannel = this.addUsersToChannel.bind(this)
         this.addUserToChannel = this.addUserToChannel.bind(this)
+        this.deleteChannel = this.deleteChannel.bind(this)
+        this.onConnected = this.onConnected.bind(this)
     }
     showOverlay() {
         this.setState({ showOverlay: true });
@@ -46,9 +49,9 @@ class Client extends React.Component {
             document.getElementById(`channel-${id}`).scrollIntoViewIfNeeded(); //non-standard, find a better solution
         }
     }
-    componentDidMount() {
-        this.props.fetchDefaultChannel();
-        this.props.fetchAllUsers();
+    componentWillMount() {
+        this.props.fetchAllUsers().then(this.props.fetchDefaultChannel);
+        // ();
         this.setupSubscription();
         // App.messaging = App.cable.subscriptions.create('ChannelsChannel', {
             //     received: this.onReceiveMessage,
@@ -87,6 +90,10 @@ class Client extends React.Component {
             case "RECEIVE_CHANNELS":
                 this.props.receiveChannels(data.channels)
             break;
+            case "DELETE_CHANNEL":
+                this.changeChannelView(1)()
+                this.props.deleteChannel(data.channelId)
+                break;
         }
     }
     handleNewUser(user){
@@ -106,6 +113,10 @@ class Client extends React.Component {
     fetchAllChannels(){
         App.clientChannel.send({type: "FETCH_ALL_CHANNELS"})
     }
+    deleteChannel(channelId){
+        console.log("deleting");
+        App.clientChannel.send({type: "DELETE_CHANNEL", data: {channel_id: channelId}})
+    }
     setupSubscription() {
         console.log("CONNECTING...")
         App.clientChannel = App.cable.subscriptions.create(
@@ -116,9 +127,13 @@ class Client extends React.Component {
             {
                 received: this.receiveClientData,
                 disconnected: ()=> console.log("DCed"),
-                connected: () => console.log("CONNECTED")
+                // connected: this.onConnected
             })
 
+    }
+    onConnected(){
+        debugger
+        App.clientChannel.send({ type: "NEW_USER_ARRIVED"})
     }
     hideMenu(e){
         if(!e || e.target === e.currentTarget) this.props.hideMenu();
@@ -142,6 +157,9 @@ class Client extends React.Component {
                 break
             case "OVERLAY_TOPIC":
                 overlay = <ShowTopicOverlay updateChannel={this.updateChannel} closeOverlay={this.closeOverlay}/>
+                break;
+            case "OVERLAY_SETTINGS":
+                overlay = <ShowSettingsOverlay deleteChannel={this.deleteChannel} updateChannel={this.updateChannel} closeOverlay={this.closeOverlay}/>
                 break;
             }
         return <div className="client">
@@ -197,6 +215,7 @@ const mapDispatchToProps = dispatch => ({
     closeOverlay: () => dispatch(closeOverlay()),
     receiveUser: (user) => dispatch(receiveUser(user)),
     addUserToChannel: (user) => dispatch(addUserToChannel(user)),
+    deleteChannel: (channelId) => dispatch(deleteChannel(channelId)),
 
 
 })

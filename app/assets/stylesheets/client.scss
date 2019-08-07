@@ -120,8 +120,161 @@ body{
     // overflow: hidden;
     height: 100%;
 }
+.settings-overlay{
+    .settings-navbar{
+        height: 50px;
+        position: absolute;
+        top: 0px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid $border-color;
+        box-shadow: 0 4px 2px -2px rgba(0,0,0,0.1);
+        width: 100%;
+        button{
+            background: none;
+            border: none;
+            position: relative;
 
+        }
+        button:hover{
+            cursor: pointer;
+        }
+        button:focus{
+            outline: none;
+            border: none;
+        }
+        .fas{
+            color: rgba(0,0,0,0.5);
+            font-size: 30px;
+        }
+        .fas:hover{
+            color: black;
+            transition-duration: 0.1s;
+        }
+        .settings-nav-back{
+            left: 15px;
+        }
+        .settings-nav-close{
+            right: 15px;
+        }
+        .settings-header{
+            align-self: center;
+            font-size: 24px;
+            font-weight: bold;
+            .channel-name{
+                color: rgba(0,0,0,0.7)
+            }
+        }
+    }
+    .main-settings{
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        position: relative;
+        top: -135px;
+        .settings-option{
+            width: 600px;
+            border-top: 1px solid $border-color;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            h2{
+                font-weight: bold;
+                font-size: 18px;
+                margin-bottom: 10px;
+                margin-top: 5px;
+                color: black;
+            }
+            p{
+                color: rgba(0,0,0,0.7)
+            }
+            i{
+                font-size: 20px;
+                color: rgba(0,0,0,0.7);
+                opacity: 0;
+            }
+            &:hover{
+                cursor: pointer;
+                background-color:rgba(0,0,0,0.03);
+                i{
+                    opacity: 1;
+                }
+            }
+        }
+        
+
+    }
+    .delete-page{
+        width: 600px;
+        position: relative;
+        left: 50px;
+        top: -150px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        line-height: 25px;
+
+        // align-items: center;
+        p{
+            margin-bottom: 20px;
+        }
+        ul{
+            list-style-type: disc;
+            list-style-position: inside;
+        }
+        .buttons{
+            display: flex;
+            flex-direction: row;
+            margin-top: 30px;
+            justify-content: flex-end;
+            button:focus{
+                outline: none;
+            }
+            button{
+                background: none;
+                border: none;
+                height: 40px;
+                border-radius: 4px;
+                min-width: 85px;
+                padding: 10px;
+                font-weight: bold;
+                font-size: 14px;
+                margin-left: 20px;
+                // background-color: red;
+            }
+            .cancel-btn{
+                transition-duration: 0.2s;
+                &:hover{
+                    cursor: pointer;
+                    transition-duration: 0.3s;
+                    color: $alt-text;
+                    background-color: $color-secondary;
+                }
+                border: 1px solid $border-color;
+
+            }
+            .delete-btn{
+                background-color: $color-foreground;
+                border: 1px solid $color-foreground;
+
+                color: $alt-text;
+                box-sizing: border-box;
+                &:hover{
+                    cursor: pointer;
+                    transition-duration: 0.2s;
+                    transition-duration: 0.2s;
+                    color: $alt-text;
+                    background-color: $color-secondary;
+                    border: 1px solid $border-color;
+                }
+            }
+        }
+    }
+}
 .client-navbar{
+    
     color: $alt-text;
     display: flex;
     flex-direction: row;
@@ -199,27 +352,51 @@ body{
         display: flex;
         align-items: center;
         justify-content: space-between;
+        
         .left-side{
+            // padding-top: 5px;
             margin-left: 30px;
             display: flex;
             flex-direction: column;
+            // align-items: center;
+            // justify-content: center;
             .channel-name{
-                width: 200px;
+
+                span:hover{
+                    cursor: pointer;
+                }
+                position: relative;
+                top: 5px;
+                display: flex;
+                justify-content: flex-start;
+                // right: 37px;
+                width: auto;
+                padding-top: 10px;
+                width: auto;
                 color: black;
                 font-weight: bolder;
                 font-size: 20px;
-                margin-bottom: 7px;
+                margin-bottom: 0px;
                 overflow: auto;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
+                // z-index: 10000;
+                // opacity: 0.999;
+                height: 30px;
             }
             .channel-info{
+                // opacity: 0.999;
+                // z-index: 0;
                 display: inline-flex;
                 align-items: center;
                 user-select: none;
                 overflow: hidden;
+                // padding-top: -10px;
+                position: relative;
+                top: -5px;
                 height: 30px;
+                // margin-top: 0px;
                 max-width: 30vw;
                 text-overflow: ellipsis;
                 color: gray;
@@ -261,7 +438,9 @@ body{
                     // max-width: 10px;
                     overflow: hidden;
                     text-overflow: ellipsis;
-                   
+                    border: 1px solid $color-bg;
+                    border-radius: 4px;
+                    margin-left: 0px;
                 }
                 .edit-text{
                     display: none;
@@ -1069,6 +1248,7 @@ body{
         color: rgba(0,0,0,0.5) !important;
     }
     .chat-message{
+        // background-color: $color-bg;
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
