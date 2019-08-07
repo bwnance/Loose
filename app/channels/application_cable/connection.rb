@@ -14,7 +14,7 @@ module ApplicationCable
         connection.subscriptions.identifiers.each_with_index do |identifier|
           hash = JSON.parse(identifier)
           if hash["channel"] == "ClientsChannel"
-            user = User.find(hash["user_id"])
+            user = User.find_by(hash[id: "user_id"])
             if user && !updatedUsers.include?(user.id)
               # debugger
               updatedUsers << user.id

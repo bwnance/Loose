@@ -8,13 +8,13 @@ class ClientsChannel < ApplicationCable::Channel
     request_data = data["data"]
     case data["type"]
       when "FETCH_CHANNEL"
-        channel = Channel.find(request_data["channel_id"])
+        channel = Channel.find_by(id: request_data["channel_id"])
         if channel
               ClientsChannel.broadcast_to(current_user, {type: "CHANNEL_SUCCESS", author_id: current_user.id, created_at: channel.created_at,channel: {id: channel.id,topic: channel.topic, title: channel.title,purpose: channel.purpose, user_ids: channel.users.ids}})
         end
       when "DELETE_CHANNEL"
         
-        channel = Channel.find(request_data["channel_id"])
+        channel = Channel.find_by(id: request_data["channel_id"])
         if channel
           channel_id = channel.id
           channel_members = channel.users.ids
@@ -52,7 +52,7 @@ class ClientsChannel < ApplicationCable::Channel
               connection.subscriptions.identifiers.each_with_index do |identifier|
                 hash = JSON.parse(identifier)
                 if hash["channel"] == "ClientsChannel"
-                  user = User.find(hash["user_id"])
+                  user = User.find_by(id: hash["user_id"])
                   if user && !updatedUsers.include?(user.id)
                     # debugger
                     updatedUsers << user.id
@@ -68,7 +68,7 @@ class ClientsChannel < ApplicationCable::Channel
         # end
       when "UPDATE_CHANNEL"
         # debugger
-        channel = Channel.find(data["channel_id"])
+        channel = Channel.find_by(id: data["channel_id"])
         if channel.update(request_data)
           i = 0;
           channel.users.each do |user|
@@ -93,11 +93,6 @@ class ClientsChannel < ApplicationCable::Channel
           channel.users.includes(:channels, :messages).each do |user|
             ClientsChannel.broadcast_to(user, {type: "USER_ADD", user: {id: user.id, username: user.username, full_name: user.full_name, channel_ids: user.channels.ids, message_ids: user.messages.ids}})
           end
-        end
-      when "NEW_USER_ARRIVED"
-        user = current_user
-        if user
-          
         end
       when "ADD_USER_TO_CHANNEL"
         user = User.find_by(id: request_data["user_id"])
