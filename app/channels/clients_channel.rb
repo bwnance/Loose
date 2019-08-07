@@ -102,7 +102,7 @@ class ClientsChannel < ApplicationCable::Channel
           ClientsChannel.broadcast_to(user, {type: "CHANNEL_SUCCESS", author_id: current_user.id,topic: channel.topic, created_at: channel.created_at,channel: {id: channel.id, title: channel.title,purpose: channel.purpose, user_ids: channel.users.ids}})
         end
         channel.users.includes(:channels, :messages).each do |user|
-          ClientsChannel.broadcast_to(user, {type: "USER_ADD", user: {id: user.id, username: user.username, full_name: user.full_name, channel_ids: user.channels.ids, message_ids: user.messages.ids}})
+        ClientsChannel.broadcast_to(user, {type: "USER_ADD", user: {id: user.id, username: user.username, full_name: user.full_name, channel_ids: user.channels.ids, message_ids: user.messages.ids}})
         end
     end
   end

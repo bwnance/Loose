@@ -27,7 +27,8 @@ class Client extends React.Component {
         this.addUsersToChannel = this.addUsersToChannel.bind(this)
         this.addUserToChannel = this.addUserToChannel.bind(this)
         this.deleteChannel = this.deleteChannel.bind(this)
-        this.onConnected = this.onConnected.bind(this)
+        // this.onConnected = this.onConnected.bind(this)
+        this.onDisconnect = this.onDisconnect.bind(this)
     }
     showOverlay() {
         this.setState({ showOverlay: true });
@@ -36,7 +37,7 @@ class Client extends React.Component {
         this.props.closeOverlay();
     }
     componentWillUnmount() {
-        // App.cable.disconnect();
+        App.cable.disconnect();
     }
     onReceiveMessage(message){
         //console.log(message); 
@@ -66,7 +67,6 @@ class Client extends React.Component {
     addUsersToChannel(users, channelId){
         console.log(users)
         App.clientChannel.send({ type: "ADD_USERS_TO_CHANNEL", data: { selectedUsers: users, channel_id: channelId } })
-
     }
     fetchChannel(channel_id){
         App.clientChannel.send({ type: "FETCH_CHANNEL", data: { channel_id: channel_id } })
@@ -126,14 +126,14 @@ class Client extends React.Component {
             },
             {
                 received: this.receiveClientData,
-                disconnected: ()=> console.log("DCed"),
+                disconnected: ()=> this.onDiconnect,
                 // connected: this.onConnected
             })
 
     }
-    onConnected(){
-        debugger
-        App.clientChannel.send({ type: "NEW_USER_ARRIVED"})
+    onDisconnect(){
+        console.log("hi");
+        this.props.logout()
     }
     hideMenu(e){
         if(!e || e.target === e.currentTarget) this.props.hideMenu();
