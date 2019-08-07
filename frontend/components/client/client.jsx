@@ -10,6 +10,7 @@ import ShowChannelsOverlay from './overlay/show_channels_overlay'
 import ClientNavBar from './client_navbar'
 import { logout } from '../../actions/session'
 import {receiveChannel} from '../../actions/channel_actions'
+import ShowTopicOverlay from './overlay/show_topic_overlay'
 class Client extends React.Component {
     constructor(props) {
         super(props)
@@ -31,7 +32,7 @@ class Client extends React.Component {
         this.props.closeOverlay();
     }
     componentWillUnmount() {
-        App.cable.disconnect();
+        // App.cable.disconnect();
     }
     onReceiveMessage(message){
         //console.log(message); 
@@ -48,9 +49,14 @@ class Client extends React.Component {
         this.props.fetchAllUsers();
         this.setupSubscription();
         // App.messaging = App.cable.subscriptions.create('ChannelsChannel', {
-        //     received: this.onReceiveMessage,
-        // })
-
+            //     received: this.onReceiveMessage,
+            // })
+            
+        }
+    updateChannel(data, channel_id){
+        const payload = { type: "UPDATE_CHANNEL", data, channel_id}  
+        console.log(payload)
+        App.clientChannel.send(payload)
     }
     addUsersToChannel(users, channelId){
         App.clientChannel.send({ type: "ADD_USERS_TO_CHANNEL", data: { selectedUsers: users, channel_id: channelId } })
@@ -67,6 +73,7 @@ class Client extends React.Component {
     receiveClientData(data){
         switch(data.type){
             case "CHANNEL_SUCCESS":
+                console.log("SUCCESS!")
                 return this.handleChannelSuccess(data.channel, data.author_id);
         }
     }
@@ -77,7 +84,7 @@ class Client extends React.Component {
         
     }
     setupSubscription() {
-        //console.log("CONNECTING...")
+        console.log("CONNECTING...")
         App.clientChannel = App.cable.subscriptions.create(
             {
                 channel: 'ClientsChannel',
@@ -85,7 +92,8 @@ class Client extends React.Component {
             },
             {
                 received: this.receiveClientData,
-                //connected: () => console.log("CONNECTED")}
+                disconnected: ()=> console.log("DCed"),
+                connected: () => console.log("CONNECTED")
             })
 
     }
@@ -108,6 +116,10 @@ class Client extends React.Component {
                 break;
             case "OVERLAY_ADD_USERS_TO_CHANNELS":
                 overlay = <AddUserOverlay addUsersToChannel={this.addUsersToChannel} changeChannelView={this.changeChannelView} closeOverlay={this.closeOverlay}/>
+                break
+            case "OVERLAY_TOPIC":
+                overlay = <ShowTopicOverlay updateChannel={this.updateChannel} closeOverlay={this.closeOverlay}/>
+                break;
             }
         return <div className="client">
             <div onClick={this.hideMenu} className={`menu-overlay ${this.props.showMenu ? "" : "invisible"}`}>

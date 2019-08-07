@@ -6,6 +6,8 @@
 #  title      :string           not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  purpose    :string
+#  topic      :text
 #
 
 class Channel < ApplicationRecord

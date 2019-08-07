@@ -91,25 +91,25 @@ class ShowChannelsOverlay extends React.Component {
             <div className="client-overlay">
                 <CloseOverlayBtn />
                 <div className="show-channels-overlay-content">
-                <div className="top-bar">
-                    <h1>
-                        Browse Channels
-                    </h1>
-                        <div onClick={this.props.showCreateChannelOverlay} className="overlay-button">
-                        Create Channel
+                    <div className="top-bar">
+                        <h1>
+                            Browse Channels
+                        </h1>
+                            <div onClick={this.props.showCreateChannelOverlay} className="overlay-button">
+                            Create Channel
+                        </div>
                     </div>
-                </div>
-                <input type="text" onChange={this.handleInput} className="loose-text-input overlay-text-input" placeholder="Search Channels"/>
-                <ul className="show-channels-list scrollable">
-                    <div className="browse-divider first-divider">
-                        Channels you can join
-                    </div>
-                    {channelList}
-                    <div className="browse-divider">
-                        Channels you belong to
-                    </div>
-                    {joinedChannelList}
-                </ul>
+                    <input type="text" onChange={this.handleInput} className="loose-text-input overlay-text-input" placeholder="Search Channels"/>
+                    <ul className="show-channels-list scrollable">
+                        <div className="browse-divider first-divider">
+                            Channels you can join
+                        </div>
+                        {channelList}
+                        <div className="browse-divider">
+                            Channels you belong to
+                        </div>
+                        {joinedChannelList}
+                    </ul>
                 </div>
             </div>
         )

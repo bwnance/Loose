@@ -129,11 +129,11 @@ body{
     height: 60px;
     z-index: 5;
     .channel-section{
+        user-select: none;
         width: 225px;
         box-sizing: border-box;
         background-color: $color-foreground;
         display: flex;
-        // overflow: auto;
 
         flex-direction: column;
         justify-content: space-between;
@@ -191,7 +191,7 @@ body{
 
     }
     .chat-section{
-            box-sizing: border-box;
+        box-sizing: border-box;
 
         flex-grow: 1;
         border-bottom: 1px solid $border-color;
@@ -204,12 +204,24 @@ body{
             display: flex;
             flex-direction: column;
             .channel-name{
+                width: 200px;
                 color: black;
                 font-weight: bolder;
                 font-size: 20px;
                 margin-bottom: 7px;
+                overflow: auto;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
             .channel-info{
+                display: inline-flex;
+                align-items: center;
+                user-select: none;
+                overflow: hidden;
+                height: 30px;
+                max-width: 30vw;
+                text-overflow: ellipsis;
                 color: gray;
                 font-size: 13px;
                 .fa-thumbtack{
@@ -220,8 +232,12 @@ body{
                     top: 1px;
                     border-left: 1px solid gray;
                     font-size: 15px;
-                    margin-right: 7px;
+                    margin-right: 6px;
                 }
+                 .info-seperator.add-topic{
+                     margin-right: 3px;
+                    //  color: red;
+                 }
                 .fa{
                     margin-right: 7px;
                 }
@@ -235,6 +251,43 @@ body{
                 .info{
                     margin-right: 7px;
                 }
+                .topic-container{
+                    flex: 1;
+                    display: inline-flex;
+                    // box-sizing: border-box;
+                    padding: 3px;
+                    margin-left: 1px;
+                    // max-width: 10px;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                   
+                }
+                .edit-text{
+                    display: none;
+                }
+                 .topic-text{
+                        // flex: 1;
+                        // width: 20px;
+                        white-space: nowrap;
+                        word-wrap: break-word;
+                        // max-width: 20px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+                .topic-container:hover{
+                    overflow-wrap: break-word;
+                        text-overflow: inherit;
+
+                    cursor: default;
+                    // position: relative;
+                    color: gray;
+                    padding: 3px;
+                    border: 1px solid $border-color;
+                    border-radius: 4px;
+                    margin-left: 0px;
+                 
+                }
+               
             }
 
         }
@@ -326,6 +379,7 @@ body{
         font-weight: bolder;
         margin-bottom: 5px;
         span{
+            font-size: 16px;
             margin-left: 5px;
             display: flex;
             flex-direction: column;
@@ -333,6 +387,7 @@ body{
             width: 100%;
             height: 100%;
             color: rgba(255,255,255,0.8);
+
 
 
         }
@@ -370,7 +425,6 @@ body{
         
     .channel-list-item{
         color: $alt-text;
-
         position: relative;
         height: 25px;
         width: 100%;
@@ -381,7 +435,8 @@ body{
             outline: none;
         }
         .channel-list-item-button{
-            color: $alt-text;
+            display: inline-block;
+            color: rgba(255,255,255,0.8);
             background: none;
             border: none;
             text-align: left;
@@ -389,6 +444,11 @@ body{
             height: 100%;
             margin: 0;
             padding: 0 5px 0 5px;
+            text-overflow: ellipsis;
+            overflow: hidden; 
+            white-space: nowrap;
+            overflow-wrap: none;
+            font-size: 15px;
         }
         .channel-list-item-button:hover{
             background-color: rgba(0, 0, 0, 0.1);
@@ -402,6 +462,96 @@ body{
     height: 100%;
     width: 225px;
     background-color: $color-foreground;
+}
+.transparent-overlay{
+    background-color: rgba(0,0,0,0.3) !important;
+    .topic-form{
+        padding: 15px;
+        background-color: $color-bg;
+        // height: 200px;
+        
+        max-height: 640px;
+        width: 500px;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        overflow:auto; 
+        .top-row{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            .close-overlay-btn:hover{
+                cursor: pointer;
+                background-color: rgba(0,0,0,0.05);
+            }
+            .close-overlay-btn{
+                background: none;
+                border: none;
+                height: 30px;
+                width: 30px;
+                border-radius: 4px;
+            }
+            
+            .button-close:focus, .close-overlay-btn:focus{
+                border: none;
+                outline: none;
+            }
+            .button-close{
+                position: relative;
+                top: 2px;
+                right: 0px;
+                height: 15px;
+                width: 15px;
+                border: none;
+                background-color: none;
+            }
+            h2{
+                font-size: 22px;
+                color: rgba(0,0,0,0.9);
+                font-weight: bold;
+                padding-bottom: 0px;
+                margin-left: 10px;
+            }
+        }
+        .topic-input{
+            resize: none;
+            height: 75px;
+            font-size: 14px;
+            align-self: center;
+            padding: 10px;
+            // max-height: 480px;
+            width: 475px;
+        }
+        .buttons{
+            display: flex;
+            justify-content: flex-end;
+            input[type="submit"], button{
+                font-size: 14px;
+                padding-left: 5px;
+                padding-right: 5px;
+                text-transform: none;
+                box-sizing: border-box;
+                font-weight: bold;
+                margin: 5px;
+                margin-left: 7px;
+                margin-right: 7px;
+                width: 80px;
+                height: 35px !important;
+            }
+            .cancel-btn{
+                color: rgba(0,0,0,0.9);
+                background-color: transparent;
+            }
+            .cancel-btn:hover{
+                color: $alt-text;
+                background-color: $color-foreground;
+            }
+            .submit-btn{
+
+            }
+        }
+    }
 }
 .client-overlay{
     // transition: display 10s linear;
@@ -881,6 +1031,9 @@ body{
             
         }
     }
+    .auto-message{
+        color: rgba(0,0,0,0.5) !important;
+    }
     .chat-message{
         display: flex;
         flex-direction: row;
@@ -980,15 +1133,27 @@ body{
             }
         }
     }
+    .message-form:focus-within{
+        border: 1px solid rgba(0,0,0,0.6);
+    }
     .message-form{
-        height: 50px;
-        width: 100%;
+        border: 1px solid $border-color;
+        display: flex;
+        align-items: center;
+        height: 45px;
+        width: 90%;
+        border-radius: 4px;
         box-sizing: border-box;
-        padding: 0 20px 0px 20px;
+        padding: 5px 20px 0px 20px;
         margin-top: 0;
         margin-bottom: 0;
+        margin-left: 5%;
         padding-bottom: 0px;
-
+        align-self: center;
+        .message-input:focus{
+            border: none;
+            outline: none;
+        }
         .message-input{
             box-sizing: border-box;
             align-self: end;
@@ -996,9 +1161,10 @@ body{
             align-self: center;
             height: 37px;
             border-radius: 4px;
+            font-size: 14px;
             box-shadow: none;
-            padding: 5px;
-            border: 1px solid $border-color;
+            // padding: 5px;
+            border: none;
             resize: none;
             border-radius: 4px;
             padding-top: 10px;

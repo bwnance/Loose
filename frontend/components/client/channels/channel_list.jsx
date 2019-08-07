@@ -27,7 +27,7 @@ class ChannelList extends React.Component {
     render(){
         const channels = this.props.channels.map((channel) => (
             <li id={`channel-${channel.id}`} className={`channel-list-item  ${channel.id === this.props.currentChannel ? " selected-channel" : ""}`} key={`channel-${channel.id}`}>
-                <button className="channel-list-item-button" onClick={this.props.changeChannelView(channel.id)} >#  {channel.title}</button>
+                <button className="channel-list-item-button" onClick={this.props.changeChannelView(channel.id)} >{`# ${channel.title}`}</button>
             </li>)) // sort alphabetically later
         return (
             <>

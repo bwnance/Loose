@@ -8,19 +8,21 @@ class ChatMessage extends React.Component{
         this.author= this.props.users[this.message.sender_id];
     }
     render(){
-        let sameUser;
+        let subsequentMessage;
         if(this.prevMessage){
 
             if(this.prevMessage.sender_id === this.message.sender_id){
-                sameUser = true;
+                subsequentMessage = true;
             }
             else{
-                sameUser = false;
+                subsequentMessage = false;
             }
+            if(this.prevMessage.is_auto_message) subsequentMessage = false;
         }else{
-            sameUser = false;
+            subsequentMessage = false;
         }
-        return sameUser ? 
+        if(this.message.is_auto_message) subsequentMessage = false;
+        return subsequentMessage ? 
             (<li className="chat-message">
                 <div className="timestamp-container">
                     <span className="hover-timestamp">
@@ -54,7 +56,7 @@ class ChatMessage extends React.Component{
                             {this.getShortAMPMTime(this.message.created_at)}
                         </span>
                     </span>
-                    <span className="message-body">{this.message.body}</span>
+                    <span className={`message-body ${this.message.is_auto_message ? "auto-message" : ""}`}>{this.message.body}</span>
                 </div>
         </li>) 
 

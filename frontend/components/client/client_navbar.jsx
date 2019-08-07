@@ -1,14 +1,19 @@
 import React from 'react'
 import { logout } from '../../actions/session'
 import {connect} from 'react-redux'
-import {showMenu} from '../../actions/ui_actions'
+import {showMenu, showTopicOverlay} from '../../actions/ui_actions'
 class ClientNavBar extends React.Component {
     constructor(props){
         super(props)
         this.showMenu = this.showMenu.bind(this);
+        this.onTopicClick = this.onTopicClick.bind(this)
     }
     showMenu(){
         this.props.showMenu();
+    }
+    onTopicClick(e){
+        e.preventDefault();
+        this.props.showTopicOverlay();
     }
     render(){
         return (
@@ -43,13 +48,19 @@ class ClientNavBar extends React.Component {
                                 <span className="info num-pinned">0</span>
                             </span>
                             <i className="info-seperator add-topic"/>
-                            <span className="info-container">
-                                <i className="fa fa-pencil-alt" />
-                                <span className="add-topic-text">Add a topic</span>
+                            <span onClick={this.onTopicClick} className="info-container topic-container">
+                                {/* <i className="fa fa-pencil-alt" /> */}
+                                {this.props.currentChannel && this.props.currentChannel.topic ? 
+                                    <span className="topic-text">{this.props.currentChannel.topic}</span> 
+                                    : 
+                                    <>
+                                        <i className="fa fa-pencil-alt" />
+                                        <span className="topic-text">Add a topic</span>
+                                    </>}
                             </span>
+                            <span className="edit-text">Edit</span>
                         </span>
                     </span>
-                    
                     <span className="right-side">
                         <i className="fa fa-phone-alt" />
                         <i className="fa fa-info-circle" />
@@ -72,6 +83,7 @@ const mapStateToProps = (state) => ({
     currentChannel: state.entities.channels[state.ui.chatWindow.id]
 })
 const mapDispatchToProps = (dispatch) => ({
-    showMenu: () => dispatch(showMenu())
+    showMenu: () => dispatch(showMenu()),
+    showTopicOverlay: () => dispatch(showTopicOverlay())
 })
 export default connect(mapStateToProps, mapDispatchToProps)(ClientNavBar)
