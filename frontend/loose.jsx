@@ -28,4 +28,5 @@ document.addEventListener('DOMContentLoaded', ()=>{
     //END DEBUG//
     const rootEl = document.getElementById('root')
     ReactDOM.render(<Root store={store}/>, rootEl)
+
 })

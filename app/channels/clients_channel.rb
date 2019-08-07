@@ -10,7 +10,7 @@ class ClientsChannel < ApplicationCable::Channel
       when "FETCH_CHANNEL"
         channel = Channel.find_by(id: request_data["channel_id"])
         if channel
-              ClientsChannel.broadcast_to(current_user, {type: "CHANNEL_SUCCESS", author_id: current_user.id, created_at: channel.created_at,channel: {id: channel.id,topic: channel.topic, title: channel.title,purpose: channel.purpose, user_ids: channel.users.ids}})
+              ClientsChannel.broadcast_to(current_user, {type: "CHANNEL_SUCCESS", author_id: current_user.id,channel: {id: channel.id,created_at: channel.created_at,topic: channel.topic, title: channel.title,purpose: channel.purpose, user_ids: channel.users.ids}})
         end
       when "DELETE_CHANNEL"
         

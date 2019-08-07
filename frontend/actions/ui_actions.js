@@ -11,7 +11,7 @@ export const SHOW_ADD_USER_TO_CHANNEL_OVERLAY = "SHOW_ADD_USER_TO_CHANNEL_OVERLA
 export const CLOSE_OVERLAY = "CLOSE_OVERLAY"
 export const SHOW_TOPIC_OVERLAY = "SHOW_TOPIC_OVERLAY"
 export const SHOW_SETTINGS_OVERLAY = "SHOW_SETTINGS_OVERLAY"
-
+export const SHOW_MESSAGE_SETTINGS_OVERLAY = "SHOW_MESSAGE_SETTINGS_OVERLAY"
 const uiErrors = errors => ({
     type: RECEIVE_UI_ERRORS,
     errors
@@ -37,12 +37,17 @@ const closeOverlayAction = () => {
 }
 const showSettingsOverlayAction = () => {
     return {
-        type: "SHOW_SETTINGS_OVERLAY"
+        type: SHOW_SETTINGS_OVERLAY
     }
 }
 const showAddUserToChannelOverlayAction = () => {
     return {
         type: SHOW_ADD_USER_TO_CHANNEL_OVERLAY
+    }
+}
+const showMessageSettingsOverlayAction = () => {
+    return {
+        type: SHOW_MESSAGE_SETTINGS_OVERLAY
     }
 }
 const receiveEmailFormData = (data) => {
@@ -97,4 +102,7 @@ export const showSettingsOverlay = () => dispatch => {
 }
 export const closeOverlay = () => dispatch => {
     return dispatch(closeOverlayAction())
+}
+export const showMessageSettingsOverlay = () => dispatch => {
+    return dispatch(showMessageSettingsOverlayAction())
 }

@@ -4,6 +4,7 @@
     <title>Loose</title>
     <%= csrf_meta_tags %>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css" rel="stylesheet">    
+    
     <%= csp_meta_tag %>
     <% if logged_in? %>
       <script type="text/javascript">
@@ -14,9 +15,11 @@
     <% end %>
     <%= stylesheet_link_tag    'application', media: 'all' %>
     <%= javascript_include_tag 'application' %>
+    
   </head>
 
   <body>
     <%= yield %>
+   
   </body>
 </html>

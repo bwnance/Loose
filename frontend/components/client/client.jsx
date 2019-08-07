@@ -161,6 +161,8 @@ class Client extends React.Component {
             case "OVERLAY_SETTINGS":
                 overlay = <ShowSettingsOverlay deleteChannel={this.deleteChannel} updateChannel={this.updateChannel} closeOverlay={this.closeOverlay}/>
                 break;
+            case "OVERLAY_MESSAGE_SETTINGS":
+                overlay = <MessageSettingsOverlay />
             }
         return <div className="client">
             <div onClick={this.hideMenu} className={`menu-overlay ${this.props.showMenu ? "" : "invisible"}`}>
