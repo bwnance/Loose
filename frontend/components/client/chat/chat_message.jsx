@@ -6,7 +6,7 @@ import {CornerDownLeft} from 'react-feather'
 class ChatMessage extends React.Component{
     constructor(props){
         super(props);
-        this.state = { showPopup: false, isEditing: false, editText: ""}
+        this.state = { showPopup: false, isEditing: false, editText: this.props.message.body}
         this.author = this.props.users[this.props.message.sender_id];
         
         this.subsequentMessage = false;
@@ -64,13 +64,13 @@ class ChatMessage extends React.Component{
                     (<>
                         <div className="message-info">
                             <i className="user-icon fa fa-user" />
-                            <div className="message-content">
+                            <div className="message-content edit-form">
                                 <span className="top-row">
                                     <input onChange={this.handleFormChange} value={this.state.editText} type="text" className="edit-form"/>
                                 </span>
-                                <span>
+                                <span className="bottom-row">
                                     <button className="edit-cancel" onClick={this.stopEditing} >Cancel</button>
-                                    <button className="edit-save" onClick={this.saveChanges}><CornerDownLeft/>Save Changes</button>
+                                    <button className="edit-save" onClick={this.saveChanges}><div><CornerDownLeft />Save Changes</div></button>
                                 </span>
                             </div>
 

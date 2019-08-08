@@ -16,6 +16,7 @@ class ClientsChannel < ApplicationCable::Channel
       when "DELETE_CHANNEL"
         if request_data["channel_id"] == 1
           return
+        end
         channel = Channel.find_by(id: request_data["channel_id"])
         if channel
           channel_id = channel.id

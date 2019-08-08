@@ -495,26 +495,27 @@ body{
 }
 
 
- .channel-list-scrollable::-webkit-scrollbar{
-        position: absolute;
-        top: 0px;
-        width: 8px;
-        border-radius: 10px;
-        background-color: transparent;
+ .channel-list::-webkit-scrollbar{
+    display: none;
+    // position: absolute;
+    // top: 0px;
+    width: 8px;
+    border-radius: 10px;
+    background-color: transparent;
 }
-.channel-list-scrollable::-webkit-scrollbar-thumb{
+.channel-list::-webkit-scrollbar-thumb{
     width: 2px;
     border-radius: 5px;
     background-color: transparent;
     transition-duration: 2s;
 }
-.channel-list-scrollable:hover::-webkit-scrollbar-thumb{
+.channel-list:hover::-webkit-scrollbar-thumb{
     width: 2px;
     border-radius: 5px;
     background-color: rgba(0, 0, 0, 0.2);
     transition-duration: 2s;
 }
-.channel-list-scrollable::-webkit-scrollbar-track{
+.channel-list::-webkit-scrollbar-track{
     border-radius: 10px;
     width: 2px;
     background-color: transparent;
@@ -528,9 +529,10 @@ body{
     color: $alt-text;
     box-sizing: border-box;
     // overflow: overlay;
+    overflow: auto;
     .channel-list-scrollable{
         float: left;
-        overflow: overlay;  
+        // overflow: overlay;  
         position: relative;
         // width: 225px !important;
         color: rgba(255,255,255,0.8);
@@ -538,7 +540,6 @@ body{
     }  
     .selected-channel:hover{
         .channel-list-item-button{
-
             background-color: $color-accent !important;
         }
     }
@@ -1383,6 +1384,89 @@ body{
         .message-content{
             display: flex;
             flex-direction: column;
+        }
+        .edit-form{
+            display: flex;
+            flex-direction: column;
+            width: calc(100% - 70px);
+            margin-left: 5px;
+            .top-row{
+                input{
+                    padding-left: 10px;
+                    border-radius: 6px;
+                    background-color: $color-bg;
+                    box-shadow: none;
+                    border: 1px solid $border-color;
+                    height: 33px;
+                    margin-bottom:10px;
+                    width: 100%;
+                    margin-right: 10px;
+
+                    &:focus{
+                        outline: none;
+                        border: 1px solid $color-foreground;
+                    }
+                }
+            }
+            .bottom-row{
+                display: flex;
+                margin-left: 5px;
+            }
+            button{
+                background: none;
+                border: none;
+                
+                svg{
+                    height: 15px;
+                }
+            }
+            .edit-cancel{
+                display: flex;
+                align-items: center;
+                background-color: $color-bg;
+                border: 1px solid $border-color;
+                border-radius: 4px;
+                justify-content: center;
+                height: 25px;
+                color: rgba(0, 0, 0, 0.9);
+                font-weight: bold;
+                margin-right: 10px;
+                font-size: 12px;
+                padding-top: 2px;
+                padding-right: 10px;
+                padding-left: 10px;
+                &:hover{
+                    transition-duration: 0.1s;
+                    cursor: pointer;
+                    color: $alt-text;
+                    background-color: $color-secondary;
+                }
+            }
+            .edit-save{
+                // padding: 2px 5px 5px 5px;
+                padding-top: 0px;
+                padding-right: 10px;
+                padding-left: 5px;
+                font-size: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: $color-foreground;
+                border-radius: 4px;
+                height: 25px;
+                color: white;
+                font-weight: bold;
+                div{
+                    display: flex;
+                    align-items: center;
+                }
+                &:hover{
+                    transition-duration: 0.1s;
+
+                    cursor: pointer;
+                    background-color: $color-secondary;
+                }
+            }
         }
         .message-content-secondary{
             padding-left: 40px;
