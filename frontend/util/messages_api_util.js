@@ -5,9 +5,15 @@ export const sendMessage = (message) => {
         data: { message }
     })
 }
-export const fetchMessages = (channelId) => {
+export const fetchMessagesFromChannel = (channelId) => {
     return $.ajax({
         type: "GET",
         url: `/api/channels/${channelId}/messages/`
+    })
+}
+export const fetchMessagesFromDM = (DMId) => {
+    return $.ajax({
+        type: "GET",
+        url: `/api/direct_messages/${DMId}/messages/`
     })
 }

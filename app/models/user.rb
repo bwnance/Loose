@@ -28,6 +28,8 @@ class User < ApplicationRecord
 
     has_many :channels, through: :channel_memberships
     has_many :messages, foreign_key: :sender_id
+    has_many :dm_memberships, class_name: :DMMembership
+    has_many :direct_messages, through: :dm_memberships
 
 
 

@@ -1,5 +1,6 @@
 class Api::MessagesController < ApplicationController
     def index
+        # constantName = 
         @messages = Channel.find(params[:channel_id]).messages
         render :index
     end

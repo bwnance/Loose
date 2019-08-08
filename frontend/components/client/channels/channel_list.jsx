@@ -1,19 +1,20 @@
 import React from 'react';
 import {connect} from 'react-redux'
 import {fetchChannels, fetchAllChannels} from '../../../actions/channel_actions'
-import {showCreateChannelOverlay} from '../../../actions/ui_actions'
+import {showChannelsOverlay, showCreateChannelOverlay, showDMsOverlay} from '../../../actions/ui_actions'
 import { logout } from '../../../actions/session'
-import {showChannelsOverlay} from '../../../actions/ui_actions'
+import {fetchDMs} from '../../../actions/dm_actions'
 
 class ChannelList extends React.Component {
     constructor(props){ 
         super(props)
         this.showCreateChannel = this.showCreateChannel.bind(this);
         this.showChannelsOverlay = this.showChannelsOverlay.bind(this)
+        this.showDmOverlay = this.showDmOverlay.bind(this)
     }
     componentDidMount() {
         this.props.fetchAllChannels();//.then(() => console.log("default channel fetched "));
-        
+        this.props.fetchDMs();
     }
     showCreateChannel(e){
         e.preventDefault();
@@ -24,10 +25,18 @@ class ChannelList extends React.Component {
         //should fetch channels with permissions
         this.props.showChannelsOverlay()
     }
+    showDmOverlay(){
+        //should fetch channels with permissions
+        this.props.showDMsOverlay()
+    }
     render(){
         const channels = this.props.channels.map((channel) => (
             <li id={`channel-${channel.id}`} className={`channel-list-item  ${channel.id === this.props.currentChannel ? " selected-channel" : ""}`} key={`channel-${channel.id}`}>
-                <button className="channel-list-item-button" onClick={this.props.changeChannelView(channel.id)} >{`# ${channel.title}`}</button>
+                <button className="channel-list-item-button" onClick={this.props.changeChannelView(channel.id, channel.messageable_type)} >{`# ${channel.title}`}</button>
+            </li>)) // sort alphabetically later
+        const dms = this.props.dms.map((dm) => (
+            <li id={`channel-${dm.id}`} className={`channel-list-item  ${dm.id === this.props.currentChannel ? " selected-channel" : ""}`} key={`channel-${dm.id}`}>
+                <button className="channel-list-item-button" onClick={this.props.changeChannelView(dm.id, dm.messageable_type)} >{`# ${dm.title}`}</button>
             </li>)) // sort alphabetically later
         return (
             <>
@@ -46,6 +55,22 @@ class ChannelList extends React.Component {
                         </div>
                     </li>
                     {channels}
+                    <li >
+                        <div className="channels-header channel-list-item">
+                            <div className="channel-list-item-button" onClick={this.showChannelsOverlay}><span>+&nbsp;&nbsp;Add a Channel</span></div>
+                            
+                        </div>
+                    </li>
+                    <li>
+                        <div className="dm-header channel-list-item">
+                            <span onClick={this.showDmOverlay}>Direct Messages</span>
+                                <button className="show-create-dm-button" onClick={this.showDmOverlay}>
+                                <i className="fa fa-plus-circle" />
+
+                            </button>
+                        </div>
+                    </li>
+                    {dms}
                 </ul>
             </div>
             </>
@@ -56,14 +81,17 @@ class ChannelList extends React.Component {
 const mapStateToProps = (state) => ({
     currentUser: state.entities.users[state.session.id],
     channels: Object.values(state.entities.channels).filter(channel => channel.user_ids.includes(state.session.id)),
-    currentChannel: state.ui.chatWindow.id
+    currentChannel: state.ui.chatWindow.id,
+    dms: Object.values(state.entities.dms)
 })
 const mapDispatchToProps = (dispatch) => ({
     fetchChannels: () => dispatch(fetchChannels()),
     fetchAllChannels : () => dispatch(fetchAllChannels()),
+    fetchDMs: ()=> dispatch(fetchDMs()),
     logout: () => dispatch(logout()),
     showCreateChannelOverlay: () => dispatch(showCreateChannelOverlay()),
-    showChannelsOverlay: () => dispatch(showChannelsOverlay())
+    showChannelsOverlay: () => dispatch(showChannelsOverlay()),
+    showDMsOverlay: () => dispatch(showDMsOverlay()),
 
 })
 

@@ -14,6 +14,7 @@ import { receiveChannel, receiveChannels, addUserToChannel, deleteChannel} from 
 import ShowTopicOverlay from './overlay/show_topic_overlay'
 import AddUserOverlay from './overlay/add_user_overlay'
 import ShowSettingsOverlay from './overlay/settings_overlay'
+import {receiveDMs, receiveDM} from '../../actions/dm_actions'
 class Client extends React.Component {
     constructor(props) {
         super(props)
@@ -44,10 +45,10 @@ class Client extends React.Component {
         //console.log(message); 
         this.setState({messages: this.state.messages.concat(message.body)})
     }
-    changeChannelView(id) {
+    changeChannelView(id, type) {
         return (makeRequest=true) => {
-            this.props.changeChannelView(id)
-            if(makeRequest) this.fetchChannel(id)
+            this.props.changeChannelView(id, type)
+            if(makeRequest) this.fetchChannel(id, type)
             document.getElementById(`channel-${id}`).scrollIntoViewIfNeeded(); //non-standard, find a better solution
         }
     }
@@ -69,8 +70,8 @@ class Client extends React.Component {
         console.log(users)
         App.clientChannel.send({ type: "ADD_USERS_TO_CHANNEL", data: { selectedUsers: users, channel_id: channelId } })
     }
-    fetchChannel(channel_id){
-        App.clientChannel.send({ type: "FETCH_CHANNEL", data: { channel_id: channel_id } })
+    fetchChannel(channel_id, type){
+        App.clientChannel.send({ type: "FETCH_CHANNEL", data: { channel_id: channel_id, messageable_type: type } })
     }
     addUserToChannel(userId, channelId){
         App.clientChannel.send({type: "ADD_USER_TO_CHANNEL", data: {user_id: userId, channel_id: channelId}})
@@ -90,9 +91,12 @@ class Client extends React.Component {
                 return this.handleNewUser(data.user);
             case "RECEIVE_CHANNELS":
                 this.props.receiveChannels(data.channels)
-            break;
+                break;
+            case "RECEIVE_DMS":
+                this.props.receiveDMs(data.dms)
+                break;
             case "DELETE_CHANNEL":
-                this.changeChannelView(1)()
+                this.changeChannelView(1, "Channel")()
                 this.props.deleteChannel(data.channelId)
                 break;
             case "DELETE_MESSAGE":
@@ -102,7 +106,7 @@ class Client extends React.Component {
     }
     handleNewUser(user){
         this.props.receiveUser(user)
-        this.fetchChannel(this.props.currentChannelId)
+        this.fetchChannel(this.props.currentChannelId, this.props.currentChannelType)
     }
     updateChannels(ids){
         // App.clientChannel
@@ -111,7 +115,7 @@ class Client extends React.Component {
         // debugger
         this.props.receiveChannel(channel)
         // debugger
-        if(author_id === this.props.currentUser.id) this.changeChannelView(channel.id)(false)
+        if(author_id === this.props.currentUser.id) this.changeChannelView(channel.id, channel.messageable_type)(false)
         
     }
     fetchAllChannels(){
@@ -151,7 +155,7 @@ class Client extends React.Component {
         //I'm so sorry.
         switch(this.props.overlayType){
             case "OVERLAY_CREATE_CHANNEL":
-                overlay = <CreateChannelOverlay createChannel={this.createChannel} addUsersToChannel={this.addUsersToChannel} changeChannelView={this.changeChannelView} closeOverlay={this.closeOverlay}/>
+                overlay = <CreateChannelOverlay createChannel={this.createChannel} addUsersToChannel={this.addUsersToChannel}  closeOverlay={this.closeOverlay}/>
                 break;
             case "OVERLAY_SHOW_CHANNELS":
                 overlay = <ShowChannelsOverlay fetchAllChannels={this.fetchAllChannels} addUserToChannel={this.addUserToChannel} changeChannelView={this.changeChannelView} closeOverlay={this.closeOverlay} />
@@ -180,15 +184,15 @@ class Client extends React.Component {
                         </div>
                     </div>
                     <ul className="menu-options">
-                        <li className="menu-item">Set a status</li>
-                        <li className="menu-item">Profile & account</li>
-                        <li className="menu-item">Preferences</li>
-                        <li className="menu-item">Set yourself to <span className="text-bold">away</span></li>
-                        <li className="menu-item">Help & Feedback</li>
-                        <div className="divider"/>
-                        <li className="menu-item">Invite People</li>
-                        <li className="menu-item">Analytics</li>
-                        <li className="menu-item">Customize Loose</li>
+                        {/* <li className="menu-item">Set a status</li> */}
+                        {/* <li className="menu-item">Profile & account</li> */}
+                        {/* <li className="menu-item">Preferences</li> */}
+                        {/* <li className="menu-item">Set yourself to <span className="text-bold">away</span></li> */}
+                        {/* <li className="menu-item">Help & Feedback</li> */}
+                        {/* <div className="divider"/> */}
+                        {/* <li className="menu-item">Invite People</li> */}
+                        {/* <li className="menu-item">Analytics</li> */}
+                        {/* <li className="menu-item">Customize Loose</li> */}
                         <li onClick={this.logout} className="menu-item">Sign out of <span className="text-bold">Loose</span></li>
                     </ul>
                     
@@ -206,6 +210,7 @@ class Client extends React.Component {
 }
 const mapStateToProps = (state) => ({
     currentChannelId: state.ui.chatWindow.id,
+    currentChannelType: state.ui.chatWindow.type,
     currentUser: state.entities.users[state.session.id],
     showMenu: state.ui.clientMenu.showMenu,
     overlayType: state.ui.overlay.overlayType
@@ -213,8 +218,9 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = dispatch => ({
     fetchDefaultChannel: () => dispatch(getDefaultChannel()),
     receiveChannels: (channels) => dispatch(receiveChannels(channels)),
+    receiveDMs: (dms) => dispatch(receiveDMs(dms)),
     fetchAllUsers: () => dispatch(getAllUsers()),
-    changeChannelView: (id) => dispatch(changeChatWindowView(id)),
+    changeChannelView: (id, type) => dispatch(changeChatWindowView(id, type)),
     logout: ()=> dispatch(logout()),
     hideMenu: ()=> dispatch(hideMenu()),
     receiveChannel: (channel) => new Promise(()=>dispatch(receiveChannel(channel))),

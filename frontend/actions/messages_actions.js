@@ -27,9 +27,13 @@ const deleteMessageAction = id => {
         id
     }
 }
-export const fetchMessages = (channelId) => dispatch => {
-    return MessagesApiUtil.fetchMessages(channelId)
-        .then((messages) => dispatch(receiveMessages(messages)))
+export const fetchMessages = (messageableId, messageableType) => dispatch => {
+    // debugger
+    const promise = messageableType === "Channel" ? 
+        MessagesApiUtil.fetchMessagesFromChannel(messageableId)
+        : MessagesApiUtil.fetchMessagesFromDM(messageableId);
+
+        return promise.then((messages) => dispatch(receiveMessages(messages)))
         .fail((errors) => dispatch(receiveMessageErrors(errors)))
 }
 export const sendMessage = (message) => dispatch => {

@@ -50,9 +50,9 @@ class ShowChannelsOverlay extends React.Component {
 
         }
     }
-    handleJoinedChannelClick(id){
+    handleJoinedChannelClick(channel){
         return (e) => {
-            this.props.changeChannelView(id)();
+            this.props.changeChannelView(channel.id, channel.messageable_type)();
             this.closeOverlay();
         }
     }
@@ -77,7 +77,7 @@ class ShowChannelsOverlay extends React.Component {
         })
         const joinedChannelList = this.state.joinedChannels.map(channel =>{
             return(
-                <li onClick={this.handleJoinedChannelClick(channel.id)} key={`channel-${channel.id}`} className="browse-channel-item">
+                <li onClick={this.handleJoinedChannelClick(channel)} key={`channel-${channel.id}`} className="browse-channel-item">
                     <div className="channel-info">
                         <div className="channel-title">
                             #{channel.title}

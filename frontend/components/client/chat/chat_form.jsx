@@ -17,7 +17,7 @@ class ChatForm extends React.Component {
                 this.messageSubmit();
             }
             else{
-                
+                setTimeout(() => document.getElementById("messages-end").scrollIntoView(), 0);
             }
         }
     }
@@ -78,14 +78,12 @@ class ChatForm extends React.Component {
 
     }
     componentDidUpdate(){
-        setTimeout(()=>document.getElementById("messages-end").scrollIntoView(), 0);
         
     }
     handleBodyUpdate(e) {
         this.setState({ body: e.target.value })
     }
     render(){
-
         return (
             <form id="message-window-form" className="message-form">
                 <textarea id="message-window-textarea" onKeyDown={this.onEnterPress} value={this.state.body} onChange={this.handleBodyUpdate} type="text" className="message-input" placeholder="Message channel" />

@@ -112,12 +112,14 @@ class ChatMessage extends React.Component{
                                     </span>
                                     <span className={`message-body ${this.props.message.is_auto_message ? "auto-message" : ""}`}>{this.props.message.body}</span>
                                 </div>
-
                             </div>
                         )}
+                        {!this.props.message.is_auto_message && this.props.message.sender_id === this.props.currentUserId ?
                         <div className="message-tooltip">
                             <button onClick={this.openMessageSettings} className="tooltip-button"><MoreHorizontal className="more" /></button>
                         </div>
+                        : null}
+
                         {this.state.showPopup ?
                             <>
                                 <div className="popup">
@@ -141,7 +143,9 @@ class ChatMessage extends React.Component{
     }
 
     editMessage(){
+        
         console.log("editing")
+
         this.setState({isEditing: true})
         this.closePopup();
         this.ref.current.scrollIntoView({ behavior: 'smooth'});
@@ -180,7 +184,8 @@ class ChatMessage extends React.Component{
     }
 }
 const mapStateToProps = (state) => ({
-    users: state.entities.users
+    users: state.entities.users,
+    currentUserId: state.session.id
 })
 const mapDispatchToProps = (dispatch) => ({
     deleteMessage: id=>dispatch(deleteMessage(id)),

@@ -1,9 +1,14 @@
 class MessagesChannel < ApplicationCable::Channel
   def subscribed
-    @channel = Channel.find(params[:channel_id]) if params[:channel_id]
+    # @messageable = Channel.find(params[:channel_id]) if params[:channel_id]
+    messageable_constant = params[:messageable_type].constantize
+    @messageable = messageable_constant.find(params[:messageable_id]) if params[:messageable_id]
+    # @messageable = messageableConstant.find(params[:channel_id])
+    # debugger
     #channel = Channel.first;
-    stream_for @channel
+    stream_for @messageable
   end 
+  
   def receive(data)
     request_data = data["data"]
     case data["type"]
@@ -14,10 +19,11 @@ class MessagesChannel < ApplicationCable::Channel
           sendDeleteMessage(channel, message)
         end
       when "NEW_MESSAGE"
-        @message = @channel.messages.new(body: request_data["body"])
+        # debugger
+        @message = @messageable.messages.new(body: request_data["body"])
         @message.sender_id = current_user.id
         if @message.save
-            sendMessage(@channel, @message)
+            sendMessage(@messageable, @message)
         else
           puts(@messages.errors.full_messages)
 
@@ -27,8 +33,8 @@ class MessagesChannel < ApplicationCable::Channel
         if message
           # debugger
           message.update(request_data["message"])
-          # sendDeleteMessage(@channel, message)
-          sendMessage(@channel, message)
+          # sendDeleteMessage(@messageable, message)
+          sendMessage(@messageable, message)
         end
     end
     

@@ -11,6 +11,8 @@ Rails.application.routes.draw do
       get 'users', to: 'users#getAllUsersForChannel'
       post 'users', to: 'channels#addUsersToChannel'
     end
+    get "direct_messages/:id/messages", to: "direct_messages#messages"
+    get 'direct_messages/currentUserDMs', to: 'direct_messages#current_user_dms'
     resources :messages, only: [:update]
     get 'session/check_email', to: 'sessions#check_email' 
     get 'channels/getDefaultChannelId', to: 'channels#getDefaultChannelId' 

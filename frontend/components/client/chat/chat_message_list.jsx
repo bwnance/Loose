@@ -7,6 +7,7 @@ class ChatMessageList extends React.Component {
         //new message arrived, scroll to the bottom!
         if(this.props.messages.length !== nextProps.messages.length){
             document.getElementById("messages-end").scrollIntoView();
+            // document.getElementsByClassName("window-message-list")[0].scrollTop = 9999999;
         }
     }
     render(){

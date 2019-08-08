@@ -8,7 +8,6 @@ class Api::ChannelsController < ApplicationController
             render 'api/errors/errors', status: 422
         end
     end
-
     def index
         @channels = Channel.includes(:users).all
         render :index

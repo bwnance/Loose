@@ -7,6 +7,8 @@ import MainSettings from './settings/main_settings'
 import RenamePage from './settings/rename_page'
 import PurposePage from './settings/purpose_page'
 import DeletePage from './settings/delete_page'
+import { getCurrentChannel } from '../../../util/messageable_util'
+
 // import { deleteChannel, addUsersToChannel } from '../../../actions/channel_actions'
 class SettingsOverlay extends React.Component {
     constructor(props) {
@@ -68,7 +70,7 @@ class SettingsOverlay extends React.Component {
     }
 }
 const mapStateToProps = (state) => ({
-    currentChannel: state.entities.channels[state.ui.chatWindow.id]
+    currentChannel: getCurrentChannel(state)
 })
 const mapDispatchToProps = (dispatch) => ({
     closeOverlay: () => dispatch(closeOverlay()),

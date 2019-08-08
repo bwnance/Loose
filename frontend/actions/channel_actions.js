@@ -12,16 +12,16 @@ export const receiveChannels = (channels) =>{
         channels
     }
 }
-const deleteChannelAction = (channelId) => {
-    return {
-        type: DELETE_CHANNEL,
-        channelId
-    }
-}
 export const receiveChannel = (channel) =>{
     return {
         type: RECEIVE_CHANNEL,
         channel
+    }
+}
+const deleteChannelAction = (channelId) => {
+    return {
+        type: DELETE_CHANNEL,
+        channelId
     }
 }
 export const receiveChannelErrors = (errors) => {

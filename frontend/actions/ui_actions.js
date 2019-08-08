@@ -8,9 +8,10 @@ export const HIDE_MENU = "HIDE_MENU"
 export const SHOW_CREATE_CHANNEL_OVERLAY = "SHOW_CREATE_CHANNEL_OVERLAY";
 export const SHOW_CHANNELS_OVERLAY = "SHOW_CHANNELS_OVERLAY";
 export const SHOW_ADD_USER_TO_CHANNEL_OVERLAY = "SHOW_ADD_USER_TO_CHANNEL_OVERLAY";
-export const CLOSE_OVERLAY = "CLOSE_OVERLAY"
-export const SHOW_TOPIC_OVERLAY = "SHOW_TOPIC_OVERLAY"
-export const SHOW_SETTINGS_OVERLAY = "SHOW_SETTINGS_OVERLAY"
+export const CLOSE_OVERLAY = "CLOSE_OVERLAY";
+export const SHOW_TOPIC_OVERLAY = "SHOW_TOPIC_OVERLAY";
+export const SHOW_SETTINGS_OVERLAY = "SHOW_SETTINGS_OVERLAY";
+export const SHOW_DMS_OVERLAY = "SHOW_DMS_OVERLAY";
 const uiErrors = errors => ({
     type: RECEIVE_UI_ERRORS,
     errors
@@ -34,6 +35,11 @@ const closeOverlayAction = () => {
         type: CLOSE_OVERLAY
     }
 }
+const showDMsOverlayAction = () => {
+    return {
+        type: SHOW_DMS_OVERLAY
+    }
+}
 const showSettingsOverlayAction = () => {
     return {
         type: SHOW_SETTINGS_OVERLAY
@@ -51,10 +57,11 @@ const receiveEmailFormData = (data) => {
         data
     }
 }
-export const changeChatWindowView = (id) => {
-    return {
+export const changeChatWindowView = (id, messageableType) => {
+    return console.log("changechat") || {
         type: RECEIVE_CURRENT_CHAT_WINDOW_ID,
-        id
+        id,
+        messageableType
     }
 }
 export const showMenu = () => {
@@ -71,7 +78,7 @@ export const hideMenu = () => {
 }
 export const getDefaultChannel = () => dispatch => {
     return UiAPIUtil.fetchDefaultChannel()
-        .then(({id}) => dispatch(changeChatWindowView(id)))
+        .then(({id}) => dispatch(changeChatWindowView(id, "Channel")))
         //.fail((err) => console.log(err))
 }
 export const checkEmail = (email) => dispatch => {
@@ -97,4 +104,7 @@ export const showSettingsOverlay = () => dispatch => {
 }
 export const closeOverlay = () => dispatch => {
     return dispatch(closeOverlayAction())
+}
+export const showDMsOverlay = ()=> dispatch => {
+    return dispatch(showDMsOverlayAction())
 }

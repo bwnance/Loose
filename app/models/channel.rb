@@ -15,8 +15,8 @@ class Channel < ApplicationRecord
     has_many :messages, as: :messageable
     has_many :channel_memberships,  class_name: :ChannelMemberships
     has_many :users, through: :channel_memberships
-
+    
     def self.default
-        Channel.find_by(title: "general")
+        Channel.find_by(id: 1)
     end
 end

@@ -27,6 +27,10 @@ class ChatWindow extends React.Component {
                 if (prevMessage && prevMessage.sender_id !== message.sender_id){
                     isTopLevelMessage = true;
                 }
+                if (prevMessage.is_auto_message){
+                    isTopLevelMessage = true;
+                }
+                    
             }
             else{
                 isTopLevelMessage = true;
@@ -57,20 +61,21 @@ class ChatWindow extends React.Component {
         )
     }
     handleMessageSubmit(body){
-        App.messaging.send({type: "NEW_MESSAGE", data: {body}})
+        App.messaging.send({type: "NEW_MESSAGE", data: {body, messageable_type: this.props.currentChannelType}})
     }
     setupSubscription(){
         //console.log("CONNECTING...")
+        // debugger
         App.messaging = App.cable.subscriptions.create(
         {
             channel: 'MessagesChannel',
-            channel_id: this.props.currentChannelId
+            messageable_id: this.props.currentChannelId, 
+            messageable_type: this.props.currentChannelType
         },
         {
             received: this.receiveMessage,
         //connected: () => console.log("CONNECTED")}
         })
-
     }
     receiveMessage(payload){
         switch(payload.type){
@@ -105,7 +110,7 @@ class ChatWindow extends React.Component {
     
     populateMessages(){
         const channelId = this.props.currentChannelId
-        return this.props.populateMessages(channelId)
+        return this.props.populateMessages(channelId, this.props.currentChannelType)
 
     }
     componentDidMount(){
@@ -122,6 +127,7 @@ const mapStateToProps = (state) => {
     // debugger
     return {
         currentChannelId: state.ui.chatWindow.id,
+        currentChannelType: state.ui.chatWindow.messageableType,
         messages: Object.values(state.entities.messages),
         users: state.entities.users
     }
@@ -130,7 +136,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
     getUser: (userId) => dispatch(getUser(userId)),
-    populateMessages: (channelId) => dispatch(fetchMessages(channelId)),
+    populateMessages: (channelId, type) => dispatch(fetchMessages(channelId, type)),
     receiveMessage: (message) => dispatch(receiveMessage(message)),
     deleteMessage: (message) => dispatch(deleteMessage(message))
 })
