@@ -272,6 +272,66 @@ body{
             }
         }
     }
+    .rename-page{
+        display: flex;
+        flex-direction: column;
+        .rename-form{
+            display: flex;
+            flex-direction: column;
+            input{
+                margin-bottom: 0px;
+            }
+            .subtitle{
+                margin-top: 0px;
+            }
+            .bottom-row{
+                display: flex;
+                justify-content: flex-end;
+                margin-top: 30px;
+            }
+            button:focus{
+            outline: none;
+            }
+            .cancel-btn{
+                transition-duration: 0.2s;
+                &:hover{
+                    cursor: pointer;
+                    transition-duration: 0.3s;
+                    color: $alt-text;
+                    background-color: $color-secondary;
+                }
+                border: 1px solid $border-color;
+
+            }
+            .submit-btn{
+                background-color: $color-foreground;
+                border: 1px solid $color-foreground;
+
+                color: $alt-text;
+                box-sizing: border-box;
+                &:hover{
+                    cursor: pointer;
+                    transition-duration: 0.2s;
+                    transition-duration: 0.2s;
+                    color: $alt-text;
+                    background-color: $color-secondary;
+                    border: 1px solid $border-color;
+                }
+            }
+            button{
+                background: none;
+                border: none;
+                height: 40px;
+                border-radius: 4px;
+                min-width: 85px;
+                padding: 10px;
+                font-weight: bold;
+                font-size: 14px;
+                margin-left: 20px;
+                // background-color: red;
+            }
+        }
+    }
 }
 .client-navbar{
     
@@ -1226,11 +1286,9 @@ body{
         width: 2px;
         background-color: transparent;
     }
-
-
     .window-message-list{
         overflow-y: scroll;
-        box-sizing: border-box;
+        // box-sizing: border-box;
         height: 90%;
         // width: 100%;
         overflow-y: scroll !important;

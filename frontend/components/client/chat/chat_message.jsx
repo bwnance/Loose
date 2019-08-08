@@ -11,7 +11,7 @@ class ChatMessage extends React.Component{
         
         this.subsequentMessage = false;
         
-        
+        this.ref = React.createRef();
         this.openMessageSettings = this.openMessageSettings.bind(this)
         this.closePopup = this.closePopup.bind(this)
         this.handleClick = this.handleClick.bind(this)
@@ -58,8 +58,7 @@ class ChatMessage extends React.Component{
         // }
         // if(this.props.message.is_auto_message) this.subsequentMessage = false;
         return (
-
-            <li className="chat-message">
+            <li className="chat-message" ref={this.ref}>
                 { this.state.isEditing ? 
                     (<>
                         <div className="message-info">
@@ -136,16 +135,16 @@ class ChatMessage extends React.Component{
                         }
                     </>
                     )
-                }                          
+                }
         </li>
-        
         )
-
     }
+
     editMessage(){
         console.log("editing")
         this.setState({isEditing: true})
         this.closePopup();
+        this.ref.current.scrollIntoView({ behavior: 'smooth'});
     }
     deleteMessage(){
         this.closePopup();

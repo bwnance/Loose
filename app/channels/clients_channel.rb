@@ -71,15 +71,24 @@ class ClientsChannel < ApplicationCable::Channel
         # end
       when "UPDATE_CHANNEL"
         # debugger
-        channel = Channel.find_by(id: data["channel_id"])
-        if channel.update(request_data)
+        channel = Channel.find_by(id: request_data["channel_id"])
+        oldTitle = channel.title
+        # debugger
+        if channel.update(request_data["channel"])
           i = 0;
           channel.users.each do |user|
             ClientsChannel.broadcast_to(user, {type: "CHANNEL_SUCCESS", author_id: current_user.id, channel: {id: channel.id, created_at: channel.created_at,topic: channel.topic, title: channel.title,purpose: channel.purpose, user_ids: channel.users.ids}})
           end
-          message = channel.messages.new(body: "set the channel topic: #{channel.topic}", sender_id: current_user.id, is_auto_message: true)
-          if(message.save)
-            MessagesChannel.broadcast_to(channel, message);
+          
+          if request_data["type"] == "TOPIC" 
+            message = channel.messages.new(body: "set the channel topic: #{channel.topic}", sender_id: current_user.id, is_auto_message: true)
+          elsif request_data["type"] == "TITLE"
+            message = channel.messages.new(body: "renamed the channel from: \"#{oldTitle}\" to \"#{channel.title}\"", sender_id: current_user.id, is_auto_message: true)
+          end
+          if(message && message.save)
+            MessagesChannel.broadcast_to(channel,  {type: "NEW_MESSAGE", message: message});
+          else
+            # debugger
           end
           # ActionCable.server.broadcast({type: "CHANNEL_SUCCESS", author_id: current_user.id, channel: {id: channel.id, title: channel.title,purpose: channel.purpose, user_ids: channel.users.ids}})
         end

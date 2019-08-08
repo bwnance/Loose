@@ -3,7 +3,6 @@ class MessagesChannel < ApplicationCable::Channel
     @channel = Channel.find(params[:channel_id]) if params[:channel_id]
     #channel = Channel.first;
     stream_for @channel
-    
   end 
   def receive(data)
     request_data = data["data"]

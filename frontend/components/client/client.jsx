@@ -61,7 +61,7 @@ class Client extends React.Component {
             
         }
     updateChannel(data, channel_id){
-        const payload = { type: "UPDATE_CHANNEL", data, channel_id}  
+        const payload = { type: "UPDATE_CHANNEL", data: { channel_id,type: "TOPIC", channel: data}}  
         console.log(payload)
         App.clientChannel.send(payload)
     }

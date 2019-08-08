@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import {closeOverlay} from '../../../actions/ui_actions'
+import {updateChannel} from '../../../actions/cable_actions'
 import SettingsNavBar from './settings/settings_navbar'
 import MainSettings from './settings/main_settings'
 import RenamePage from './settings/rename_page'
@@ -15,6 +16,7 @@ class SettingsOverlay extends React.Component {
         this.goBack = this.goBack.bind(this)
         this.changeView = this.changeView.bind(this)
         this.deleteChannel = this.deleteChannel.bind(this)
+        this.renameChannel = this.renameChannel.bind(this)
     }
     
     setStateFromChild(state) {
@@ -36,6 +38,9 @@ class SettingsOverlay extends React.Component {
             this.setState({ currentPage: pageName})
         }
     }
+    renameChannel(value){
+        this.props.updateChannel(this.props.currentChannel.id, {title: value}, "TITLE");
+    }
     render() {
         let content = "";
         switch (this.state.currentPage) {
@@ -43,7 +48,7 @@ class SettingsOverlay extends React.Component {
                 content = <MainSettings changeView={this.changeView}/>
                 break;
             case "RENAME":
-                content = <RenamePage />
+                content = <RenamePage closeOverlay={this.props.closeOverlay} currentChannel={this.props.currentChannel} renameChannel={this.renameChannel}/>
                 break;
             case "PURPOSE":
                 content = <PurposePage />
@@ -66,6 +71,7 @@ const mapStateToProps = (state) => ({
     currentChannel: state.entities.channels[state.ui.chatWindow.id]
 })
 const mapDispatchToProps = (dispatch) => ({
-    closeOverlay: () => dispatch(closeOverlay())
+    closeOverlay: () => dispatch(closeOverlay()),
+    updateChannel: (channel_id, data, type) => dispatch(updateChannel(channel_id, data, type))
 })
 export default connect(mapStateToProps, mapDispatchToProps)(SettingsOverlay)

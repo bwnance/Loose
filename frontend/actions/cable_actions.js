@@ -5,3 +5,7 @@ export const deleteMessage = (message) => dispatch => {
 export const updateMessage = (message_id, message) => dispatch => {
     CableUtil.updateMessage(message_id, message)
 }
+export const updateChannel = (channelId, channel, type="") => dispatch => {
+    // debugger
+    CableUtil.updateChannel(channelId, channel, type)
+}
