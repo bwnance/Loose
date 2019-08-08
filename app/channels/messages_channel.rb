@@ -1,6 +1,7 @@
 class MessagesChannel < ApplicationCable::Channel
   def subscribed
     # @messageable = Channel.find(params[:channel_id]) if params[:channel_id]
+    # debugger
     messageable_constant = params[:messageable_type].constantize
     @messageable = messageable_constant.find(params[:messageable_id]) if params[:messageable_id]
     # @messageable = messageableConstant.find(params[:channel_id])

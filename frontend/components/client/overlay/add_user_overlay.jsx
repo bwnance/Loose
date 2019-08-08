@@ -15,7 +15,7 @@ class AddUserOverlay extends React.Component {
     handleSubmit(e) {
         e.preventDefault()
         console.log(this.state.selectedUsers)
-        this.props.addUsersToChannel(this.state.selectedUsers, this.props.currentChannel.id);
+        this.props.addUsersToChannel(this.state.selectedUsers, this.props.currentChannel.id, "Channel");
         
         this.resetState()
         this.props.closeOverlay();

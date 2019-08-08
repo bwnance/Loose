@@ -14,7 +14,7 @@ class CreateChannelOverlay extends React.Component {
     }
     onSubmit(e) {
         e.preventDefault()
-        this.props.createChannel(this.state);
+        this.props.createChannel(this.state, "Channel");
         this.resetState()
 
     }       

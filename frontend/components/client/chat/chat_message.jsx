@@ -21,6 +21,9 @@ class ChatMessage extends React.Component{
         this.stopEditing = this.stopEditing.bind(this)
         this.saveChanges = this.saveChanges.bind(this)
     }
+    componentWillUnmount() {
+        // debugger
+    }
     openMessageSettings(){
         this.setState({showPopup: true});
     }

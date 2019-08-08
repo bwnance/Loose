@@ -6,11 +6,11 @@ class ClientsChannel < ApplicationCable::Channel
   def getMessageableConst(type)
     type.constantize
   end
-  def send_channel_success(user, channel)
-    ClientsChannel.broadcast_to(user, {type: "CHANNEL_SUCCESS", author_id: current_user.id, channel: {id: channel.id,created_at: channel.created_at,topic: channel.topic, title: channel.title,purpose: channel.purpose, user_ids: channel.users.ids}})
+  def send_channel_success(user, channel, type)
+    ClientsChannel.broadcast_to(user, {type: "CHANNEL_SUCCESS", author_id: current_user.id, channel: {id: channel.id, messageable_type: type, created_at: channel.created_at,topic: channel.topic, title: channel.title,purpose: channel.purpose, user_ids: channel.users.ids}})
 
   end
-  def send_channel_delete(user, channelId)
+  def send_channel_delete(user, channel_id)
     ClientsChannel.broadcast_to(user,{type: "DELETE_CHANNEL", channelId: channel_id})
   end
   def send_receive_channels(user, channels)
@@ -26,10 +26,11 @@ class ClientsChannel < ApplicationCable::Channel
      
       when "FETCH_CHANNEL"
         return if !request_data["messageable_type"] || request_data["channel_id"]
-        channel = getMessageableConst(request_data["messageable_type"]).find_by(id: request_data["channel_id"])
+        channel_type = request_data["messageable_type"]
+        channel = getMessageableConst(channel_type).find_by(id: request_data["channel_id"])
         if channel
               # ClientsChannel.broadcast_to(current_user, {type: "CHANNEL_SUCCESS", author_id: current_user.id,channel: {id: channel.id,created_at: channel.created_at,topic: channel.topic, title: channel.title,purpose: channel.purpose, user_ids: channel.users.ids}})
-              send_channel_success(current_user, channel)
+              send_channel_success(current_user, channel, channel_type)
         end
       when "DELETE_CHANNEL"
         if request_data["channel_id"] == 1
@@ -43,7 +44,7 @@ class ClientsChannel < ApplicationCable::Channel
           users = User.where(id: channel_members)
           
           users.each do |user|
-            send_delete_channel(user, channel_id)
+            send_channel_delete(user, channel_id)
           end
         end
       when "FETCH_ALL_CHANNELS"
@@ -58,10 +59,13 @@ class ClientsChannel < ApplicationCable::Channel
 
         end
       when "CREATE_CHANNEL"
-        channel = Channel.new(title: request_data["title"], purpose: request_data["purpose"])
+        # debugger
+        channel_info = request_data["channel"]
+        channel_type = request_data["messageable_type"];
+        channel = getMessageableConst(channel_type).new(title: channel_info["title"], purpose: channel_info["purpose"])
         if channel.save!
             #add to channel
-            users_to_add = request_data["selectedUsers"].is_a?(Array) ? request_data["selectedUsers"] + [current_user.id] : [current_user.id]
+            users_to_add = channel_info["selectedUsers"].is_a?(Array) ? channel_info["selectedUsers"] + [current_user.id] : [current_user.id]
             users = User.includes(:channels).where(id: users_to_add)
             channel.users.concat(users)
             
@@ -78,7 +82,7 @@ class ClientsChannel < ApplicationCable::Channel
                     updatedUsers << user.id
                     # console.log(user)
                     # ClientsChannel.broadcast_to(user, {type: "CHANNEL_SUCCESS", author_id: current_user.id, channel: {id: channel.id,  created_at: channel.created_at,topic: channel.topic, title: channel.title,purpose: channel.purpose, user_ids: channel.users.ids}})
-                    send_channel_success(user, channel)
+                    send_channel_success(user, channel, channel_type)
                   end
                 end
               end
@@ -99,7 +103,7 @@ class ClientsChannel < ApplicationCable::Channel
         if channel.update(request_data["channel"])
           i = 0;
           channel.users.each do |user|
-            send_channel_success(user, channel)
+            send_channel_success(user, channel, "Channel")
             # ClientsChannel.broadcast_to(user, {type: "CHANNEL_SUCCESS", author_id: current_user.id, channel: {id: channel.id, created_at: channel.created_at,topic: channel.topic, title: channel.title,purpose: channel.purpose, user_ids: channel.users.ids}})
           end
           
@@ -117,13 +121,15 @@ class ClientsChannel < ApplicationCable::Channel
         end
       when "ADD_USERS_TO_CHANNEL"
         users_to_add = request_data["selectedUsers"]
-        channel = Channel.includes(:users).find_by(id: request_data["channel_id"])
+        channel_type = request_data["messageable_type"];
+
+        channel = getMessageableConst(channel_type).includes(:users).find_by(id: request_data["channel_id"])
         users = User.where(id: users_to_add)
         # debugger
         if users_to_add && users && channel
           channel.users.concat(users)
           users.each do |user|
-            send_channel_success(user, channel)
+            send_channel_success(user, channel, channel_type)
             # ClientsChannel.broadcast_to(user, {type: "CHANNEL_SUCCESS", author_id: current_user.id,topic: channel.topic, created_at: channel.created_at,channel: {id: channel.id, title: channel.title,purpose: channel.purpose, user_ids: channel.users.ids}})
           end     
           channel.users.includes(:channels, :messages).each do |user|
@@ -131,11 +137,13 @@ class ClientsChannel < ApplicationCable::Channel
           end
         end
       when "ADD_USER_TO_CHANNEL"
+        # debugger
         user = User.find_by(id: request_data["user_id"])
-        channel = Channel.includes(:users).find_by(id: request_data["channel_id"])
+        channel_type = request_data["messageable_type"];
+        channel = getMessageableConst(channel_type).includes(:users).find_by(id: request_data["channel_id"])
         if user && channel
           channel.users << user
-          send_channel_success(user, channel)
+          send_channel_success(user, channel, channel_type)
           # ClientsChannel.broadcast_to(user, {type: "CHANNEL_SUCCESS", author_id: current_user.id,topic: channel.topic, created_at: channel.created_at,channel: {id: channel.id, title: channel.title,purpose: channel.purpose, user_ids: channel.users.ids}})
         end
         channel.users.includes(:channels, :messages).each do |user|

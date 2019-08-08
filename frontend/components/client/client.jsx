@@ -61,24 +61,25 @@ class Client extends React.Component {
             // })
             
         }
+    //only "Channel" channels can be updated
     updateChannel(data, channel_id){
-        const payload = { type: "UPDATE_CHANNEL", data: { channel_id,type: "TOPIC", channel: data}}  
+        const payload = { type: "UPDATE_CHANNEL", data: { channel_id, messageable_type:"CHANNEL" ,type: "TOPIC", channel: data}}  
         console.log(payload)
         App.clientChannel.send(payload)
     }
-    addUsersToChannel(users, channelId){
+    addUsersToChannel(users, channel){
         console.log(users)
-        App.clientChannel.send({ type: "ADD_USERS_TO_CHANNEL", data: { selectedUsers: users, channel_id: channelId } })
+        App.clientChannel.send({ type: "ADD_USERS_TO_CHANNEL", data: { selectedUsers: users, channel_id: channel.id, messageable_type: channel.type } })
     }
     fetchChannel(channel_id, type){
         App.clientChannel.send({ type: "FETCH_CHANNEL", data: { channel_id: channel_id, messageable_type: type } })
     }
-    addUserToChannel(userId, channelId){
-        App.clientChannel.send({type: "ADD_USER_TO_CHANNEL", data: {user_id: userId, channel_id: channelId}})
+    addUserToChannel(userId, channel){
+        App.clientChannel.send({type: "ADD_USER_TO_CHANNEL", data: {user_id: userId, channel_id: channel.id, messageable_type: channel.messageable_type}})
         this.closeOverlay();
     }
-    createChannel(data){
-        App.clientChannel.send({type: "CREATE_CHANNEL", data: data})
+    createChannel(data, type){
+        App.clientChannel.send({type: "CREATE_CHANNEL", data: {channel:data, messageable_type: type}})
         this.closeOverlay();
     }
     receiveClientData(data){
@@ -226,7 +227,7 @@ const mapDispatchToProps = dispatch => ({
     receiveChannel: (channel) => new Promise(()=>dispatch(receiveChannel(channel))),
     closeOverlay: () => dispatch(closeOverlay()),
     receiveUser: (user) => dispatch(receiveUser(user)),
-    addUserToChannel: (user) => dispatch(addUserToChannel(user)),
+    // addUserToChannel: (user) => dispatch(addUserToChannel(user)),
     deleteChannel: (channelId) => dispatch(deleteChannel(channelId)),
     deleteMessage: (id) => dispatch(deleteMessage(id))
 
