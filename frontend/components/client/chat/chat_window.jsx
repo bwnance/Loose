@@ -14,41 +14,41 @@ class ChatWindow extends React.Component {
     }
     
     render(){
-        // let prevMessage = null;
-        // const messages = [];
-        // for (let i = 0; i < this.props.messages.length; i++){
+        let prevMessage = null;
+        const messages = [];
+        for (let i = 0; i < this.props.messages.length; i++){
 
-        //     const message = this.props.messages[i]
+            const message = this.props.messages[i]
 
-        //     const prevMessage = this.props.messages[i-1];
-        //     const isTopLevelMessage = false;
-        //     // debugger
-        //     if(prevMessage){
-        //         if (prevMessage && prevMessage.sender_id !== message.sender_id){
-        //             isTopLevelMessage = true;
-        //         }
-        //     }
-        //     else{
-        //         isTopLevelMessage = true;
-        //     }
-        //     if (message.is_auto_message) {
-        //         isTopLevelMessage = true;
-        //     }
+            const prevMessage = this.props.messages[i-1];
+            const isTopLevelMessage = false;
+            // debugger
+            if(prevMessage){
+                if (prevMessage && prevMessage.sender_id !== message.sender_id){
+                    isTopLevelMessage = true;
+                }
+            }
+            else{
+                isTopLevelMessage = true;
+            }
+            if (message.is_auto_message) {
+                isTopLevelMessage = true;
+            }
 
-        //     messages.push(<ChatMessage isTopLevelMessage={isTopLevelMessage} key={`message-${message.id}`} message={message} />)
+            messages.push(<ChatMessage isTopLevelMessage={isTopLevelMessage} key={`message-${message.id}`} message={message} />)
 
-        // }
+        }
         // const messages = this.props.messages.map((message)=>{
         //     return <ChatMessage
         // }
 
-        let prevMessage;
-        const messages = this.props.messages.map((message)=>{
-            let cm = <ChatMessage isTopLevelMessage={true} prevMessage={prevMessage} key={`message-${message.id}`} message={message}/>
-            prevMessage = message
-            return cm;
-        })
-        debugger
+        // let prevMessage;
+        // const messages = this.props.messages.map((message)=>{
+        //     let cm = <ChatMessage isTopLevelMessage={true} prevMessage={prevMessage} key={`message-${message.id}`} message={message}/>
+        //     prevMessage = message
+        //     return cm;
+        // })
+        // debugger
         return (
             <div className="chat-window">
                 <ChatMessageList messages={messages}/>
@@ -119,7 +119,7 @@ class ChatWindow extends React.Component {
 }
 const mapStateToProps = (state) => {
     console.log("msp");
-    debugger
+    // debugger
     return {
         currentChannelId: state.ui.chatWindow.id,
         messages: Object.values(state.entities.messages),

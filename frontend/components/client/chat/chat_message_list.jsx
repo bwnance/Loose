@@ -10,7 +10,7 @@ class ChatMessageList extends React.Component {
         }
     }
     render(){
-        debugger
+        // debugger
         return (
         <ul className="window-message-list">
             {this.props.messages}
