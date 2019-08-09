@@ -5,13 +5,16 @@ class SearchUsersField extends React.Component {
     constructor(props) {
         super(props)
         this.keyUp = this.keyUp.bind(this);
-        this.handleSearchBarInput = this.handleSearchBarInput.bind(this)
         this.selectUser = this.selectUser.bind(this)
         this.onClick = this.onClick.bind(this);
-        this.state = { searchUser: "", selectedUsers: [], foundUsers: [], disableDropdown: false}
+        this.handleSearchBarInput = this.handleSearchBarInput.bind(this)
         this.handleInput = this.handleInput.bind(this)
         this.disableDropdown = this.disableDropdown.bind(this)
-        this.exclusionList = this.props.exclusionList || []
+        this.state = { searchUser: "", selectedUsers: [], foundUsers: [], disableDropdown: false}
+        this.getExclusionList = this.getExclusionList.bind(this)
+    }
+    getExclusionList() {
+        return this.props.exclusionList || []
     }
     setBothStates(state){
         this.props.setParentState(state);
@@ -48,7 +51,7 @@ class SearchUsersField extends React.Component {
         this.handleInput("searchUser")(e);
         const searchText = e.target.value
         let foundUsers = [];
-        Object.values(this.props.users).filter(user=>!this.exclusionList.includes(user.id)).forEach(user => {
+        Object.values(this.props.users).filter(user=>!this.getExclusionList().includes(user.id)).forEach(user => {
             if (searchText !== "" && user.id !== this.props.currentUserId && user.username.startsWith(searchText)) {
                 foundUsers.push(user)
             }
@@ -99,7 +102,7 @@ class SearchUsersField extends React.Component {
             <div className="users-search-field">
                 <div id="channel-members-container" onClick={this.onClick} className="loose-text-input overlay-text-input">
                     {selectedUserSpans}
-                    <input className="search-members-input" type="text" onKeyDown={this.keyUp} onChange={this.handleSearchBarInput} placeholder={placeholder} value={this.state.searchUser} />
+                    <input className={`search-members-input ${this.props.autoHeight ? "" : ""}`} type="text" onKeyDown={this.keyUp} onChange={this.handleSearchBarInput} placeholder={placeholder} value={this.state.searchUser} />
                 </div>
                 {dropdownDisabled ? null : <UsersDropdown disableDropdown={this.disableDropdown} foundUserButtons={foundUserButtons}/>}
             </div>

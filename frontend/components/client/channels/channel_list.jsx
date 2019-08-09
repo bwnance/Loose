@@ -36,7 +36,7 @@ class ChannelList extends React.Component {
             </li>)) // sort alphabetically later
         const dms = this.props.dms.map((dm) => (
             <li id={`channel-${dm.id}`} className={`channel-list-item  ${dm.id === this.props.currentChannel ? " selected-channel" : ""}`} key={`channel-${dm.id}`}>
-                <button className="channel-list-item-button" onClick={this.props.changeChannelView(dm.id, dm.messageable_type)} >{`# ${dm.title}`}</button>
+                <button className="channel-list-item-button" onClick={this.props.changeChannelView(dm.id, dm.messageable_type)} ><i className="user-active fa fa-circle" />{`${dm.title}`}</button>
             </li>)) // sort alphabetically later
         return (
             <>

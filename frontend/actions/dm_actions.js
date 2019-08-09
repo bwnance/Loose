@@ -5,10 +5,10 @@ import * as DMApiUtil from '../util/dm_api_util'
 export const RECEIVE_DMS = "RECEIVE_DMS"
 export const RECEIVE_DM = "RECEIVE_DM"
 
-export const receiveDM = (dms) => {
+export const receiveDM = (dm) => {
     return {
         type: RECEIVE_DM,
-        dms
+        dm
     }
 }
 export const receiveDMs = (dms) => {

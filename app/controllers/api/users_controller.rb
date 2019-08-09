@@ -3,6 +3,8 @@ class Api::UsersController < ApplicationController
         @user = User.new(user_params)
         if @user.save
             @user.channels << Channel.default
+            dm = DirectMessage.create()
+            dm.users << @user
             login!(@user)
             render :show
         else

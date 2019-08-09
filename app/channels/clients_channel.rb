@@ -7,8 +7,12 @@ class ClientsChannel < ApplicationCable::Channel
     type.constantize
   end
   def send_channel_success(user, channel, type)
-    ClientsChannel.broadcast_to(user, {type: "CHANNEL_SUCCESS", author_id: current_user.id, channel: {id: channel.id, messageable_type: type, created_at: channel.created_at,topic: channel.topic, title: channel.title,purpose: channel.purpose, user_ids: channel.users.ids}})
-
+    if type == "DirectMessage"
+      title = channel.users.map { |user| user.full_name if user.id != current_user.id }.compact().join(", ")
+      ClientsChannel.broadcast_to(user, {type: "CHANNEL_SUCCESS", author_id: current_user.id, channel: {id: channel.id, messageable_type: type,title: title, created_at: channel.created_at,user_ids: channel.users.ids}})
+    else
+      ClientsChannel.broadcast_to(user, {type: "CHANNEL_SUCCESS", author_id: current_user.id, channel: {id: channel.id, messageable_type: type, created_at: channel.created_at,topic: channel.topic, title: channel.title,purpose: channel.purpose, user_ids: channel.users.ids}})
+    end
   end
   def send_channel_delete(user, channel_id)
     ClientsChannel.broadcast_to(user,{type: "DELETE_CHANNEL", channelId: channel_id})
@@ -124,6 +128,9 @@ class ClientsChannel < ApplicationCable::Channel
         channel_type = request_data["messageable_type"];
 
         channel = getMessageableConst(channel_type).includes(:users).find_by(id: request_data["channel_id"])
+        if !channel && channel_type == "DirectMessage"
+          channel = getMessageableConst(channel_type).create()
+        end
         users = User.where(id: users_to_add)
         # debugger
         if users_to_add && users && channel
@@ -135,7 +142,12 @@ class ClientsChannel < ApplicationCable::Channel
           channel.users.includes(:channels, :messages).each do |user|
             send_user_add(user)
           end
+        # elsif users_to_add && users && channel_type == "DirectMessage"
+        #   # dm = getMessageableConst(channel_type).create()
+        #   # dm.users.concat(users)
+
         end
+    
       when "ADD_USER_TO_CHANNEL"
         # debugger
         user = User.find_by(id: request_data["user_id"])

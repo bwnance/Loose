@@ -95,7 +95,7 @@ class ClientNavBar extends React.Component {
                     <span className="right-side">
                         {/* //<i className="fa fa-phone-alt" /> */}
                         {/* <i className="fa fa-info-circle" /> */}
-                            <i onClick={this.showSettingsOverlay} className="fa fa-cog" />
+                        {this.props.currentChannel && this.props.currentChannel.messageable_type === "DirectMessage" ? null : <i onClick={this.showSettingsOverlay} className="fa fa-cog" />}
                         {/* <i className="divider"/> */}
                         {/* <i className="fa fa-search" /> */}
                         {/* <i className="fa fa-at" /> */}

@@ -15,6 +15,7 @@ import ShowTopicOverlay from './overlay/show_topic_overlay'
 import AddUserOverlay from './overlay/add_user_overlay'
 import ShowSettingsOverlay from './overlay/settings_overlay'
 import {receiveDMs, receiveDM} from '../../actions/dm_actions'
+import DMOverlay from './overlay/dm_overlay'
 class Client extends React.Component {
     constructor(props) {
         super(props)
@@ -31,6 +32,7 @@ class Client extends React.Component {
         this.deleteChannel = this.deleteChannel.bind(this)
         // this.onConnected = this.onConnected.bind(this)
         this.onDisconnect = this.onDisconnect.bind(this)
+        this.addUsersToDM = this.addUsersToDM.bind(this)
     }
     showOverlay() {
         this.setState({ showOverlay: true });
@@ -49,7 +51,7 @@ class Client extends React.Component {
         return (makeRequest=true) => {
             this.props.changeChannelView(id, type)
             if(makeRequest) this.fetchChannel(id, type)
-            document.getElementById(`channel-${id}`).scrollIntoViewIfNeeded(); //non-standard, find a better solution
+            // document.getElementById(`channel-${id}`).scrollIntoViewIfNeeded(); //non-standard, find a better solution
         }
     }
     componentWillMount() {
@@ -66,6 +68,9 @@ class Client extends React.Component {
         const payload = { type: "UPDATE_CHANNEL", data: { channel_id, messageable_type:"CHANNEL" ,type: "TOPIC", channel: data}}  
         console.log(payload)
         App.clientChannel.send(payload)
+    }
+    addUsersToDM(users){
+        App.clientChannel.send({ type: "ADD_USERS_TO_CHANNEL", data: { selectedUsers: users, messageable_type: "DirectMessage" } })
     }
     addUsersToChannel(users, channel){
         console.log(users)
@@ -114,7 +119,13 @@ class Client extends React.Component {
     }
     handleChannelSuccess(channel, author_id){
         // debugger
-        this.props.receiveChannel(channel)
+        if(channel.messageable_type === "DirectMessage"){
+            this.props.receiveDM(channel)
+
+        }else{
+            this.props.receiveChannel(channel)
+
+        }
         // debugger
         if(author_id === this.props.currentUser.id) this.changeChannelView(channel.id, channel.messageable_type)(false)
         
@@ -170,8 +181,9 @@ class Client extends React.Component {
             case "OVERLAY_SETTINGS":
                 overlay = <ShowSettingsOverlay deleteChannel={this.deleteChannel} updateChannel={this.updateChannel} closeOverlay={this.closeOverlay}/>
                 break;
-            case "OVERLAY_MESSAGE_SETTINGS":
-                overlay = <MessageSettingsOverlay />
+            case "OVERLAY_DMS":
+                overlay = <DMOverlay changeChannelView={this.changeChannelView} addUsersToDM={this.addUsersToDM} closeOverlay={this.closeOverlay}/>
+                break;
             }
         return <div className="client">
             <div onClick={this.hideMenu} className={`menu-overlay ${this.props.showMenu ? "" : "invisible"}`}>
@@ -225,6 +237,7 @@ const mapDispatchToProps = dispatch => ({
     logout: ()=> dispatch(logout()),
     hideMenu: ()=> dispatch(hideMenu()),
     receiveChannel: (channel) => new Promise(()=>dispatch(receiveChannel(channel))),
+    receiveDM: (dm) => dispatch(receiveDM(dm)),
     closeOverlay: () => dispatch(closeOverlay()),
     receiveUser: (user) => dispatch(receiveUser(user)),
     // addUserToChannel: (user) => dispatch(addUserToChannel(user)),

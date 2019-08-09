@@ -346,6 +346,16 @@ body{
         }
     }
 }
+.user-active{
+    display: inline;
+    line-height: 8px;
+    font-size: 8px;
+    vertical-align: middle;
+    text-align: center;
+    margin-right: 5px;
+    color: limegreen;
+}
+
 .client-navbar{
     
     color: $alt-text;
@@ -1266,7 +1276,95 @@ body{
         cursor: pointer;
     }
 }
-
+.dm-overlay{
+    
+    .dm-overlay-content{
+        display: flex;
+        flex-direction: column;
+        .dm-members-container{
+            min-height: 55px;
+            height: auto !important;
+        }
+        .add-users-form{
+            display: flex;
+            flex-direction: row;
+            align-items: inherit;
+            input[type="submit"]{
+                position: relative;
+                top: 5px;
+                height: 55px;
+            }
+        }
+        .users-search-field{
+            display: flex;
+            flex-direction: column;
+            overflow-x: visible;
+            .subtitle{
+                color: grey;
+                margin-top: 20px;
+                margin-bottom: 5px;
+                margin-left: 10px;
+            }
+            .dm-search-results{
+                overflow-x: visible;
+                height: 73vh;
+                width: 100%;
+               
+                .scrollable{
+                    width: calc(120px + 100%);
+                    overflow-y: scroll;
+                    max-height: 73vh;
+                }
+                button{
+                    
+                    background: none;
+                    width: 100%;
+                    border: none;
+                    height: 60px !important;
+                    display: flex;
+                    align-items: center;
+                    border-top: 1px solid $border-color;
+                    // border-
+                    font-weight: bold;
+                    justify-content: space-between;
+                    .dm-timestamp{
+                        color: grey;
+                        font-weight: normal;
+                        margin-right: 5px;
+                    }
+                    .enter-icon{
+                        color: grey;
+                        font-weight: normal;
+                        display: none;
+                        .fa{
+                            transform: rotate(90deg);
+                            margin-left: 10px;
+                            margin-right: 10px;
+                            font-size: 15px;
+                        }
+                    }
+                    &:hover{
+                        cursor: pointer;
+                        background-color: rgba(0,0,0,0.05);
+                        .dm-timestamp{
+                            display: none;
+                        } 
+                        .enter-icon{
+                            display: inherit;
+                        }
+                    }
+                    .content{
+                        display: flex;
+                        align-items: center;
+                    }
+                    svg{
+                        height: 30px;
+                    }
+                }
+            }
+        }
+    }
+}
 .chat-window{
     position: relative;
     height: 100%;
