@@ -19,6 +19,7 @@ class SettingsOverlay extends React.Component {
         this.changeView = this.changeView.bind(this)
         this.deleteChannel = this.deleteChannel.bind(this)
         this.renameChannel = this.renameChannel.bind(this)
+        this.setPurpose = this.setPurpose.bind(this)
     }
     
     setStateFromChild(state) {
@@ -43,6 +44,9 @@ class SettingsOverlay extends React.Component {
     renameChannel(value){
         this.props.updateChannel(this.props.currentChannel.id, {title: value}, "TITLE");
     }
+    setPurpose(value){
+        this.props.updateChannel(this.props.currentChannel.id, {purpose: value}, "PURPOSE");
+    }
     render() {
         let content = "";
         switch (this.state.currentPage) {
@@ -53,7 +57,7 @@ class SettingsOverlay extends React.Component {
                 content = <RenamePage closeOverlay={this.props.closeOverlay} currentChannel={this.props.currentChannel} renameChannel={this.renameChannel}/>
                 break;
             case "PURPOSE":
-                content = <PurposePage />
+                content = <PurposePage closeOverlay={this.props.closeOverlay} currentChannel={this.props.currentChannel} setPurpose={this.setPurpose} />
                 break;
             case "DELETE":
                 content = <DeletePage deleteChannel={this.deleteChannel} closeOverlay={this.props.closeOverlay} currentChannel={this.props.currentChannel}/>

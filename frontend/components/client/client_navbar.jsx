@@ -27,6 +27,7 @@ class ClientNavBar extends React.Component {
         this.props.showAddUserToChannelOverlay();
     }
     render(){
+        const isOwner = this.props.currentChannel && this.props.currentChannel.owner
         return (
             <>
             <div className={`popupSettings ${this.showPopup ? "" : ""}`}>
@@ -46,19 +47,29 @@ class ClientNavBar extends React.Component {
                 </div>
                 <div className="chat-section">
                     <span className="left-side">
-                            {this.props.currentChannel && this.props.currentChannel.messageable_type === "DirectMessage" ? 
+                            {this.props.currentChannel && this.props.currentChannel.messageable_type === "DirectMessage"? 
                             (
                                     <div className={`channel-name dm-name`}>
                                         <span>
-                                            {`#${this.props.currentChannel && this.props.currentChannel.title}`}
+                                            {`${this.props.currentChannel && this.props.currentChannel.title}`}
                                         </span>
                                     </div>
                             ) : (
-                                    <div className = {`channel-name`}>
-                                        <span className="channel-span" onClick={this.showSettingsOverlay}>
-                                            {`#${this.props.currentChannel && this.props.currentChannel.title}`}
-                                        </span>
-                                    </div>
+                                   
+                                        isOwner ?
+                                            <div className = {`channel-name`}>
+                                                <span className="channel-span" onClick={this.showSettingsOverlay}>
+                                                    {`#${this.props.currentChannel && this.props.currentChannel.title}`}
+                                                </span> 
+                                            </div>
+                                        : 
+                                            <div className={`channel-name no-hover`}>
+                                            <span className="channel-span no-hover">
+                                                    {`#${this.props.currentChannel && this.props.currentChannel.title}`}
+                                                </span>
+                                            </div>
+                                        
+                                    
                             ) }
                        
                        
@@ -95,7 +106,7 @@ class ClientNavBar extends React.Component {
                     <span className="right-side">
                         {/* //<i className="fa fa-phone-alt" /> */}
                         {/* <i className="fa fa-info-circle" /> */}
-                        {this.props.currentChannel && this.props.currentChannel.messageable_type === "DirectMessage" ? null : <i onClick={this.showSettingsOverlay} className="fa fa-cog" />}
+                        {this.props.currentChannel && this.props.currentChannel.messageable_type === "DirectMessage" || !isOwner ? null : <i onClick={this.showSettingsOverlay} className="fa fa-cog" />}
                         {/* <i className="divider"/> */}
                         {/* <i className="fa fa-search" /> */}
                         {/* <i className="fa fa-at" /> */}

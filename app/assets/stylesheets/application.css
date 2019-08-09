@@ -34,7 +34,9 @@
   content: attr(value);
 } */
 
-
+.no-hover:hover{
+    cursor: default !important;
+}
 .scrollable::-webkit-scrollbar{
     top: 0px;
     width: 8px;

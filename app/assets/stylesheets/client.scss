@@ -272,13 +272,13 @@ body{
             }
         }
     }
-    .rename-page{
+    .rename-page, .purpose-page{
         display: flex;
         flex-direction: column;
         // justify-content: flex-start;
         position: relative;
         top: -200px;
-        .rename-form{
+        .rename-form, .purpose-form{
             label{
                 // margin-bottom: 0px;
             }
@@ -753,6 +753,24 @@ body{
     height: 100%;
     width: 225px;
     background-color: $color-foreground;
+}
+.purpose-page{
+    position: absolute;
+    .purpose-input-container{
+        display: flex;
+    }
+    .purpose-input{
+        position: relative;
+        top: 0px;
+        resize: none;
+        height: 100px;
+        font-size: 14px;
+        align-self: center;
+        padding: 10px;
+        // max-height: 480px;
+        width: 600px;
+    }
+
 }
 .transparent-overlay{
     background-color: rgba(0,0,0,0.3) !important;
