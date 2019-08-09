@@ -8,7 +8,7 @@ import ChatForm from './chat_form';
 class ChatWindow extends React.Component {
     constructor(props){
         super(props)
-        this.state = {currentChannelId: this.props.currentChannelId, messages: []}
+        this.state = {currentChannelId: this.props.currentChannelId, currentChannelType: this.props.currentChannelType, messages: []}
         this.populateMessages = this.populateMessages.bind(this)
         this.receiveMessage = this.receiveMessage.bind(this)
     }
@@ -99,9 +99,9 @@ class ChatWindow extends React.Component {
     componentWillUnmount(){
         App.messaging.unsubscribe();
     }
-    componentDidUpdate(){
-        if(this.state.currentChannelId !== this.props.currentChannelId){
-            this.setState({ currentChannelId: this.props.currentChannelId })
+    componentDidUpdate(prevProps){
+        if (prevProps.currentChannelId !== this.props.currentChannelId || this.props.currentChannelType !== prevProps.currentChannelType){
+            this.setState({ currentChannelId: this.props.currentChannelId, currentChannelType: this.props.currentChannelType })
             this.populateMessages();
             App.messaging.unsubscribe();
             this.setupSubscription();
