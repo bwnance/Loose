@@ -6,3 +6,4 @@ json.title title
 json.user_ids do 
     json.array! dm.users.ids
 end
+json.hidden dm.dm_memberships.find_by(user_id: current_user.id).hidden

@@ -58,7 +58,7 @@ const receiveEmailFormData = (data) => {
     }
 }
 export const changeChatWindowView = (id, messageableType) => {
-    return console.log("changechat") || {
+    return {
         type: RECEIVE_CURRENT_CHAT_WINDOW_ID,
         id,
         messageableType

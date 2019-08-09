@@ -632,6 +632,13 @@ body{
         background-color: $color-accent;
         button{
             color: black !important;
+            .x{
+                &:hover{
+                    color: rgba(0,0,0,1) !important;
+
+                }
+                color: rgba(0,0,0,0.7) !important;
+            }
         }
     }
    
@@ -670,16 +677,16 @@ body{
             background: none;
             border: none;
             align-self: center;
-            margin-right: 5px;
+            margin-right: 0px;
             margin-top: 7px;
-            i{
-                position: relative;
-                bottom: 3px;
-                font-size: 17px;
+            .plus{
+                height: 18px;
+                // width: 2px;
+                margin-right: -3px;
                 color: rgba(255,255,255,0.6);
                 
             }
-            i:hover{
+            .plus:hover{
                 cursor: pointer;
                 color: rgba(255,255,255,0.9);
                 
@@ -701,7 +708,9 @@ body{
             outline: none;
         }
         .channel-list-item-button{
-            display: inline-block;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             color: rgba(255,255,255,0.8);
             background: none;
             border: none;
@@ -715,10 +724,26 @@ body{
             white-space: nowrap;
             overflow-wrap: none;
             font-size: 15px;
+            .x{
+                color: rgba(255,255,255,0.6);
+                display: none;
+                height: 18px;
+                // width: 2px;
+                margin-right: -2px;
+                position: relative;
+                z-index: 10000;
+                &:hover{
+                    cursor: pointer;
+                    color: rgba(255,255,255,0.9);
+                }
+            }
         }
         .channel-list-item-button:hover{
             background-color: rgba(0, 0, 0, 0.1);
             cursor: pointer;
+            .x{
+                display: inherit;
+            }
         }
     }
     display: flex;

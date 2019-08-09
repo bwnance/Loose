@@ -8,8 +8,10 @@ class ClientsChannel < ApplicationCable::Channel
   end
   def send_channel_success(user, channel, type)
     if type == "DirectMessage"
+      dmm = channel.dm_memberships.find_by(user_id: current_user.id)
+      hidden = dmm.hidden
       title = channel.users.map { |user| user.full_name if user.id != current_user.id }.compact().join(", ")
-      ClientsChannel.broadcast_to(user, {type: "CHANNEL_SUCCESS", author_id: current_user.id, channel: {id: channel.id, messageable_type: type,title: title, created_at: channel.created_at,user_ids: channel.users.ids}})
+      ClientsChannel.broadcast_to(user, {type: "CHANNEL_SUCCESS", author_id: current_user.id, channel: {id: channel.id, messageable_type: type,title: title, hidden: hidden, created_at: channel.created_at,user_ids: channel.users.ids}})
     else
       ClientsChannel.broadcast_to(user, {type: "CHANNEL_SUCCESS", author_id: current_user.id, channel: {id: channel.id, messageable_type: type, created_at: channel.created_at,topic: channel.topic, title: channel.title,purpose: channel.purpose, user_ids: channel.users.ids}})
     end
@@ -27,7 +29,16 @@ class ClientsChannel < ApplicationCable::Channel
     
     request_data = data["data"]
     case data["type"]
-     
+      when "HIDE_DM"
+        dm = DirectMessage.find_by(id: request_data["dm_id"])
+        dmm = dm.dm_memberships.find_by(user_id: current_user.id)
+        dmm.update(hidden: true)
+        send_channel_success(current_user,dm, "DirectMessage")
+      when "SHOW_DM"
+        dm = DirectMessage.find_by(id: request_data["dm_id"])
+        dmm = dm.dm_memberships.find_by(user_id: current_user.id)
+        dmm.update(hidden: false)
+        send_channel_success(current_user,dm, "DirectMessage")
       when "FETCH_CHANNEL"
         return if !request_data["messageable_type"] || request_data["channel_id"]
         channel_type = request_data["messageable_type"]

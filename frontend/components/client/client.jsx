@@ -33,6 +33,8 @@ class Client extends React.Component {
         // this.onConnected = this.onConnected.bind(this)
         this.onDisconnect = this.onDisconnect.bind(this)
         this.addUsersToDM = this.addUsersToDM.bind(this)
+        this.hideDM = this.hideDM.bind(this)
+        this.showDM = this.showDM.bind(this)
     }
     showOverlay() {
         this.setState({ showOverlay: true });
@@ -48,7 +50,8 @@ class Client extends React.Component {
         this.setState({messages: this.state.messages.concat(message.body)})
     }
     changeChannelView(id, type) {
-        return (makeRequest=true) => {
+        
+        return (makeRequest=true && this.props.currentChannelId !== id) => {
             this.props.changeChannelView(id, type)
             if(makeRequest) this.fetchChannel(id, type)
             // document.getElementById(`channel-${id}`).scrollIntoViewIfNeeded(); //non-standard, find a better solution
@@ -86,6 +89,14 @@ class Client extends React.Component {
     createChannel(data, type){
         App.clientChannel.send({type: "CREATE_CHANNEL", data: {channel:data, messageable_type: type}})
         this.closeOverlay();
+    }
+    hideDM(id){
+        setTimeout(this.changeChannelView(1, "Channel"),110);
+        App.clientChannel.send({type: "HIDE_DM", data: {dm_id: id}})
+    }
+    showDM(id){
+
+        App.clientChannel.send({type: "SHOW_DM", data: {dm_id: id}})
     }
     receiveClientData(data){
         switch(data.type){
@@ -182,7 +193,7 @@ class Client extends React.Component {
                 overlay = <ShowSettingsOverlay deleteChannel={this.deleteChannel} updateChannel={this.updateChannel} closeOverlay={this.closeOverlay}/>
                 break;
             case "OVERLAY_DMS":
-                overlay = <DMOverlay changeChannelView={this.changeChannelView} addUsersToDM={this.addUsersToDM} closeOverlay={this.closeOverlay}/>
+                overlay = <DMOverlay showDM={this.showDM} changeChannelView={this.changeChannelView} addUsersToDM={this.addUsersToDM} closeOverlay={this.closeOverlay}/>
                 break;
             }
         return <div className="client">
@@ -213,7 +224,7 @@ class Client extends React.Component {
             </div>
             <ClientNavBar/>
             <div className="client-content">
-                <ChannelList changeChannelView={this.changeChannelView} showOverlay={this.showOverlay} closeOverlay={this.closeOverlay}/>
+                <ChannelList hideDM={this.hideDM} changeChannelView={this.changeChannelView} showOverlay={this.showOverlay} closeOverlay={this.closeOverlay}/>
                 {this.props.currentChannelId ? <ChatWindow/> : ""}
             </div>
             {overlay}

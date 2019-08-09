@@ -19,6 +19,7 @@ class DMOverlay extends React.Component {
         const foundDM = this.dmExists(this.state.selectedUsers.concat(this.props.currentUser.id))
         if (foundDM) {
             this.props.closeOverlay();
+            this.props.showDM(foundDM.id)
             this.props.changeChannelView(foundDM.id, "DirectMessage")()
             return
         }
