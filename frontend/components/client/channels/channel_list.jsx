@@ -5,6 +5,7 @@ import {showChannelsOverlay, showCreateChannelOverlay, showDMsOverlay} from '../
 import { logout } from '../../../actions/session'
 import {fetchDMs} from '../../../actions/dm_actions'
 import {XCircle, PlusCircle} from 'react-feather'
+import {getCurrentChannel} from '../../../util/messageable_util'
 class ChannelList extends React.Component {
     constructor(props){ 
         super(props)
@@ -46,11 +47,11 @@ class ChannelList extends React.Component {
     }
     render(){
         const channels = this.props.channels.map((channel) => (
-            <li id={`channel-${channel.id}`} className={`channel-list-item  ${channel.id === this.props.currentChannel ? " selected-channel" : ""}`} key={`channel-${channel.id}`}>
+            <li id={`channel-${channel.id}`} className={`channel-list-item  ${channel.id === this.props.currentChannelId && channel.messageable_type === this.props.currentChannel.messageable_type ? " selected-channel" : ""}`} key={`channel-${channel.id}`}>
                 <button className="channel-list-item-button" onClick={this.props.changeChannelView(channel.id, channel.messageable_type)} >{`# ${channel.title}`}</button>
             </li>)) // sort alphabetically later
         const dms = this.props.dms.map((dm) => dm.hidden ? null : (
-            <li id={`channel-${dm.id}`} className={`channel-list-item  ${dm.id === this.props.currentChannel ? " selected-channel" : ""}`} key={`channel-${dm.id}`}>
+            <li id={`channel-${dm.id}`} className={`channel-list-item  ${dm.id === this.props.currentChannelId && dm.messageable_type === this.props.currentChannel.messageable_type ? " selected-channel" : ""}`} key={`channel-${dm.id}`}>
                 
                 <button className="channel-list-item-button" onClick={()=> this.timeout = setTimeout(this.props.changeChannelView(dm.id, dm.messageable_type),50)} ><span><i className="user-active fa fa-circle" />{`${dm.title}`}</span> <XCircle onClick={this.hideDM(dm.id)} className="x"/></button>
             </li>)) // sort alphabetically later
@@ -97,7 +98,8 @@ class ChannelList extends React.Component {
 const mapStateToProps = (state) => ({
     currentUser: state.entities.users[state.session.id],
     channels: Object.values(state.entities.channels).filter(channel => channel.user_ids.includes(state.session.id)),
-    currentChannel: state.ui.chatWindow.id,
+    currentChannelId: state.ui.chatWindow.id,
+    currentChannel: getCurrentChannel(state),
     dms: Object.values(state.entities.dms)
 })
 const mapDispatchToProps = (dispatch) => ({
