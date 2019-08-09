@@ -117,7 +117,7 @@ class ClientsChannel < ApplicationCable::Channel
         end
         oldTitle = channel.title
         # debugger
-        return if(!channel.owner || channel.owner.id != current_user.id) 
+        return if((!channel.owner || channel.owner.id != current_user.id) && request_data["type"] == "TITLE") 
         if channel.update(request_data["channel"])
           i = 0;
           channel.users.each do |user|
