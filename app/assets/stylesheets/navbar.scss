@@ -10,18 +10,19 @@
     z-index: 2;
     background-color: $color-bg;
     .logo{
-        height: 25px;
-        width: 25px;
+        height: 40px;
+        width: 40px;
         background-image: asset_url('loose-logo.png');
         background-repeat: no-repeat;
-        background-size: 25px;
+        background-size: 40px;
         display: table-cell;
+        // margin-right: 50px;
     }
     .loose-text{
         display: table-cell;
         vertical-align: middle;
         font-weight:bolder;
-        font-size: 18px;
+        font-size: 25px;
 
     }
     .logo-container{
@@ -48,6 +49,7 @@
 .navbar-login{ 
     padding: 10px;
     margin: 10px;
+    // margin-top: 20px;
     --webkit-appearance: textfield;
     box-sizing: border-box;
     background-color: rgba(0,0,0,0);
@@ -62,6 +64,7 @@
     text-transform: uppercase;
     transition-duration: 0.2s;
     border: 1px solid grey;
+    margin-top: 10px !important;
 }
 .navbar-login:hover{ 
     background-color: $color-foreground;
@@ -87,6 +90,8 @@
     text-transform: uppercase;
     transition-duration: 0.2s;
     border: 1px solid $color-foreground;
+    margin-top: 10px !important;
+
     
 }
 .navbar-signup:hover{ 

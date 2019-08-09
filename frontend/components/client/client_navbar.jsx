@@ -47,7 +47,7 @@ class ClientNavBar extends React.Component {
                 </div>
                 <div className="chat-section">
                     <span className="left-side">
-                            {this.props.currentChannel && this.props.currentChannel.messageable_type === "DirectMessage"? 
+                            {this.props.currentChannel && this.props.currentChannel.messageable_type === "DirectMessage" ? 
                             (
                                     <div className={`channel-name dm-name`}>
                                         <span>
@@ -76,10 +76,17 @@ class ClientNavBar extends React.Component {
                         <span className="channel-info">
                             {/* <i className="fa fa-star" />
                             <span className="info-seperator"/> */}
-                            <span onClick={this.showAddUserToChannelOverlay} className="info-container view-users">
-                                <i className="fa fa-user" />
-                                <span className="info num-users">{`${this.props.currentChannel && this.props.currentChannel.user_ids.length}`}</span>
-                            </span>
+                                {this.props.currentChannel && this.props.currentChannel.messageable_type === "DirectMessage" ? 
+                                    <span className="info-container no-hover view-users">
+                                        <i className="fa fa-user no-hover" />
+                                        <span className="info num-users no-hover">{`${this.props.currentChannel && this.props.currentChannel.user_ids.length}`}</span>
+                                    </span>
+                                :
+                                    <span onClick={this.showAddUserToChannelOverlay} className="info-container view-users">
+                                        <i className="fa fa-user" />
+                                        <span className="info num-users">{`${this.props.currentChannel && this.props.currentChannel.user_ids.length}`}</span>
+                                    </span> }
+                            
                             {/* <span className="info-seperator"/>
                             <span className="info-container view-pinned">
                                 <i className="fa fa-thumbtack" />
