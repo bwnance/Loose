@@ -53,7 +53,7 @@ class ChannelList extends React.Component {
         const dms = this.props.dms.map((dm) => dm.hidden ? null : (
             <li id={`channel-${dm.id}`} className={`channel-list-item  ${dm.id === this.props.currentChannelId && dm.messageable_type === this.props.currentChannel.messageable_type ? " selected-channel" : ""}`} key={`channel-${dm.id}`}>
                 
-                <button className="channel-list-item-button" onClick={()=> this.timeout = setTimeout(this.props.changeChannelView(dm.id, dm.messageable_type),50)} ><span><i className="user-active fa fa-circle" />{`${dm.title}`}</span> <XCircle onClick={this.hideDM(dm.id)} className="x"/></button>
+                <button className="channel-list-item-button" onClick={() => this.timeout = setTimeout(this.props.changeChannelView(dm.id, dm.messageable_type), 50)} ><span><i className="user-active fa fa-circle" />{`${dm.title}`}</span> </button><XCircle onClick={this.hideDM(dm.id)} className="x" />
             </li>)) // sort alphabetically later
         return (
             <>

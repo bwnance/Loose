@@ -605,7 +605,12 @@ body{
     width: 2px;
     background-color: transparent;
 }
-
+.channel-list-item{
+    cursor: pointer !important;
+    button{
+        cursor: pointer !important;
+    }
+}
 .channel-list{
     // justify-content: center;
     // position: absolute;
@@ -624,21 +629,22 @@ body{
 
     }  
     .selected-channel:hover{
+        cursor: pointer;
+        background-color: $color-accent !important;
         .channel-list-item-button{
-            background-color: $color-accent !important;
         }
     }
     .selected-channel{
         background-color: $color-accent;
         button{
             color: black !important;
-            .x{
-                &:hover{
-                    color: rgba(0,0,0,1) !important;
+        }
+        .x{
+            &:hover{
+                color: rgba(0,0,0,1) !important;
 
-                }
-                color: rgba(0,0,0,0.7) !important;
             }
+            color: rgba(0,0,0,0.7) !important;
         }
     }
    
@@ -670,7 +676,7 @@ body{
         }
         .show-create-channel-button, .show-create-dm-button{
             &:focus{
-                 border: none;
+                border: none;
                 box-shadow: none;
                 outline: none;
             }
@@ -695,27 +701,30 @@ body{
         
        
     }
-        
+    
     .channel-list-item{
         color: $alt-text;
         position: relative;
         height: 25px;
         width: 100%;
         box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         .channel-list-item-button:focus{
             border: none;
             box-shadow: none;
             outline: none;
         }
         .channel-list-item-button{
-            display: flex;
+            display: block;
             align-items: center;
             justify-content: space-between;
             color: rgba(255,255,255,0.8);
             background: none;
             border: none;
             text-align: left;
-            width: 100%;
+            width: 85%;
             height: 100%;
             margin: 0;
             padding: 0 5px 0 5px;
@@ -724,26 +733,31 @@ body{
             white-space: nowrap;
             overflow-wrap: none;
             font-size: 15px;
-            .x{
-                color: rgba(255,255,255,0.6);
-                display: none;
-                height: 18px;
-                // width: 2px;
-                margin-right: -2px;
-                position: relative;
-                z-index: 10000;
-                &:hover{
-                    cursor: pointer;
-                    color: rgba(255,255,255,0.9);
-                }
+        }
+        .x{
+            color: rgba(255,255,255,0.6);
+            display: none;
+            height: 18px;
+            // width: 2px;
+            margin-right: 3px;
+            position: relative;
+            z-index: 10000;
+            &:hover{
+                cursor: pointer;
+                color: rgba(255,255,255,0.9);
             }
         }
         .channel-list-item-button:hover{
+           
+        
+        }
+        &:hover{
             background-color: rgba(0, 0, 0, 0.1);
-            cursor: pointer;
+            cursor: pointer !important;
             .x{
                 display: inherit;
             }
+
         }
     }
     display: flex;
@@ -1382,6 +1396,13 @@ body{
                         color: grey;
                         font-weight: normal;
                         margin-right: 5px;
+                    }
+                    .dm-title{
+                        max-width: 350px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        display: block;
+                        white-space: nowrap;
                     }
                     .enter-icon{
                         color: grey;
