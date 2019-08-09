@@ -45,7 +45,7 @@ class ChatMessage extends React.Component{
         this.props.updateMessage(this.props.message.id, {body: this.state.editText});
     }
     render(){
-        // console.log(`MESSAGE: ${this.props.message}`)
+        // //console.log(`MESSAGE: ${this.props.message}`)
         // this.subsequentMessage;
         // if(this.props.prevMessage){
 
@@ -147,7 +147,7 @@ class ChatMessage extends React.Component{
 
     editMessage(){
         
-        console.log("editing")
+        //console.log("editing")
 
         this.setState({isEditing: true})
         this.closePopup();

@@ -36,7 +36,7 @@ class ShowChannelsOverlay extends React.Component {
             const foundJoinedChannels = this.props.joinedChannels.filter(channel=>{
                 return channel.title.toLowerCase().startsWith(searchText)
             })
-            // console.log(foundJoinableChannels)
+            // //console.log(foundJoinableChannels)
             this.setState({joinableChannels: foundJoinableChannels, joinedChannels: foundJoinedChannels})
         }
         else{
@@ -66,6 +66,9 @@ class ShowChannelsOverlay extends React.Component {
                         <div className="channel-title">
                             #{channel.title}
                         </div>
+                        <div className="channel-purpose">
+                            {channel.purpose}
+                        </div>
                         <div className="channel-date">
                             Created on&nbsp;{(new Date(channel.created_at)).toLocaleString('en-us', { month: "long", day: "numeric", year: "numeric" })}
                             {/* {channel.created_at} */}
@@ -83,6 +86,9 @@ class ShowChannelsOverlay extends React.Component {
                     <div className="channel-info">
                         <div className="channel-title">
                             #{channel.title}
+                        </div>
+                        <div className="channel-purpose">
+                            {channel.purpose}
                         </div>
                         <div className="channel-date">
                             Created on&nbsp;{(new Date(channel.created_at)).toLocaleString('en-us', { month: "long", day: "numeric", year: "numeric" })}
@@ -125,8 +131,8 @@ class ShowChannelsOverlay extends React.Component {
     }
 }
 const mapStateToProps = (state) => ({
-    joinableChannels: Object.values(state.entities.channels).filter(channel => !state.entities.users[state.session.id].channel_ids.includes(channel.id)),
-    joinedChannels: Object.values(state.entities.channels).filter(channel => state.entities.users[state.session.id].channel_ids.includes(channel.id)),
+    joinableChannels: Object.values(state.entities.channels).filter(channel => !channel.user_ids.includes(state.session.id)),//!state.entities.users[state.session.id].channel_ids.includes(channel.id)),
+    joinedChannels: Object.values(state.entities.channels).filter(channel => channel.user_ids.includes(state.session.id)),//state.entities.users[state.session.id].channel_ids.includes(channel.id)),
     currentUserId: state.entities.users[state.session.id].id
 
 })

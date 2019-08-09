@@ -7,7 +7,7 @@
 
 (function() {
   this.App || (this.App = {});
-  console.log("CREATING CONSUMER!!!!!!!!!!!!!")
+  //console.log("CREATING CONSUMER!!!!!!!!!!!!!")
   App.cable = ActionCable.createConsumer();
 
 }).call(this);

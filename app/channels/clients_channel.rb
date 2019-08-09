@@ -13,7 +13,8 @@ class ClientsChannel < ApplicationCable::Channel
       title = channel.users.map { |user| user.full_name if user.id != current_user.id }.compact().join(", ")
       ClientsChannel.broadcast_to(user, {type: "CHANNEL_SUCCESS", author_id: current_user.id, channel: {id: channel.id, messageable_type: type,title: title, hidden: hidden, created_at: channel.created_at,user_ids: channel.users.ids}})
     else
-      ClientsChannel.broadcast_to(user, {type: "CHANNEL_SUCCESS", author_id: current_user.id, channel: {id: channel.id, messageable_type: type, created_at: channel.created_at,topic: channel.topic, title: channel.title,purpose: channel.purpose, user_ids: channel.users.ids}})
+      isOwner = channel.owner && channel.owner.id == current_user.id
+      ClientsChannel.broadcast_to(user, {type: "CHANNEL_SUCCESS", author_id: current_user.id, channel: {id: channel.id,owner: isOwner,   messageable_type: type, created_at: channel.created_at,topic: channel.topic, title: channel.title,purpose: channel.purpose, user_ids: channel.users.ids}})
     end
   end
   def send_channel_delete(user, channel_id)
@@ -53,6 +54,8 @@ class ClientsChannel < ApplicationCable::Channel
         end
         channel = Channel.find_by(id: request_data["channel_id"])
         if channel
+          # debugger
+          return if(!channel.owner || channel.owner.id != current_user.id)
           channel_id = channel.id
           channel_members = channel.users.ids
           channel.destroy
@@ -83,8 +86,7 @@ class ClientsChannel < ApplicationCable::Channel
             users_to_add = channel_info["selectedUsers"].is_a?(Array) ? channel_info["selectedUsers"] + [current_user.id] : [current_user.id]
             users = User.includes(:channels).where(id: users_to_add)
             channel.users.concat(users)
-            
-           
+            channel.channel_memberships.find_by(id: channel.channel_memberships).update(owner: true)
             updatedUsers = []
             ActionCable.server.connections.each do |connection|
               # debugger
@@ -95,7 +97,7 @@ class ClientsChannel < ApplicationCable::Channel
                   if user && !updatedUsers.include?(user.id)
                     # debugger
                     updatedUsers << user.id
-                    # console.log(user)
+                    # //console.log(user)
                     # ClientsChannel.broadcast_to(user, {type: "CHANNEL_SUCCESS", author_id: current_user.id, channel: {id: channel.id,  created_at: channel.created_at,topic: channel.topic, title: channel.title,purpose: channel.purpose, user_ids: channel.users.ids}})
                     send_channel_success(user, channel, channel_type)
                   end
@@ -115,6 +117,7 @@ class ClientsChannel < ApplicationCable::Channel
         end
         oldTitle = channel.title
         # debugger
+        return if(!channel.owner || channel.owner.id != current_user.id) 
         if channel.update(request_data["channel"])
           i = 0;
           channel.users.each do |user|
@@ -137,16 +140,17 @@ class ClientsChannel < ApplicationCable::Channel
       when "ADD_USERS_TO_CHANNEL"
         users_to_add = request_data["selectedUsers"]
         channel_type = request_data["messageable_type"];
-
+        # debugger
         channel = getMessageableConst(channel_type).includes(:users).find_by(id: request_data["channel_id"])
         if !channel && channel_type == "DirectMessage"
           channel = getMessageableConst(channel_type).create()
         end
+        # debugger
         users = User.where(id: users_to_add)
         # debugger
         if users_to_add && users && channel
           channel.users.concat(users)
-          users.each do |user|
+          channel.users.each do |user|
             send_channel_success(user, channel, channel_type)
             # ClientsChannel.broadcast_to(user, {type: "CHANNEL_SUCCESS", author_id: current_user.id,topic: channel.topic, created_at: channel.created_at,channel: {id: channel.id, title: channel.title,purpose: channel.purpose, user_ids: channel.users.ids}})
           end     

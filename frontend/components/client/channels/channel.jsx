@@ -7,11 +7,11 @@ class Channel extends React.Component {
         this.messages = []
     }
     handleMessage(message){
-        //console.log(message.body);
+        ////console.log(message.body);
         this.messages.concat(message.body)
     }
     handleReceivedChannel(channel){
-        //console.log(channel)
+        ////console.log(channel)
     }
     render(){
         

@@ -14,7 +14,7 @@ class DMOverlay extends React.Component {
     }
     handleSubmit(e) {
         e.preventDefault()
-        // console.log(this.state.selectedUsers)
+        // //console.log(this.state.selectedUsers)
         // this.props.addUsersToChannel(this.state.selectedUsers, this.props.currentChannel.id, "Channel");
         const foundDM = this.dmExists(this.state.selectedUsers.concat(this.props.currentUser.id))
         if (foundDM) {
@@ -34,12 +34,12 @@ class DMOverlay extends React.Component {
     }
     handleInput(type) {
         return (e) => {
-            // console.log(e.target.value)
+            // //console.log(e.target.value)
             this.setState({ [type]: e.target.value })
         }
     }
     setStateFromChild(state) {
-        // console.log(state)
+        // //console.log(state)
         this.setState(state)
     }
     resetState() {

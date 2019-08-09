@@ -94,7 +94,7 @@ class SearchDMsField extends React.Component {
         if (user.id === this.props.currentUserId) return false;
         const retval =  Object.values(this.props.dms).some(dm => (dm.user_ids.length === 2 && dm.user_ids.includes(user.id)))
         // debugger
-        // console.log(retval)
+        // //console.log(retval)
         return retval
     }
     handleSearchBarInput(e) {
@@ -113,7 +113,7 @@ class SearchDMsField extends React.Component {
         //looks at all users that we don't have a DM with
         this.filteredUsers().forEach(user => {
             const filteredUsername = user.username.toLowerCase().replace(/[^0-9a-z]/g, '');
-            // console.log(user.username)
+            // //console.log(user.username)
 
             if (filteredUsername.startsWith(searchText.toLowerCase()) || user.full_name.startsWith(searchText)) {
                 // debugger
@@ -127,7 +127,7 @@ class SearchDMsField extends React.Component {
 
     handleInput(type){
         return (e) => {
-           // console.log(e.target.value)
+           // //console.log(e.target.value)
             this.setBothStates({ [type]: e.target.value })
             this.props.handleInput(type)(e);
         }
@@ -152,10 +152,10 @@ class SearchDMsField extends React.Component {
         })
         const foundDMButtons = this.state.foundDMs.map((dm) => {
             if(this.state.selectedDMs.includes(dm.id)){
-                // console.log("huh?")
+                // //console.log("huh?")
                 return undefined
             }
-            // console.log(dm.title);
+            // //console.log(dm.title);
             return (
                 <button onClick={this.selectDM(dm)} key={`found-dm-${dm.id}`} className="found_dm_item">
                     <div className="content">

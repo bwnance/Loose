@@ -14,8 +14,8 @@ class AddUserOverlay extends React.Component {
     }
     handleSubmit(e) {
         e.preventDefault()
-        console.log(this.state.selectedUsers)
-        this.props.addUsersToChannel(this.state.selectedUsers, this.props.currentChannel.id, "Channel");
+        //console.log(this.state.selectedUsers)
+        this.props.addUsersToChannel(this.state.selectedUsers, this.props.currentChannel);
         
         this.resetState()
         this.props.closeOverlay();
@@ -23,12 +23,12 @@ class AddUserOverlay extends React.Component {
     }       
     handleInput(type) {
         return (e) => {
-            // console.log(e.target.value)
+            // //console.log(e.target.value)
             this.setState({ [type]: e.target.value })
         }
     }
     setStateFromChild(state) {
-        console.log(state)
+        //console.log(state)
         this.setState(state)
     }
     resetState() {

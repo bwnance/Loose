@@ -19,4 +19,8 @@ class Channel < ApplicationRecord
     def self.default
         Channel.find_by(id: 1)
     end
+    def owner
+        membership = channel_memberships.where(owner: true).first 
+        (membership && membership.user) || nil
+    end
 end

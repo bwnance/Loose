@@ -22,7 +22,7 @@ class SettingsOverlay extends React.Component {
     }
     
     setStateFromChild(state) {
-        console.log(state)
+        //console.log(state)
         this.setState(state)
     }
     resetState() {

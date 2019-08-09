@@ -46,7 +46,7 @@ class Client extends React.Component {
         App.cable.disconnect();
     }
     onReceiveMessage(message){
-        //console.log(message); 
+        ////console.log(message); 
         this.setState({messages: this.state.messages.concat(message.body)})
     }
     changeChannelView(id, type) {
@@ -69,15 +69,15 @@ class Client extends React.Component {
     //only "Channel" channels can be updated
     updateChannel(data, channel_id){
         const payload = { type: "UPDATE_CHANNEL", data: { channel_id, messageable_type:"CHANNEL" ,type: "TOPIC", channel: data}}  
-        console.log(payload)
+        //console.log(payload)
         App.clientChannel.send(payload)
     }
     addUsersToDM(users){
         App.clientChannel.send({ type: "ADD_USERS_TO_CHANNEL", data: { selectedUsers: users, messageable_type: "DirectMessage" } })
     }
     addUsersToChannel(users, channel){
-        console.log(users)
-        App.clientChannel.send({ type: "ADD_USERS_TO_CHANNEL", data: { selectedUsers: users, channel_id: channel.id, messageable_type: channel.type } })
+        //console.log(users)
+        App.clientChannel.send({ type: "ADD_USERS_TO_CHANNEL", data: { selectedUsers: users, channel_id: channel.id, messageable_type: channel.messageable_type } })
     }
     fetchChannel(channel_id, type){
         App.clientChannel.send({ type: "FETCH_CHANNEL", data: { channel_id: channel_id, messageable_type: type } })
@@ -87,7 +87,7 @@ class Client extends React.Component {
         this.closeOverlay();
     }
     createChannel(data, type){
-        App.clientChannel.send({type: "CREATE_CHANNEL", data: {channel:data, messageable_type: type}})
+        App.clientChannel.send({type: "CREATE_CHANNEL", data: {channel: data, messageable_type: type}})
         this.closeOverlay();
     }
     hideDM(id){
@@ -101,10 +101,10 @@ class Client extends React.Component {
     receiveClientData(data){
         switch(data.type){
             case "CHANNEL_SUCCESS":
-                console.log("SUCCESS!")
-                return this.handleChannelSuccess(data.channel, data.author_id);
+                //console.log("SUCCESS!")
+                return this.handleChannelSuccess(data.channel, data.author_id)
             case "USER_ADD":
-                console.log("WHOO WHOOO NEW USER ALERT")
+                //console.log("WHOO WHOOO NEW USER ALERT")
                 return this.handleNewUser(data.user);
             case "RECEIVE_CHANNELS":
                 this.props.receiveChannels(data.channels)
@@ -145,11 +145,11 @@ class Client extends React.Component {
         App.clientChannel.send({type: "FETCH_ALL_CHANNELS"})
     }
     deleteChannel(channelId){
-        console.log("deleting");
+        //console.log("deleting");
         App.clientChannel.send({type: "DELETE_CHANNEL", data: {channel_id: channelId}})
     }
     setupSubscription() {
-        console.log("CONNECTING...")
+        //console.log("CONNECTING...")
         App.clientChannel = App.cable.subscriptions.create(
             {
                 channel: 'ClientsChannel',
@@ -163,7 +163,7 @@ class Client extends React.Component {
 
     }
     onDisconnect(){
-        console.log("hi");
+        //console.log("hi");
         this.props.logout()
     }
     hideMenu(e){

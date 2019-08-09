@@ -3,3 +3,5 @@ json.messageable_type "Channel"
 json.user_ids do 
     json.array! channel.users.ids
 end
+# debugger
+json.owner (channel.owner && channel.owner.id == current_user.id)

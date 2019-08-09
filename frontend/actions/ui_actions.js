@@ -79,7 +79,7 @@ export const hideMenu = () => {
 export const getDefaultChannel = () => dispatch => {
     return UiAPIUtil.fetchDefaultChannel()
         .then(({id}) => dispatch(changeChatWindowView(id, "Channel")))
-        //.fail((err) => console.log(err))
+        //.fail((err) => //console.log(err))
 }
 export const checkEmail = (email) => dispatch => {
 

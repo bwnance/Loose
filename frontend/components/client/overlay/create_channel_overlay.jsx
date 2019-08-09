@@ -26,7 +26,7 @@ class CreateChannelOverlay extends React.Component {
     }
     handleInput(type){
         return (e) => {
-           // console.log(e.target.value)
+           // //console.log(e.target.value)
             this.setState({ [type]: e.target.value })
         }
     }

@@ -19,7 +19,7 @@ class ChannelList extends React.Component {
 
     }
     componentDidMount() {
-        this.props.fetchAllChannels();//.then(() => console.log("default channel fetched "));
+        this.props.fetchAllChannels();//.then(() => //console.log("default channel fetched "));
         this.props.fetchDMs();
     }
     showCreateChannel(e){

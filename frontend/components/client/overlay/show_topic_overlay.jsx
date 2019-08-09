@@ -14,7 +14,7 @@ class ShowTopicOverlay extends React.Component {
     setTopic(e){
         e.preventDefault()
         this.props.updateChannel({topic: this.state.topicText}, this.props.currentChannelId)
-        console.log(this.props.currentChannelId)
+        //console.log(this.props.currentChannelId)
         this.setState({topicText: ""})
         this.props.closeOverlay();
     }
@@ -35,7 +35,7 @@ class ShowTopicOverlay extends React.Component {
             + parseFloat(textAreaStyle.getPropertyValue('border-bottom-width'));
 
 
-        console.log(height);
+        //console.log(height);
         if (height > 480) height = 480;
         textArea.style.height = height + "px";
     }

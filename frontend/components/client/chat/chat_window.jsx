@@ -64,7 +64,7 @@ class ChatWindow extends React.Component {
         App.messaging.send({type: "NEW_MESSAGE", data: {body, messageable_type: this.props.currentChannelType}})
     }
     setupSubscription(){
-        //console.log("CONNECTING...")
+        ////console.log("CONNECTING...")
         // debugger
         App.messaging = App.cable.subscriptions.create(
         {
@@ -74,7 +74,7 @@ class ChatWindow extends React.Component {
         },
         {
             received: this.receiveMessage,
-        //connected: () => console.log("CONNECTED")}
+        //connected: () => //console.log("CONNECTED")}
         })
     }
     receiveMessage(payload){
@@ -118,12 +118,12 @@ class ChatWindow extends React.Component {
         //connect to live chat and populate messages slice of state
         this.populateMessages()
         this.setupSubscription();
-        //console.log(this.props.currentChannelId)
+        ////console.log(this.props.currentChannelId)
 
     }
 }
 const mapStateToProps = (state) => {
-    console.log("msp");
+    //console.log("msp");
     // debugger
     return {
         currentChannelId: state.ui.chatWindow.id,

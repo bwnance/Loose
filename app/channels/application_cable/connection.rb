@@ -24,7 +24,7 @@ module ApplicationCable
               # puts user.full_name
               # debugger
               updatedUsers << user.id
-              # console.log(user)
+              # //console.log(user)
               ClientsChannel.broadcast_to(user, {type: "USER_ADD", user: {id: current_user.id, username: current_user.username, full_name: current_user.full_name, channel_ids: current_user.channels.ids, message_ids: current_user.messages.ids}})
             end
           end

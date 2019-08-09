@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_09_091426) do
+ActiveRecord::Schema.define(version: 2019_08_09_102048) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 2019_08_09_091426) do
     t.integer "channel_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "owner", default: false, null: false
     t.index ["channel_id"], name: "index_channel_memberships_on_channel_id"
     t.index ["user_id"], name: "index_channel_memberships_on_user_id"
   end
