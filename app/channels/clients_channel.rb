@@ -14,7 +14,8 @@ class ClientsChannel < ApplicationCable::Channel
       title = current_user.full_name if title == ""
       ClientsChannel.broadcast_to(user, {type: "CHANNEL_SUCCESS", author_id: current_user.id, channel: {id: channel.id, messageable_type: type,title: title, hidden: hidden, created_at: channel.created_at,user_ids: channel.users.ids}})
     else
-      isOwner = channel.owner && channel.owner.id == current_user.id
+      isOwner = channel.owner && channel.owner.id == user.id
+      # debugger
       ClientsChannel.broadcast_to(user, {type: "CHANNEL_SUCCESS", author_id: current_user.id, channel: {id: channel.id,owner: isOwner,   messageable_type: type, created_at: channel.created_at,topic: channel.topic, title: channel.title,purpose: channel.purpose, user_ids: channel.users.ids}})
     end
   end
