@@ -52,6 +52,7 @@ class SearchDMsField extends React.Component {
             e.preventDefault();
             if(id === this.props.currentUserId){
                 const dm = Object.values(this.props.dms).find(dm=> dm.user_ids.length === 1 && dm.user_ids[0] === this.props.currentUserId)
+                this.props.showDM(dm.id)
                 this.props.changeChannelView(dm.id, "DirectMessage")();
                 this.props.closeOverlay();
                 return

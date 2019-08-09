@@ -2,6 +2,7 @@
 body{
     overflow: overlay;
 }
+
 .client{
     font-family: 'Lato', sans-serif;
     width: 100%;
@@ -1512,6 +1513,7 @@ body{
             display: flex;
             align-items: center;
             flex: 1;
+            
         }
         .popup{
             position: absolute;

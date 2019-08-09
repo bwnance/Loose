@@ -11,6 +11,7 @@ class ClientsChannel < ApplicationCable::Channel
       dmm = channel.dm_memberships.find_by(user_id: current_user.id)
       hidden = dmm.hidden
       title = channel.users.map { |user| user.full_name if user.id != current_user.id }.compact().join(", ")
+      title = current_user.full_name if title == ""
       ClientsChannel.broadcast_to(user, {type: "CHANNEL_SUCCESS", author_id: current_user.id, channel: {id: channel.id, messageable_type: type,title: title, hidden: hidden, created_at: channel.created_at,user_ids: channel.users.ids}})
     else
       isOwner = channel.owner && channel.owner.id == current_user.id
@@ -39,7 +40,8 @@ class ClientsChannel < ApplicationCable::Channel
         dm = DirectMessage.find_by(id: request_data["dm_id"])
         dmm = dm.dm_memberships.find_by(user_id: current_user.id)
         dmm.update(hidden: false)
-        send_channel_success(current_user,dm, "DirectMessage")
+        # debugger
+        send_channel_success(current_user, dm, "DirectMessage")
       when "FETCH_CHANNEL"
         return if !request_data["messageable_type"] || request_data["channel_id"]
         channel_type = request_data["messageable_type"]
@@ -124,7 +126,6 @@ class ClientsChannel < ApplicationCable::Channel
             send_channel_success(user, channel, "Channel")
             # ClientsChannel.broadcast_to(user, {type: "CHANNEL_SUCCESS", author_id: current_user.id, channel: {id: channel.id, created_at: channel.created_at,topic: channel.topic, title: channel.title,purpose: channel.purpose, user_ids: channel.users.ids}})
           end
-          
           if request_data["type"] == "TOPIC" 
             message = channel.messages.new(body: "set the channel topic: #{channel.topic}", sender_id: current_user.id, is_auto_message: true)
           elsif request_data["type"] == "TITLE"

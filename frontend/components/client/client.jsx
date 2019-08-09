@@ -91,11 +91,12 @@ class Client extends React.Component {
         this.closeOverlay();
     }
     hideDM(id){
+        
         setTimeout(this.changeChannelView(1, "Channel"),110);
         App.clientChannel.send({type: "HIDE_DM", data: {dm_id: id}})
     }
     showDM(id){
-
+        
         App.clientChannel.send({type: "SHOW_DM", data: {dm_id: id}})
     }
     receiveClientData(data){

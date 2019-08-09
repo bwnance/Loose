@@ -16,11 +16,13 @@ class DMOverlay extends React.Component {
         e.preventDefault()
         // //console.log(this.state.selectedUsers)
         // this.props.addUsersToChannel(this.state.selectedUsers, this.props.currentChannel.id, "Channel");
+        
         const foundDM = this.dmExists(this.state.selectedUsers.concat(this.props.currentUser.id))
+        console.log(foundDM)
         if (foundDM) {
             this.props.closeOverlay();
             this.props.showDM(foundDM.id)
-            this.props.changeChannelView(foundDM.id, "DirectMessage")()
+            // this.props.changeChannelView(foundDM.id, "DirectMessage")()
             return
         }
         this.props.addUsersToDM(this.state.selectedUsers.concat(this.props.currentUser.id))
@@ -46,6 +48,7 @@ class DMOverlay extends React.Component {
         this.setState({ searchUser: "", foundUsers: [], selectedUsers: [] })
     }
     render() {
+        // debugger
         return (
             <div className="client-overlay add-users-overlay dm-overlay">
                 <CloseOverlayBtn />
@@ -54,7 +57,7 @@ class DMOverlay extends React.Component {
                         Direct Messages
                     </h2>
                     <form className="overlay-form add-users-form" onSubmit={this.handleSubmit}>
-                        <SearchDMsField closeOverlay={this.props.closeOverlay} changeChannelView={this.props.changeChannelView} dmExists={this.dmExists} setParentState={this.setStateFromChild} handleInput={this.handleInput} />
+                        <SearchDMsField showDM={this.props.showDM}closeOverlay={this.props.closeOverlay} changeChannelView={this.props.changeChannelView} dmExists={this.dmExists} setParentState={this.setStateFromChild} handleInput={this.handleInput} />
                         <input className="overlay-submit" type="submit" value="Add" />
                     </form>
                     
