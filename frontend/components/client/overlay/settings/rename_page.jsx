@@ -24,7 +24,7 @@ export default class RenamePage extends React.Component {
                     <input onChange={this.onChange} type="text" id="rename-input-id" placeholder={`Rename ${this.props.currentChannel.title}`} value={this.state.inputValue} className="rename-input loose-text-input overlay-text-input"/>
                     <div className="subtitle">Names should be lowercase, without spaces or periods.</div>
                     <div className="bottom-row">
-                        <button type="button" className="cancel-btn">Cancel</button>
+                        <button onClick={this.props.closeOverlay} type="button" className="cancel-btn">Cancel</button>
                         <button className="submit-btn" onClick={this.onSubmit}>Rename Channel</button>
                     </div>
                 </form>

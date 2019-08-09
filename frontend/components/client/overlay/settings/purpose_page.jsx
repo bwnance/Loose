@@ -42,7 +42,7 @@ export default class PurposePage extends React.Component {
                     </div>
                     <div className="subtitle">Describe what this channel is for.</div>
                     <div className="bottom-row">
-                        <button type="button" className="cancel-btn">Cancel</button>
+                        <button onClick={this.props.closeOverlay} type="button" className="cancel-btn">Cancel</button>
                         <button className="submit-btn" onClick={this.onSubmit}>Update Purpose</button>
                     </div>
                 </form>
