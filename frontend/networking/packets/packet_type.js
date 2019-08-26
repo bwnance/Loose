@@ -1,0 +1,23 @@
+export default PacketType = Object.freeze({
+    //server packets
+    RECEIVE_CHANNEL: 1,
+    RECEIVE_CHANNELS: 2,
+    RECEIVE_USER: 3,
+    RECEIVE_DMS: 4,
+    SERVER_DELETE_CHANNEL: 5,
+    SERVER_DELETE_MESSAGE: 6,
+
+
+    //client packets
+    UPDATE_CHANNEL: 10,
+    ADD_USER_TO_CHANNEL: 11,
+    ADD_USERS_TO_CHANNEL: 12,
+    FETCH_CHANNEL: 13,
+    CREATE_CHANNEL: 14,
+    HIDE_DM: 15,
+    SHOW_DM: 16,
+    CLIENT_DELETE_CHANNEL: 17,
+    CLIENT_DELETE_MESSAGE: 18,
+    NEW_MESSAGE: 19,
+    UPDATE_MESSAGE: 20
+})

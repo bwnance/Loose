@@ -91,13 +91,19 @@ class Client extends React.Component {
         this.closeOverlay();
     }
     hideDM(id){
-        
         setTimeout(this.changeChannelView(1, "Channel"),110);
         App.clientChannel.send({type: "HIDE_DM", data: {dm_id: id}})
     }
     showDM(id){
         
         App.clientChannel.send({type: "SHOW_DM", data: {dm_id: id}})
+    }
+    fetchAllChannels() {
+        App.clientChannel.send({ type: "FETCH_ALL_CHANNELS" })
+    }
+    deleteChannel(channelId) {
+        //console.log("deleting");
+        App.clientChannel.send({ type: "DELETE_CHANNEL", data: { channel_id: channelId } })
     }
     receiveClientData(data){
         switch(data.type){
@@ -114,7 +120,7 @@ class Client extends React.Component {
                 this.props.receiveDMs(data.dms)
                 break;
             case "DELETE_CHANNEL":
-                this.changeChannelView(1, "Channel")()
+                this.changeChannelView(1, "Channel")() //gross.
                 this.props.deleteChannel(data.channelId)
                 break;
             case "DELETE_MESSAGE":
@@ -142,19 +148,13 @@ class Client extends React.Component {
         if(author_id === this.props.currentUser.id) this.changeChannelView(channel.id, channel.messageable_type)(false)
         
     }
-    fetchAllChannels(){
-        App.clientChannel.send({type: "FETCH_ALL_CHANNELS"})
-    }
-    deleteChannel(channelId){
-        //console.log("deleting");
-        App.clientChannel.send({type: "DELETE_CHANNEL", data: {channel_id: channelId}})
-    }
+
     setupSubscription() {
         //console.log("CONNECTING...")
         App.clientChannel = App.cable.subscriptions.create(
             {
                 channel: 'ClientsChannel',
-                user_id: this.props.currentUser.id
+                
             },
             {
                 received: this.receiveClientData,
