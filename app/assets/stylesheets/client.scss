@@ -1791,13 +1791,14 @@ body{
         display: flex;
         align-items: center;
         height: 45px;
-        width: 90%;
+        // width: 90%;
         border-radius: 4px;
         box-sizing: border-box;
         padding: 5px 20px 0px 20px;
         margin-top: 0;
         margin-bottom: 0;
-        margin-left: 5%;
+        margin-left: 10px;
+        margin-right: 10px;
         padding-bottom: 0px;
         align-self: center;
         .message-input:focus{
