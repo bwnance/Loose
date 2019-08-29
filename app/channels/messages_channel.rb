@@ -11,6 +11,7 @@ class MessagesChannel < ApplicationCable::Channel
   end 
   
   def receive(data)
+    
     request_data = data["data"]
     case data["type"]
       when "DELETE_MESSAGE"

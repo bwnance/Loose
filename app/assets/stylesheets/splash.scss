@@ -95,12 +95,13 @@ html{
 .splash-errors::after{
     content: '';
     position: absolute;
+    background-color: transparent;
     top: 100%;
     left: 50%;
     margin-left: -12px;
     border-width: 12px;
     border-style: solid;
-    border-color: #fff transparent;
+    border-color: $color-bg transparent;
     border-right-color: transparent;
     border-left-color: transparent;
     border-bottom-color: transparent;
